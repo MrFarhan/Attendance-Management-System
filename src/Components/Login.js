@@ -4,6 +4,8 @@ import * as Yup from 'yup';
 import '../App.css'
 import { Form, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom'
+import { FiLogIn } from 'react-icons/fi';
+
 
 
 export const Login = () => {
@@ -35,7 +37,7 @@ export const Login = () => {
 
 
     const SignupFunc = () => {
-        history.push("/dashboard")
+        history.push("/signup")
     }
 
     return (
@@ -59,7 +61,7 @@ export const Login = () => {
             <Form.Group controlId="formBasicCheckbox" className="inputcheckbox">
                 <Form.Check type="checkbox" label="Check me out" />
             </Form.Group>
-            <Button variant="primary" type="submit" onClick={LoginFunc} > Login</Button>
+            <Button variant="primary" type="submit" onClick={LoginFunc} > <FiLogIn />Login</Button>
             <Button variant="link" onClick={SignupFunc}>Don't have an account</Button>
 
 

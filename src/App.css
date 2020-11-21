@@ -33,3 +33,18 @@ width: 70%;
   display: flex;
 
 }
+.radiobtngroup{
+  width: auto;
+}
+.radiobtn{
+  display: flex;
+  width: 5em;
+}
+
+.radiosubsec{
+  display: flex;
+  position: relative;
+  align-items: center;
+  font-size: inherit;
+  justify-content: center;
+}
