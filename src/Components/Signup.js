@@ -3,11 +3,20 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import '../App.css'
 import { Form, Button } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
+import firebase from "firebase"
+
 
 
 
 export const Signup = () => {
+
+    let history = useHistory()
+
+    // const [uName, setuName] = useState("")
+    // const [uEmail, setuEmail] = useState("")
+    // const [uPassword, setuPassword] = useState("")
+    // const [confirmPassword, setconfirmPassword] = useState("")
 
     const formik = useFormik({
         initialValues: {
@@ -50,24 +59,43 @@ export const Signup = () => {
         }),
         onSubmit: values => {
             console.log(JSON.stringify(values, null, 2));
+            SignupFunc(values)
         },
     });
 
-    let history = useHistory()
+    const SignupFunc = (values) => {
 
-    const LoginFunc = () => {
-        history.push("/")
+        firebase.auth().createUserWithEmailAndPassword(values.email, values.password).then((res) => {
+            let UID = firebase.auth().currentUser?.uid
+            console.log(res, "signup res")
+            firebase.database().ref('Users/' + UID).set({
+                firstName: values.firstName,
+                lastName: values.lastName,
+                email: values.email,
+                // gender: values.gender,
+                isVerified: false
+            })
+            history.push("/")
+
+        }).catch(function (error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(errorCode, "error code" + errorMessage, "error message")
+            // ...
+        });
     }
 
 
-    const SignupFunc = () => {
-        history.push("/signup")
+
+    const LoginFunc = () => {
+
     }
 
     return (
         <Form onSubmit={formik.handleSubmit} className="loginform">
 
-            <Form.Group controlId="formBasicEmail">
+            <Form.Group>
                 <Form.Label className="labels" htmlFor="firstName">First Name</Form.Label>
                 <Form.Control className="inputs" id="firstName" type="text" placeholder="Enter email" {...formik.getFieldProps('firstName')} autoFocus />
                 <span className="inputerror">  {formik.touched.firstName && formik.errors.firstName ? (
@@ -75,7 +103,7 @@ export const Signup = () => {
                 ) : null}</span>
             </Form.Group>
 
-            <Form.Group controlId="formBasicEmail">
+            <Form.Group>
                 <Form.Label className="labels" htmlFor="lastName">Last Name</Form.Label>
                 <Form.Control className="inputs" id="lastName" type="text" placeholder="Enter email" {...formik.getFieldProps('lastName')} />
                 <span className="inputerror">  {formik.touched.lastName && formik.errors.lastName ? (
@@ -83,7 +111,7 @@ export const Signup = () => {
                 ) : null}</span>
             </Form.Group>
 
-            <Form.Group controlId="formBasicEmail">
+            <Form.Group>
                 <Form.Label className="labels" htmlFor="email">Email address</Form.Label>
                 <Form.Control className="inputs" id="email" type="email" placeholder="Enter email" {...formik.getFieldProps('email')} />
                 <span className="inputerror">  {formik.touched.email && formik.errors.email ? (
@@ -111,7 +139,7 @@ export const Signup = () => {
                     /></div>
             </Form.Group>
 
-            <Form.Group controlId="formBasicPassword">
+            <Form.Group>
                 <Form.Label className="labels">Password</Form.Label>
                 <Form.Control className="inputs" id="password" type="password" placeholder="Password" {...formik.getFieldProps('password')} />
                 <span className="inputerror">{formik.touched.password && formik.errors.password ? (
@@ -119,7 +147,7 @@ export const Signup = () => {
                 ) : null}</span>
             </Form.Group>
 
-            <Form.Group controlId="formBasicPassword">
+            <Form.Group>
                 <Form.Label className="labels">Confirm Password</Form.Label>
                 <Form.Control className="inputs" id="confirmPassword" type="password" placeholder="confirm Password" {...formik.getFieldProps('confirmPassword')} />
                 <span className="inputerror">{formik.touched.confirmPassword && formik.errors.confirmPassword ? (
@@ -131,7 +159,7 @@ export const Signup = () => {
                 <Form.Check type="checkbox" label="I hereby agree all terms of services " {...formik.getFieldProps('acceptedTerms')} />
             </Form.Group>
 
-            <Button variant="primary" type="submit" onClick={SignupFunc} > Sign up</Button>
+            <Button variant="primary" type="submit" onClick={SignupFunc}  > Sign up</Button>
             <Button variant="link" onClick={LoginFunc}>Already have an account</Button>
 
 

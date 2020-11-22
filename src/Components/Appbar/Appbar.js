@@ -29,8 +29,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MenuAppBar() {
   const classes = useStyles();
   const [auth, setAuth] = React.useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+  const [anchorEl, setAnchorEl] = React.useState(false);
   let history = useHistory()
 
   const handleChange = (event) => {
@@ -38,6 +37,7 @@ export default function MenuAppBar() {
   };
 
   const handleMenu = (event) => {
+    // console.log(event.currentTarget)
     setAnchorEl(event.currentTarget);
   };
 
@@ -71,7 +71,7 @@ export default function MenuAppBar() {
           <Typography variant="h6" className={classes.title}>
             Dashboard
           </Typography>
-          {auth && (
+          {Boolean(auth) ? (
             <div>
               <IconButton
                 aria-label="account of current user"
@@ -94,14 +94,14 @@ export default function MenuAppBar() {
                   vertical: 'top',
                   horizontal: 'right',
                 }}
-                open={open}
+                open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
                 <MenuItem onClick={profileFunc}>Profile setting</MenuItem>
                 <MenuItem onClick={LogoutFunc}>Log out</MenuItem>
               </Menu>
             </div>
-          )}
+          ): null}
         </Toolbar>
       </AppBar>
       <AppbarBody />

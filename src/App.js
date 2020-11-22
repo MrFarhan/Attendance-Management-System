@@ -7,11 +7,10 @@ import { Signup } from './Components/Signup';
 import { Test } from './Test';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Profile } from './Components/Profile';
-
+import firebase from "./firebase"
 
 function App() {
   return (
-
     <Router>
       <div className="App">
         <Switch>
@@ -21,8 +20,6 @@ function App() {
           <Route path="/profile"><Profile /></Route>
           <Route path="/test"><Test /></Route>
         </Switch>
-
-
 
       </div>
     </Router >
