@@ -17,6 +17,7 @@ export const Signup = () => {
             contactNumber: "",
             password: "",
             confirmPassword: "",
+            acceptedTerms: false
 
         },
         validationSchema: Yup.object({
@@ -35,13 +36,16 @@ export const Signup = () => {
                 .required('Required'),
             confirmPassword: Yup.string()
                 .max(20, 'Must be 20 characters or less')
-                .required('Required'),
-            dateofBirth: Yup.date(),
-            acceptedTerms: Yup.boolean()
                 .required('Required')
-                .oneOf([true], 'You must accept the terms and conditions.'),
-            // gender
-            // Agree terms
+                .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+            dateofBirth: Yup.date(),
+            // acceptedTerms: Yup.boolean()
+            //     .required('Required')
+            //     .oneOf([true], 'You must accept the terms and conditions.'),
+            // gender: Yup.boolean()
+            //     .required('Required')
+            //     .oneOf(["Male", "Female"], 'Please select your gender'),
+
 
         }),
         onSubmit: values => {
@@ -93,18 +97,18 @@ export const Signup = () => {
                     Gender
                 </Form.Label>
                 <div className="radiosubsec">
-                <Form.Check className="radiobtn"
-                    type="radio"
-                    label="Male"
-                    name="formHorizontalRadios"
-                    id="formHorizontalRadios1"
-                />
-                <Form.Check className="radiobtn"
-                    type="radio"
-                    label="Female"
-                    name="formHorizontalRadios"
-                    id="formHorizontalRadios2"
-                /></div>
+                    <Form.Check className="radiobtn"
+                        type="radio"
+                        label="Male"
+                        name="formHorizontalRadios"
+                        id="formHorizontalRadios1"
+                    />
+                    <Form.Check className="radiobtn"
+                        type="radio"
+                        label="Female"
+                        name="formHorizontalRadios"
+                        id="formHorizontalRadios2"
+                    /></div>
             </Form.Group>
 
             <Form.Group controlId="formBasicPassword">
@@ -117,18 +121,16 @@ export const Signup = () => {
 
             <Form.Group controlId="formBasicPassword">
                 <Form.Label className="labels">Confirm Password</Form.Label>
-                <Form.Control className="inputs" id="confirmPassword" type="confirmPassword" placeholder="confirm Password" {...formik.getFieldProps('confirmPassword')} />
+                <Form.Control className="inputs" id="confirmPassword" type="password" placeholder="confirm Password" {...formik.getFieldProps('confirmPassword')} />
                 <span className="inputerror">{formik.touched.confirmPassword && formik.errors.confirmPassword ? (
                     <div>{formik.errors.confirmPassword}</div>
                 ) : null}</span>
             </Form.Group>
 
-            <Form.Group controlId="formBasicCheckbox" className="inputcheckbox" name="acceptedTerms">
-                <Form.Check type="checkbox" label="I hereby agree all terms of services " name="acceptedTerms" />
+            <Form.Group controlId="formBasicCheckbox" className="inputcheckbox"   >
+                <Form.Check type="checkbox" label="I hereby agree all terms of services " {...formik.getFieldProps('acceptedTerms')} />
             </Form.Group>
-            {/* <MyCheckbox >
-                I accept the terms and conditions
-           </MyCheckbox> */}
+
             <Button variant="primary" type="submit" onClick={SignupFunc} > Sign up</Button>
             <Button variant="link" onClick={LoginFunc}>Already have an account</Button>
 
