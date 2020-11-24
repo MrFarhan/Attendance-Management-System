@@ -1,4 +1,4 @@
-// import React from 'react'
+import React from 'react'
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import './App.css';
 import { Dashboard } from './Components/Dashboard';
@@ -8,11 +8,15 @@ import { Test } from './Test';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Profile } from './Components/Profile';
 // eslint-disable-next-line 
-import firebase from "./firebase" //used for firebase initialization
+import firebaseData from "./firebase" //used for firebase initialization
 import { Provider } from 'react-redux';
 import { store } from './Redux/Store';
+// eslint-disable-next-line 
+import firebase from "firebase"
 
 function App() {
+
+
   return (
     <Provider store={store}>
       <Router>
@@ -24,7 +28,6 @@ function App() {
             <Route path="/profile"><Profile /></Route>
             <Route path="/test"><Test /></Route>
           </Switch>
-
         </div>
       </Router >
     </Provider >

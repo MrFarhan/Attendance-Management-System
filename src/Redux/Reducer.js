@@ -1,17 +1,23 @@
-import { UUID } from "./ActionTypes"
+import { USER_DETAILS } from "./ActionTypes"
 
 export const initialState = {
-    uuid: false
+    userDetails: false,
+    // fbCurrentUser: ""
 }
 
 export default function Reducer(state = initialState, { type, payload }) {
     switch (type) {
-        case UUID:
+        case USER_DETAILS:
             console.log("reducer cosole")
             return {
                 ...state,
-                uuid: payload
+                userDetails: payload
             }
+        // case FB_CURRENT_USER:
+        //     return {
+        //         ...state,
+        //         fbCurrentUser: payload
+        //     }
         default:
             return state
     }

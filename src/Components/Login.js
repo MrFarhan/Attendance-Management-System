@@ -1,18 +1,35 @@
-import React from 'react'
+import React, { useEffect} from 'react'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import '../App.css'
 import { Form, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom'
 import { FiLogIn } from 'react-icons/fi';
-import {useDispatch} from "react-redux"
+import { useDispatch } from "react-redux"
 import firebase from 'firebase'
-import { uuidAction } from '../Redux/Actions';
+import { userDetailsAction } from '../Redux/Actions';
 require('firebase/auth')
 
 
 export const Login = () => {
     const dispatch = useDispatch()
+    let history = useHistory()
+    var user = firebase.auth().currentUser;
+    // const [userDetails, setUserDetails] = useState()
+
+
+
+    useEffect(() => {
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                history.push("/dashboard")
+            } else {
+                history.push("/")
+            }
+        });
+
+
+    }, [user, history])
 
     const formik = useFormik({
         initialValues: {
@@ -36,18 +53,17 @@ export const Login = () => {
         },
     });
 
-    let history = useHistory()
 
     const LoginFunc = (email, pass) => {
-        console.log(email, "email stat")
-        console.log(pass, "email stat")
         firebase.auth().signInWithEmailAndPassword(email, pass)
-            .then((res) => {
-                console.log(res, "res")
-                
-                dispatch(uuidAction(firebase.auth().currentUser?.uid))
-                history.replace("/dashboard")
-
+            .then((response) => {
+                console.log(response, "response from firebase at login")
+                firebase.database().ref(`Users/${firebase.auth().currentUser?.uid}/`).on("value", (res) => {
+                    // setUserDetails(res.val())
+                    dispatch(userDetailsAction(res.val()))
+                    console.log(res.val(), "user details in login")
+                    history.replace("/dashboard")
+                })
             })
             .catch(function (error) {
                 // Handle Errors here.

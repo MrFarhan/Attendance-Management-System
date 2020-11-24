@@ -3,7 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import firebase from 'firebase'
-import { useSelector } from 'react-redux';
+import { useDispatch} from 'react-redux';
+import { userDetailsAction } from '../../Redux/Actions';
 require('firebase/auth')
 
 const useStyles = makeStyles((theme) => ({
@@ -18,22 +19,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AppbarBody() {
-    const [userName, setUserName] = useState()
-    const state = useSelector(({uuid})=>uuid)
-    console.log(state, "uuid state from use selector")
+    const [userDetails, setUserDetails] = useState(false)
+    let dispatch = useDispatch()
 
     useEffect(() => {
-        firebase.database().ref(`Users/${state}/`).on("value", (res) => setUserName(res.val()))
+        firebase.database().ref(`Users/${firebase.auth().currentUser?.uid}/`).on("value", (res) => {
+            setUserDetails(res.val())
+            dispatch(userDetailsAction(res.val()))
+            console.log(res.val(), "user details in appbar body ")
+        })
 
-    }, [state])
+    }, [])
+
     const classes = useStyles();
-    console.log(firebase.auth().currentUser?.uid, "firebase auth in appbarbody file")
 
     return (
         <div className={classes.root}>
             <Grid container spacing={3}>
                 <Grid item xs={3}>
-                    <Paper className={classes.paper}>Logedin as: {userName?.firstName} </Paper>
+                    <Paper className={classes.paper}>Logedin as: {userDetails?.firstName} </Paper>
 
                 </Grid>
                 <Grid item xs={12}>

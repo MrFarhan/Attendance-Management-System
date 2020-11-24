@@ -9,6 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AppbarBody from './AppbarBody';
 import { useHistory } from "react-router-dom"
+import firebase from "firebase"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,8 +40,8 @@ export default function MenuAppBar() {
   }
   const LogoutFunc = () => {
     setAnchorEl(null);
+    firebase.auth().signOut()
     history.push("/")
-
   }
 
   const handleClose = () => {
