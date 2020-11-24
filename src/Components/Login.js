@@ -5,14 +5,15 @@ import '../App.css'
 import { Form, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom'
 import { FiLogIn } from 'react-icons/fi';
+import {useDispatch} from "react-redux"
 import firebase from 'firebase'
+import { uuidAction } from '../Redux/Actions';
 require('firebase/auth')
 
 
 export const Login = () => {
+    const dispatch = useDispatch()
 
-    // const [uEmail, setuEmail] = useState("")
-    // const [uPassword, setuPassword] = useState("")
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -28,12 +29,9 @@ export const Login = () => {
                 .required('Required')
         }),
         onSubmit: values => {
-            let test = (values.email);
+            let email = (values.email);
             let pass = (values.password);
-            console.log(test);
-            // setuEmail(test.email)
-            // setuPassword(test.password)
-            LoginFunc(test, pass)
+            LoginFunc(email, pass)
 
         },
     });
@@ -43,36 +41,33 @@ export const Login = () => {
     const LoginFunc = (email, pass) => {
         console.log(email, "email stat")
         console.log(pass, "email stat")
-        // history.push("/dashboard")
         firebase.auth().signInWithEmailAndPassword(email, pass)
-        .then((res) => {
-            console.log(res,"res")
+            .then((res) => {
+                console.log(res, "res")
+                
+                dispatch(uuidAction(firebase.auth().currentUser?.uid))
+                history.replace("/dashboard")
 
-            history.replace("/dashboard")
-
-        })
-        .catch(function (error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            // [START_EXCLUDE]
-            if (errorCode === 'auth/wrong-password') {
-                alert('Wrong password.');
-            } else {
-                alert(errorMessage);
-            }
-            console.log(error, "error");
-            // [END_EXCLUDE]
-        });
-     }
-
-
-     const SignupFunc = () => {
-        history.push("/signup")
+            })
+            .catch(function (error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // [START_EXCLUDE]
+                if (errorCode === 'auth/wrong-password') {
+                    alert('Wrong password.');
+                } else {
+                    alert(errorMessage);
+                }
+                console.log(error, "error");
+                // [END_EXCLUDE]
+            });
     }
 
-    console.log(firebase.auth().currentUser?.uid, "firebase auth")
 
+    const SignupFunc = () => {
+        history.push("/signup")
+    }
 
     return (
         <Form onSubmit={formik.handleSubmit} className="loginform">

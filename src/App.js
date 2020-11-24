@@ -7,23 +7,27 @@ import { Signup } from './Components/Signup';
 import { Test } from './Test';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Profile } from './Components/Profile';
-import firebase from "./firebase"
+// eslint-disable-next-line 
+import firebase from "./firebase" //used for firebase initialization
+import { Provider } from 'react-redux';
+import { store } from './Redux/Store';
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Switch>
-          <Route exact path="/"><Login /></Route>
-          <Route path="/Dashboard"><Dashboard /></Route>
-          <Route path="/signup"><Signup /></Route>
-          <Route path="/profile"><Profile /></Route>
-          <Route path="/test"><Test /></Route>
-        </Switch>
+    <Provider store={store}>
+      <Router>
+        <div className="App">
+          <Switch>
+            <Route exact path="/"><Login /></Route>
+            <Route path="/Dashboard"><Dashboard /></Route>
+            <Route path="/signup"><Signup /></Route>
+            <Route path="/profile"><Profile /></Route>
+            <Route path="/test"><Test /></Route>
+          </Switch>
 
-      </div>
-    </Router >
-
+        </div>
+      </Router >
+    </Provider >
   );
 }
 
