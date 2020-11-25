@@ -10,6 +10,8 @@ import Menu from '@material-ui/core/Menu';
 import AppbarBody from './AppbarBody';
 import { useHistory } from "react-router-dom"
 import firebase from "firebase"
+import { userDetailsAction } from '../../Redux/Actions';
+import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MenuAppBar() {
   const classes = useStyles();
+  let dispatch = useDispatch()
   const [anchorEl, setAnchorEl] = React.useState(false);
   let history = useHistory()
 
@@ -42,6 +45,7 @@ export default function MenuAppBar() {
     setAnchorEl(null);
     firebase.auth().signOut()
     history.push("/")
+    dispatch(userDetailsAction(false))
   }
 
   const handleClose = () => {
