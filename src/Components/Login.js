@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import '../App.css'
@@ -7,17 +7,15 @@ import { Redirect, useHistory } from 'react-router-dom'
 import { FiLogIn } from 'react-icons/fi';
 import { useDispatch, useSelector } from "react-redux"
 import firebase from 'firebase'
-import { userDetailsAction } from '../Redux/Actions';
+import { loadingAction, userDetailsAction } from '../Redux/Actions';
 require('firebase/auth')
 
 
 export const Login = () => {
     const dispatch = useDispatch()
-    const [loading, setLoading] = useState(false)
     let history = useHistory()
     var user = firebase.auth().currentUser;
-    // const [userDetails, setUserDetails] = useState()
-    const state = useSelector((state) => state.userDetails)
+    const userDetails = useSelector((state) => state.userDetails)
     const loadingred = useSelector((val) => val.loading)
 
 
@@ -25,12 +23,12 @@ export const Login = () => {
     useEffect(() => {
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
-                setLoading(true)
+                dispatch(loadingAction(false))
             }
         });
 
 
-    }, [user])
+    }, [user, dispatch])
 
     const formik = useFormik({
         initialValues: {
@@ -57,14 +55,10 @@ export const Login = () => {
 
     const LoginFunc = (email, pass) => {
         firebase.auth().signInWithEmailAndPassword(email, pass)
-            .then((response) => {
-                console.log(response, "response from firebase at login")
+            .then(() => {
                 firebase.database().ref(`Users/${firebase.auth().currentUser?.uid}/`).on("value", (res) => {
-                    // setUserDetails(res.val())
                     dispatch(userDetailsAction(res.val()))
-                    console.log(res.val(), "user details in login")
                     history.push("/dashboard")
-                    // Redirect("/dashboard")
                 })
             })
             .catch(function (error) {
@@ -87,7 +81,7 @@ export const Login = () => {
         history.push("/signup")
     }
 
-    if (!loadingred && state) return <Redirect to="/dashboard" />
+    if (!loadingred && userDetails) return <Redirect to="/dashboard" />
     return (
         <Form onSubmit={formik.handleSubmit} className="loginform">
             <Form.Group >
@@ -111,8 +105,6 @@ export const Login = () => {
             </Form.Group>
             <Button variant="primary" type="submit" > <FiLogIn />Login</Button>
             <Button variant="link" onClick={SignupFunc}>Don't have an account</Button>
-
-
         </Form>
     );
 };

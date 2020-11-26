@@ -13,11 +13,6 @@ export const Signup = () => {
 
     let history = useHistory()
 
-    // const [uName, setuName] = useState("")
-    // const [uEmail, setuEmail] = useState("")
-    // const [uPassword, setuPassword] = useState("")
-    // const [confirmPassword, setconfirmPassword] = useState("")
-
     const formik = useFormik({
         initialValues: {
             firstName: "",
@@ -48,13 +43,6 @@ export const Signup = () => {
                 .required('Required')
                 .oneOf([Yup.ref('password'), null], 'Passwords must match'),
             dateofBirth: Yup.date(),
-            // acceptedTerms: Yup.boolean()
-            //     .required('Required')
-            //     .oneOf([true], 'You must accept the terms and conditions.'),
-            // gender: Yup.boolean()
-            //     .required('Required')
-            //     .oneOf(["Male", "Female"], 'Please select your gender'),
-
 
         }),
         onSubmit: values => {
@@ -72,7 +60,6 @@ export const Signup = () => {
                 firstName: values.firstName,
                 lastName: values.lastName,
                 email: values.email,
-                // gender: values.gender,
                 isVerified: false
             })
             history.push("/")
@@ -161,8 +148,6 @@ export const Signup = () => {
 
             <Button variant="primary" type="submit" onClick={SignupFunc}  > Sign up</Button>
             <Button variant="link" onClick={LoginFunc}>Already have an account</Button>
-
-
         </Form>
     );
 };
