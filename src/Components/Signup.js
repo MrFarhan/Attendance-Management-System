@@ -76,7 +76,7 @@ export const Signup = () => {
 
 
     const LoginFunc = () => {
-
+        history.push("/")
     }
 
     return (
