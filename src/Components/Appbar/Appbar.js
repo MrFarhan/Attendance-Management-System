@@ -11,7 +11,9 @@ import AppbarBody from './AppbarBody';
 import { useHistory } from "react-router-dom"
 import firebase from "firebase"
 import { userDetailsAction } from '../../Redux/Actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import SideNav from './SideNav';
+import "../../App.css"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,6 +32,8 @@ export default function MenuAppBar() {
   let dispatch = useDispatch()
   const [anchorEl, setAnchorEl] = React.useState(false);
   let history = useHistory()
+  const state = useSelector((state) => state.userDetails)
+
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -56,14 +60,20 @@ export default function MenuAppBar() {
 
 
   return (
-    <div className={classes.root}>
+    // complete dashboard page
+    <div className={classes.root} className="dashboardMain">
+
       <AppBar position="static">
+
+
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            Dashboard
+            Attendance Management System
           </Typography>
 
           <div>
+          <span>{state?.firstName}</span>
+
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -73,6 +83,7 @@ export default function MenuAppBar() {
             >
               <AccountCircle />
             </IconButton>
+            
             <Menu
               id="menu-appbar"
               anchorEl={anchorEl}
@@ -93,7 +104,9 @@ export default function MenuAppBar() {
             </Menu>
           </div>
         </Toolbar>
+
       </AppBar>
+      <div className="test"><SideNav /></div>
       <AppbarBody />
     </div>
   );

@@ -1,17 +1,19 @@
 .App {
   display: flex;
+  width: 100vw;
   justify-content: center;
   text-align: center;
-  padding: 3em;
+  padding: 1em;
   /* margin-bottom: 2em; */
 }
 .loginform{
+  width: 50%;
   padding: 1em;
   /* display: flex;
   flex-direction: row; */
   justify-content: center;
   align-items: center;
-  width: 500px;
+  /* width: 500px; */
 }
 
 .labels{
@@ -50,6 +52,28 @@ width: 70%;
 }
 
 
-.dashboardmain{
-  width: 650px;
+
+.dashboardMain{
+  width: 90% ;
+  
+  /* display: flex; */
+ 
+}
+
+.test{
+  width: 20%;
+  height: 200px;
+  display: flex;
+  float: left;
+  flex-direction: column;
+}
+
+.mainappbarbody{
+  display: flex;
+  /* margin-left: 20%; */
+}
+
+.firstpaper{
+  margin-left: 80%;
+  width: auto;
 }

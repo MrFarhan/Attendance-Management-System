@@ -5,12 +5,14 @@ import Grid from '@material-ui/core/Grid';
 import firebase from 'firebase'
 import { useDispatch, useSelector } from 'react-redux';
 import { loadingAction, userDetailsAction } from '../../Redux/Actions';
+import "../../App.css";
 import { useHistory } from 'react-router-dom';
 require('firebase/auth')
 
+
 const useStyles = makeStyles((theme) => ({
     root: {
-        flexGrow: 1,
+        // flexGrow: 1,
     },
     paper: {
         padding: theme.spacing(2),
@@ -37,10 +39,10 @@ export default function AppbarBody() {
     const classes = useStyles();
 
     return (
-        <div className={classes.root}>
+        <div className={classes.root} className="mainappbarbody">
             <Grid container spacing={3}>
-                <Grid item xs={3}>
-                    <Paper className={classes.paper}>Logedin as: {state?.firstName} </Paper>
+                <Grid item xs={12} >
+                    <Paper className="firstpaper" >Date: </Paper>
                 </Grid>
                 <Grid item xs={12}>
                     <Paper className={classes.paper}>Main Body</Paper>
