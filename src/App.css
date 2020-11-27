@@ -74,6 +74,9 @@ width: 70%;
 }
 
 .firstpaper{
-  margin-left: 80%;
-  width: auto;
+  margin-left: 70%;
+  width: 17em;
+  /* position: absolute; */
+  justify-content: flex-end;
+  /* width: auto; */
 }
