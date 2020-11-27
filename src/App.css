@@ -80,3 +80,8 @@ width: 70%;
   justify-content: flex-end;
   /* width: auto; */
 }
+
+.sideNav{
+  background-color: red;
+  /* color: green; */
+}

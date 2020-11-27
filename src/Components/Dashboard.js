@@ -12,7 +12,6 @@ export const Dashboard = () => {
     if (!loading && !userDetails) return <Redirect to="/" />
 
     return (
-
             <MenuAppBar />
     )
 }

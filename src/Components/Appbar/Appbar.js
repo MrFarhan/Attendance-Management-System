@@ -14,6 +14,7 @@ import { userDetailsAction } from '../../Redux/Actions';
 import { useDispatch, useSelector } from 'react-redux';
 import SideNav from './SideNav';
 import "../../App.css"
+import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,15 +65,12 @@ export default function MenuAppBar() {
     <div className={classes.root} className="dashboardMain">
 
       <AppBar position="static">
-
-
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
             Attendance Management System
           </Typography>
-
-          <div>
-          <span>{state?.firstName}</span>
+          <Button variant="contained">Check in</Button>{' '}
+          <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{state?.firstName}</span>
 
             <IconButton
               aria-label="account of current user"
@@ -102,11 +100,10 @@ export default function MenuAppBar() {
               <MenuItem onClick={profileFunc}>Profile setting</MenuItem>
               <MenuItem onClick={LogoutFunc}>Log out</MenuItem>
             </Menu>
-          </div>
+
         </Toolbar>
 
       </AppBar>
-      <div className="test"><SideNav /></div>
       <AppbarBody />
     </div>
   );

@@ -1,6 +1,7 @@
 // import { Tab } from '@material-ui/core'
 import React from 'react'
 import { Tab, Col, Nav, Row } from 'react-bootstrap'
+import "../../App.css"
 
 const SideNav = () => {
     return (
@@ -26,20 +27,20 @@ const SideNav = () => {
                             </Nav.Item>
                         </Nav>
                     </Col>
-                    {/* <Col sm={9}>
+                </Row>
+                    <Col sm={9}>
                     <Tab.Content>
                         <Tab.Pane eventKey="first">
-                            <Sonnet />
-                            <p>Some text here</p>
+                            {/* <Sonnet /> */}
+                            <p>Some text hereSome text hereSome text hereSome text here</p>
                         </Tab.Pane>
                         <Tab.Pane eventKey="second">
-                            <Sonnet />
-                            <p>Some other text here</p>
+                            {/* <Sonnet /> */}
+                            <p>Some other text hereSome other text hereSome other text hereSome other text here</p>
 
                         </Tab.Pane>
                     </Tab.Content>
-                </Col> */}
-                </Row>
+                </Col>
             </Tab.Container>
         </div>
 

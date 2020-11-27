@@ -8,6 +8,9 @@ import { loadingAction, userDetailsAction } from '../../Redux/Actions';
 import "../../App.css";
 import { useHistory } from 'react-router-dom';
 import date from 'date-and-time';
+import SideNav from './SideNav';
+import { Tab, Col, Nav, Row } from 'react-bootstrap'
+
 require('firebase/auth')
 
 
@@ -32,15 +35,12 @@ export default function AppbarBody() {
     let [cDate, setUdate] = useState()
 
     useEffect(() => {
-        
         setInterval(() => {
             setUdate(date.format(new Date(), pattern))
         }, 1000);
-
         console.log(cDate, "cDate")
-        
     }, [])
-    
+
 
     useEffect(() => {
         firebase.database().ref(`Users/${firebase.auth().currentUser?.uid}/`).on("value", (res) => {
@@ -54,29 +54,58 @@ export default function AppbarBody() {
 
     const classes = useStyles();
 
-
-    // date.parse('Mar 22 2019 2:54:21 PM', pattern);
-    // date.parse('Jul 27 2019 4:15:24 AM', pattern);
-    // date.parse('Dec 25 2019 3:51:11 AM', pattern);
-
-
-
     return (
         <div className={classes.root} className="mainappbarbody">
-            <Grid container spacing={3}>
-                <Grid item xs={12} >
-                    <Paper className="firstpaper" ><b>Date: </b>{cDate}</Paper>
-                </Grid>
-                <Grid item xs={12}>
-                    <Paper className={classes.paper}>Main Body</Paper>
-                </Grid>
-                <Grid item xs={6}>
-                    <Paper className={classes.paper}>Sub section (if any)</Paper>
-                </Grid>
-                <Grid item xs={6}>
-                    <Paper className={classes.paper}>Sub section (if any)</Paper>
-                </Grid>
-            </Grid>
+            {/* <span className="date-time"><b>Date: </b>{cDate}</span> */}
+
+            <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+                <Row>
+                    <Col sm={12}>
+                        <Nav variant="pills" className="flex-column">
+                            <Nav.Item>
+                                <Nav.Link eventKey="first">Timer</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link eventKey="second">Time Sheet  </Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link eventKey="third">Report  </Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link eventKey="fourth">Team  </Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link eventKey="fifth">Projects  </Nav.Link>
+                            </Nav.Item>
+                        </Nav>
+                    </Col>
+                </Row>
+                <Col sm={9}>
+                    <Tab.Content>
+                        <Tab.Pane eventKey="first">
+                            {/* <Sonnet /> */}
+                            <p>Some text hereSome text hereSome text hereSome text here</p>
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="second">
+                            {/* <Sonnet /> */}
+                            <p>Some other text hereSome other text hereSome other text hereSome other text here</p>
+
+                        </Tab.Pane>
+                    </Tab.Content>
+                </Col>
+            </Tab.Container>
+
+
+
+
+
+
+
+
+
+
+
+
         </div>
     );
 }
