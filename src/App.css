@@ -85,3 +85,15 @@ width: 70%;
   background-color: red;
   /* color: green; */
 }
+
+.profileMain{
+  width: 90% ;
+
+}
+
+
+
+
+.profileNav{
+  display: flex;
+}
