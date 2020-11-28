@@ -3,7 +3,7 @@
   width: 100vw;
   justify-content: center;
   text-align: center;
-  padding: 1em;
+  /* padding: 1em; */
   /* margin-bottom: 2em; */
 }
 .loginform{
@@ -54,7 +54,7 @@ width: 70%;
 
 
 .dashboardMain{
-  width: 90% ;
+  width: 100% ;
   
   /* display: flex; */
  
@@ -62,7 +62,7 @@ width: 70%;
 
 .test{
   width: 20%;
-  height: 200px;
+  height: 500px;
   display: flex;
   float: left;
   flex-direction: column;
@@ -87,7 +87,8 @@ width: 70%;
 }
 
 .profileMain{
-  width: 90% ;
+  width: 100% ;
+  height: 100%;
 
 }
 
@@ -95,5 +96,28 @@ width: 70%;
 
 
 .profileNav{
+  display: flex;
+  height: 100%;
+  width: auto;
+  background-color: rgb(232, 225, 225);
+}
+
+
+.loginformProfile{
+  width: 70%;
+  height: 100% !important;
+  padding: 1em;
+  /* display: flex;
+  flex-direction: row; */
+  justify-content: center;
+  align-items: center;
+  margin-left: 15%;
+  /* width: 500px; */
+}
+
+#formcheck-api-regular{
+  width: 7em;
+  height: 8em !important ;
+  align-items: left;
   display: flex;
 }
