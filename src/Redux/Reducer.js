@@ -3,14 +3,14 @@ import { LOADING } from "./ActionTypes"
 
 
 export const initialState = {
-    userDetails: false,
+    userDetails: {},
     loading: true
 }
 
 export default function Reducer(state = initialState, { type, payload }) {
     switch (type) {
         case USER_DETAILS:
-            console.log("reducer cosole")
+            console.log("user details reducer cosole", payload)
             return {
                 ...state,
                 userDetails: payload

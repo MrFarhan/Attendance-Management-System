@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import '../App.css'
@@ -10,7 +10,6 @@ import firebase from "firebase"
 
 
 export const Signup = () => {
-
     let history = useHistory()
 
     const formik = useFormik({
@@ -18,9 +17,11 @@ export const Signup = () => {
             firstName: "",
             lastName: "",
             email: "",
-            contactNumber: "",
+            cNumber: "",
             password: "",
             confirmPassword: "",
+            gender: "",
+            dateofBirth: "",
             acceptedTerms: false
 
         },
@@ -43,10 +44,16 @@ export const Signup = () => {
                 .required('Required')
                 .oneOf([Yup.ref('password'), null], 'Passwords must match'),
             dateofBirth: Yup.date(),
+            gender: Yup.mixed()
+                .required('Required')
+                .oneOf(['Male', 'Female']),
+            cNumber: Yup.number()
+
 
         }),
         onSubmit: values => {
             console.log(JSON.stringify(values, null, 2));
+            console.log(values, "values in signup form submission")
             SignupFunc(values)
         },
     });
@@ -60,6 +67,9 @@ export const Signup = () => {
                 firstName: values.firstName,
                 lastName: values.lastName,
                 email: values.email,
+                cNumber: values.cNumber,
+                gender: values.gender,
+                dateofBirth: values.dateofBirth,
                 isVerified: false
             })
             history.push("/")
@@ -106,25 +116,49 @@ export const Signup = () => {
                 ) : null}</span>
             </Form.Group>
 
+            <Form.Group>
+                <Form.Label className="labels" htmlFor="cNumber">Phone Number</Form.Label>
+                <Form.Control className="inputs" id="cNumber" type="number" placeholder="Enter your mobile number" {...formik.getFieldProps('cNumber')} />
+                <span className="inputerror">  {formik.touched.cNumber && formik.errors.cNumber ? (
+                    <div>{formik.errors.cNumber}</div>
+                ) : null}</span>
+            </Form.Group>
 
-            <Form.Group className="inputcheckbox">
+            <Form.Group {...formik.getFieldProps('dateofBirth')}>
+                <Form.Label className="labels" htmlFor="dateofBirth">Select your date of birth</Form.Label>
+                <Form.Control className="inputs" id="dateofBirth" type="date" placeholder="Select your date of birth" />
+                <span className="inputerror">  {formik.touched.dateofBirth && formik.errors.dateofBirth ? (
+                    <div>{formik.errors.dateofBirth}</div>
+                ) : null}</span>
+            </Form.Group>
+
+
+            <Form.Group  {...formik.getFieldProps('gender')} className="inputcheckbox">
                 <Form.Label className="radiobtngroup">
                     Gender
                 </Form.Label>
-                <div className="radiosubsec">
+                <div className="radiosubsec" >
                     <Form.Check className="radiobtn"
                         type="radio"
                         label="Male"
-                        name="formHorizontalRadios"
-                        id="formHorizontalRadios1"
+                        name="gender"
+                        id="Male"
+                        value="Male"
                     />
                     <Form.Check className="radiobtn"
                         type="radio"
                         label="Female"
-                        name="formHorizontalRadios"
-                        id="formHorizontalRadios2"
-                    /></div>
+                        name="gender"
+                        id="Female"
+                        value="Female"
+                    />
+                </div>
+                <div className="inputerror">  {formik.touched.gender && formik.errors.gender ? (
+                    <div>{formik.errors.gender}</div>
+                ) : null}</div>
             </Form.Group>
+
+
 
             <Form.Group>
                 <Form.Label className="labels">Password</Form.Label>
@@ -146,8 +180,8 @@ export const Signup = () => {
                 <Form.Check type="checkbox" label="I hereby agree all terms of services " {...formik.getFieldProps('acceptedTerms')} />
             </Form.Group>
 
-            <Button variant="primary" type="submit" onClick={SignupFunc}  > Sign up</Button>
-            <Button variant="link" onClick={LoginFunc}>Already have an account</Button>
+            <Button variant="primary" type="submit" > Sign up</Button>
+            <Button variant="link" type="button" onClick={LoginFunc}>Already have an account</Button>
         </Form>
     );
 };

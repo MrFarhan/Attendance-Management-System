@@ -2,7 +2,6 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { MainAppbar } from './Appbar/MainAppbar'
-import SideNav from './Appbar/SideNav'
 import "../App.css"
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -11,24 +10,26 @@ import { Form, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import firebase from "firebase"
 import pic from "./Circle-icons-profile.svg"
+import { useDispatch } from "react-redux"
+import { userDetailsAction } from '../Redux/Actions'
 
 
 export const Profile = () => {
     const userDetails = useSelector((state) => state.userDetails)
     const loading = useSelector((val) => val.loading)
     let history = useHistory()
-
-
+    let dispatch = useDispatch()
+    console.log(userDetails, "userdetails in profile")
 
     const formik = useFormik({
         initialValues: {
-            firstName: "",
-            lastName: "",
-            email: "",
-            contactNumber: "",
-            password: "",
-            confirmPassword: "",
-            acceptedTerms: false
+            firstName: userDetails.firstName,
+            lastName: userDetails.lastName,
+            email: userDetails.email,
+            cNumber: userDetails.cNumber,
+            password: userDetails.password,
+            gender: userDetails.gender,
+            dateofBirth: userDetails.dateofBirth
 
         },
         validationSchema: Yup.object({
@@ -50,45 +51,48 @@ export const Profile = () => {
                 .required('Required')
                 .oneOf([Yup.ref('password'), null], 'Passwords must match'),
             dateofBirth: Yup.date(),
+            gender: Yup.mixed()
+                .required('Required')
+                .oneOf(['Male', 'Female'], "please select your gender"),
+            cNumber: Yup.number()
 
         }),
         onSubmit: values => {
             console.log(JSON.stringify(values, null, 2));
-            SignupFunc(values)
+            UpdateFunc(values)
         },
     });
 
-    const SignupFunc = (values) => {
+    const UpdateFunc = (values) => {
 
-        firebase.auth().createUserWithEmailAndPassword(values.email, values.password).then((res) => {
-            let UID = firebase.auth().currentUser?.uid
-            console.log(res, "signup res")
-            firebase.database().ref('Users/' + UID).set({
-                firstName: values.firstName,
-                lastName: values.lastName,
-                email: values.email,
-                isVerified: false
-            })
-            history.push("/")
+        let UID = firebase.auth().currentUser?.uid
+        firebase.database().ref("Users/" + UID).update({
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email,
+            cNumber: values.cNumber,
+            gender: values.gender,
+            dateofBirth: values.dateofBirth,
+            isVerified: false
+        }).then(dispatch(userDetailsAction({
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email,
+            cNumber: values.cNumber,
+            gender: values.gender,
+            dateofBirth: values.dateofBirth,
+            isVerified: false
+        })).then((values)=>console.log(values, "values in profile"))
+        ).catch((e) => console.log(e, "error"))
 
-        }).catch(function (error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(errorCode, "error code" + errorMessage, "error message")
-            // ...
-        });
-    }
-
-
-
-    const LoginFunc = () => {
         history.push("/")
+
     }
 
     if (!loading && !userDetails) return <Redirect to="/" />
 
-
+    console.log(userDetails, "userDetails in profile")
+    console.log(userDetails.gender, "userdetails gender")
     return (
         <div className="profileMain">
             <div className="profileComp">
@@ -103,7 +107,7 @@ export const Profile = () => {
                     <div className="mb-3">
                         <Form.File >
                             <img src={pic} id="formcheck-api-regular" />
-                            <Form.File.Input />
+                            <Form.File.Input onClick={(e) => console.log(e.target.files[0])} />
                         </Form.File>
                     </div>
 
@@ -133,23 +137,46 @@ export const Profile = () => {
                     </Form.Group>
 
 
-                    <Form.Group className="inputcheckbox">
+                    <Form.Group>
+                        <Form.Label className="labels" htmlFor="cNumber">Phone Number</Form.Label>
+                        <Form.Control className="inputs" id="cNumber" type="number" placeholder="Enter your mobile number" {...formik.getFieldProps('cNumber')} />
+                        <span className="inputerror">  {formik.touched.cNumber && formik.errors.cNumber ? (
+                            <div>{formik.errors.cNumber}</div>
+                        ) : null}</span>
+                    </Form.Group>
+
+                    <Form.Group {...formik.getFieldProps('dateofBirth')}>
+                        <Form.Label className="labels" htmlFor="dateofBirth">Select your date of birth</Form.Label>
+                        <Form.Control className="inputs" id="dateofBirth" type="date" placeholder="Select your date of birth" />
+                        <span className="inputerror">  {formik.touched.dateofBirth && formik.errors.dateofBirth ? (
+                            <div>{formik.errors.dateofBirth}</div>
+                        ) : null}</span>
+                    </Form.Group>
+
+
+                    <Form.Group  {...formik.getFieldProps('gender')} className="inputcheckbox">
                         <Form.Label className="radiobtngroup">
                             Gender
                 </Form.Label>
-                        <div className="radiosubsec">
+                        <div className="radiosubsec" >
                             <Form.Check className="radiobtn"
                                 type="radio"
                                 label="Male"
-                                name="formHorizontalRadios"
-                                id="formHorizontalRadios1"
+                                name="gender"
+                                id="Male"
+                                value="Male"
                             />
                             <Form.Check className="radiobtn"
                                 type="radio"
                                 label="Female"
-                                name="formHorizontalRadios"
-                                id="formHorizontalRadios2"
-                            /></div>
+                                name="gender"
+                                id="Female"
+                                value="Female"
+                            />
+                        </div>
+                        <div className="inputerror">  {formik.touched.gender && formik.errors.gender ? (
+                            <div>{formik.errors.gender}</div>
+                        ) : null}</div>
                     </Form.Group>
 
                     <Form.Group>
@@ -168,12 +195,8 @@ export const Profile = () => {
                         ) : null}</span>
                     </Form.Group>
 
-                    <Form.Group controlId="formBasicCheckbox" className="inputcheckbox"   >
-                        <Form.Check type="checkbox" label="I hereby agree all terms of services " {...formik.getFieldProps('acceptedTerms')} />
-                    </Form.Group>
 
-                    <Button variant="primary" type="submit" onClick={SignupFunc}  > Sign up</Button>
-                    <Button variant="link" onClick={LoginFunc}>Already have an account</Button>
+                    <Button variant="primary" type="submit" > Update</Button>
                 </Form>
 
             </div >

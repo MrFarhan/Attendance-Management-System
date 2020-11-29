@@ -1,5 +1,4 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 
 import AppbarBody from './AppbarBody';
 import { MainAppbar } from './MainAppbar';
