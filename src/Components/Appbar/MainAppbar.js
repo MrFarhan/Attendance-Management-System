@@ -3,29 +3,27 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import "../../App.css"
-
+import pic from "../Circle-icons-profile.svg"
 import { useHistory } from "react-router-dom"
 import firebase from "firebase"
 import { userDetailsAction } from '../../Redux/Actions';
 import { useDispatch, useSelector } from 'react-redux';
-import SideNav from './SideNav';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
+    root: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
+    title: {
+        flexGrow: 1,
+    },
 }));
 
 export const MainAppbar = () => {
@@ -33,8 +31,8 @@ export const MainAppbar = () => {
     let dispatch = useDispatch()
     const [anchorEl, setAnchorEl] = React.useState(false);
     let history = useHistory()
-    const state = useSelector((state) => state.userDetails)
-  
+    const userDetails = useSelector((state) => state.userDetails)
+
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -65,7 +63,7 @@ export const MainAppbar = () => {
                         Attendance Management System
           </Typography>
                     <Button variant="contained">Check in</Button>{' '}
-                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{state?.firstName}</span>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{userDetails?.firstName}</span>
 
                     <IconButton
                         aria-label="account of current user"
@@ -73,8 +71,9 @@ export const MainAppbar = () => {
                         aria-haspopup="true"
                         onClick={handleMenu}
                         color="inherit"
+                        height="2em"
                     >
-                        <AccountCircle />
+                        <img src={userDetails?.dp || pic} className="dpIcon" alt="profile " />
                     </IconButton>
 
                     <Menu

@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
 import firebase from 'firebase'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { loadingAction, userDetailsAction } from '../../Redux/Actions';
 import "../../App.css";
 import { useHistory } from 'react-router-dom';
-import date from 'date-and-time';
+// import date from 'date-and-time';
 import SideNav from './SideNav';
-import { Tab, Col, Nav, Row } from 'react-bootstrap'
 
 require('firebase/auth')
 
@@ -28,18 +25,17 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function AppbarBody() {
-    const state = useSelector((state) => state.userDetails)
     let history = useHistory()
     let dispatch = useDispatch()
-    const pattern = date.compile('MMM D YYYY hh:mm:ss A');
-    let [cDate, setUdate] = useState()
+    // const pattern = date.compile('MMM D YYYY hh:mm:ss A');
+    // let [cDate, setUdate] = useState()
 
-    useEffect(() => {
-        setInterval(() => {
-            setUdate(date.format(new Date(), pattern))
-        }, 1000);
-        console.log(cDate, "cDate")
-    }, [])
+    // useEffect(() => {
+    //     setInterval(() => {
+    //         setUdate(date.format(new Date(), pattern))
+    //     }, 1000);
+    //     console.log(cDate, "cDate")
+    // }, [])
 
 
     useEffect(() => {
@@ -55,7 +51,7 @@ export default function AppbarBody() {
     const classes = useStyles();
 
     return (
-        <div className={classes.root} className="mainappbarbody">
+        <div className={classes.root + " mainappbarbody"} >
             {/* <span className="date-time"><b>Date: </b>{cDate}</span> */}
 
             <SideNav />

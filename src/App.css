@@ -118,6 +118,13 @@ width: 70%;
 #formcheck-api-regular{
   width: 7em;
   height: 8em !important ;
+  border-radius: 1em;
   align-items: left;
   display: flex;
+}
+
+.dpIcon{
+  width: 2em !important;
+  height: 2em !important;
+  border-radius: 2em !important;
 }
