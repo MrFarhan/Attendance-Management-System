@@ -27,11 +27,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const MainAppbar = () => {
+
     const classes = useStyles();
+    const userDetails = useSelector((state) => state.userDetails)
     let dispatch = useDispatch()
     const [anchorEl, setAnchorEl] = React.useState(false);
+    const [dp, setDp] = React.useState(userDetails?.dp || pic)
     let history = useHistory()
-    const userDetails = useSelector((state) => state.userDetails)
 
 
     const handleMenu = (event) => {
@@ -73,7 +75,7 @@ export const MainAppbar = () => {
                         color="inherit"
                         height="2em"
                     >
-                        <img src={userDetails?.dp || pic} className="dpIcon" alt="profile " />
+                        <img src={dp} className="dpIcon" alt="profile " />
                     </IconButton>
 
                     <Menu
