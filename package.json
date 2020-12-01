@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^12.1.10",
     "bootstrap": "^4.5.3",
     "date-and-time": "^0.14.1",
+    "date.js": "^0.3.3",
     "firebase": "^8.1.1",
     "formik": "^2.2.5",
     "react": "^17.0.1",

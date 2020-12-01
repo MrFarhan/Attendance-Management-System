@@ -33,8 +33,15 @@ export const MainAppbar = () => {
     let dispatch = useDispatch()
     const [anchorEl, setAnchorEl] = React.useState(false);
     const [dp, setDp] = React.useState(userDetails?.dp || pic)
+    const [checkin, setCheckin] = React.useState(true)
     let history = useHistory()
 
+
+    React.useEffect(() => {
+        setCheckin(false)
+        
+
+    }, [userDetails.checkin])
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -57,6 +64,40 @@ export const MainAppbar = () => {
         setAnchorEl(null);
 
     }
+
+    const Checkin = (e) => {
+        setCheckin(true)
+        const start = Date.now();
+        const started = new Date(start)
+        console.log(started, "started")
+
+
+        let UID = firebase.auth().currentUser?.uid
+        firebase.database().ref('Users/' + UID).update({
+            checkedin: start
+        })
+
+
+
+
+    }
+
+    const Checkout = (e) => {
+        const start = Date.now();
+        const started = new Date(start)
+        console.log(started, "started")
+
+        let UID = firebase.auth().currentUser?.uid
+        firebase.database().ref('Users/' + UID).update({
+            checkedout: start
+        })
+        setCheckin(false)
+    
+    }
+
+
+    // console.log(, "userdetails.checkin")
+
     return (
         <div>
             <AppBar position="static">
@@ -64,7 +105,7 @@ export const MainAppbar = () => {
                     <Typography variant="h6" className={classes.title}>
                         Attendance Management System
           </Typography>
-                    <Button variant="contained">Check in</Button>{' '}
+                    {checkin ? <Button variant="contained" onClick={((e) => Checkout(e))}>Check out</Button> : <Button variant="contained" onClick={((e) => Checkin(e))}>Check in</Button>}
                     <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{userDetails?.firstName}</span>
 
                     <IconButton
