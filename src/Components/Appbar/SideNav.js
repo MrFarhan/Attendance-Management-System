@@ -5,7 +5,7 @@ import "../../App.css"
 
 const SideNav = () => {
     return (
-        <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+        <Tab.Container id="left-tabs-example" defaultActiveKey="second">
             <Row>
                 <Col sm={12}>
                     <Nav variant="pills" className="flex-column">

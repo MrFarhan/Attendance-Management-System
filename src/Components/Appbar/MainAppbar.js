@@ -39,7 +39,7 @@ export const MainAppbar = () => {
 
     React.useEffect(() => {
         setCheckin(false)
-        
+
 
     }, [userDetails.checkin])
 
@@ -65,6 +65,13 @@ export const MainAppbar = () => {
 
     }
 
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = mm + "-" + dd + "-" + yyyy;
+console.log(today, "today")
     const Checkin = (e) => {
         setCheckin(true)
         const start = Date.now();
@@ -72,8 +79,9 @@ export const MainAppbar = () => {
         console.log(started, "started")
 
 
+
         let UID = firebase.auth().currentUser?.uid
-        firebase.database().ref('Users/' + UID).update({
+        firebase.database().ref(`Attendance/${UID}/${today}`).set({
             checkedin: start
         })
 
@@ -87,12 +95,13 @@ export const MainAppbar = () => {
         const started = new Date(start)
         console.log(started, "started")
 
+
         let UID = firebase.auth().currentUser?.uid
-        firebase.database().ref('Users/' + UID).update({
+        firebase.database().ref(`Attendance/${UID}/${today}`).update({
             checkedout: start
         })
         setCheckin(false)
-    
+
     }
 
 
