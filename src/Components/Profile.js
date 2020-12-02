@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { MainAppbar } from './Appbar/MainAppbar'
+// import { MainAppbar } from './Appbar/MainAppbar'
 import "../App.css"
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -10,6 +10,7 @@ import { Form, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import firebase from "firebase"
 import pic from "./Circle-icons-profile.svg"
+import { Dashboard } from './Dashboard';
 
 
 export const Profile = () => {
@@ -87,17 +88,10 @@ const imgUpload = (e) => {
 if (!loading && !userDetails) return <Redirect to="/" />
 
 
-
-
-
-
-
-
-
 return (
     <div className="profileMain">
         <div className="profileComp">
-            <MainAppbar />
+            <Dashboard />
         </div>
         <div className="profileNav">
 
@@ -180,21 +174,6 @@ return (
                         <div>{formik.errors.gender}</div>
                     ) : null}</div>
                 </Form.Group>
-                {/*<Form.Group>
-                        <Form.Label className="labels">Password</Form.Label>
-                        <Form.Control className="inputs" id="password" type="password" placeholder="Password" {...formik.getFieldProps('password')} />
-                        <span className="inputerror">{formik.touched.password && formik.errors.password ? (
-                            <div>{formik.errors.password}</div>
-                        ) : null}</span>
-                    </Form.Group>
-
-                    <Form.Group>
-                        <Form.Label className="labels">Confirm Password</Form.Label>
-                        <Form.Control className="inputs" id="confirmPassword" type="password" placeholder="confirm Password" {...formik.getFieldProps('confirmPassword')} />
-                        <span className="inputerror">{formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-                            <div>{formik.errors.confirmPassword}</div>
-                        ) : null}</span>
-                    </Form.Group> */}
 
 
                 <Button variant="primary" type="submit" > Update</Button>
