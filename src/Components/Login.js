@@ -8,6 +8,7 @@ import { FiLogIn } from 'react-icons/fi';
 import { useDispatch, useSelector } from "react-redux"
 import firebase from 'firebase'
 import { loadingAction, userDetailsAction } from '../Redux/Actions';
+import { Appbar } from './Appbar';
 require('firebase/auth')
 
 
@@ -84,6 +85,7 @@ export const Login = () => {
     if (!loadingred && userDetails) return <Redirect to="/dashboard" />
     return (
         <Form onSubmit={formik.handleSubmit} className="loginform">
+            <Appbar />
             <Form.Group >
                 <Form.Label className="labels" htmlFor="email">Email address</Form.Label>
                 <Form.Control className="inputs" id="email" type="email" placeholder="Enter email" {...formik.getFieldProps('email')} autoFocus />

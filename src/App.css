@@ -14,6 +14,7 @@
   justify-content: center;
   align-items: center;
   /* width: 500px; */
+  margin-top: 5em; 
 }
 
 .labels{
@@ -134,6 +135,53 @@ width: 70%;
 
 .appbarRightSide{
   margin-left: auto;
-  
+  height: 4.7em;
 
 }
+
+.makeStyles-drawerPaper-4{
+background-color: #3f51b5 !important;
+color: white !important;
+
+}
+
+.makeStyles-drawerPaper-10{
+  background-color: #3f51b5 !important;
+  color: white !important;
+  
+}
+
+
+.makeStyles-drawerPaper-22{
+  background-color: #3f51b5 !important;
+  color: white !important;
+}
+
+@media (min-width: 600px){
+.appbarRightSide {
+    min-height: 64px;
+}}
+
+.logo{
+  width:10em;
+  height: 3em;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5em;
+}
+
+.MuiTypography-noWrap{
+  margin-left: 15em;
+}
+
+.center{
+  margin-left: 18em !important;
+}
+
+.dashboard{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5em;
+}
+

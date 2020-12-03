@@ -5,6 +5,7 @@ import '../App.css'
 import { Form, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import firebase from "firebase"
+import { Appbar } from './Appbar';
 
 
 
@@ -91,7 +92,7 @@ export const Signup = () => {
 
     return (
         <Form onSubmit={formik.handleSubmit} className="loginform">
-
+            <Appbar />
             <Form.Group>
                 <Form.Label className="labels" htmlFor="firstName">First Name</Form.Label>
                 <Form.Control className="inputs" id="firstName" type="text" placeholder="Enter email" {...formik.getFieldProps('firstName')} autoFocus />
