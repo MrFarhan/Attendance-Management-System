@@ -85,14 +85,14 @@ export const Profile = () => {
         }).catch((e) => console.log(e.message, "error in profile pic put"))
     }
 
-    if (!loading && !userDetails) return <Redirect to="/" />
+    if (!loading && !userDetails) history.push("/")
     console.log("profile comp redner")
 
     return (
         <div className="profileMain">
             <div className="profileNav">
 
-                <Appbar />
+                {/* <Appbar /> */}
                 <Form onSubmit={formik.handleSubmit} className="loginformProfile">
 
                     <div className="mb-3">

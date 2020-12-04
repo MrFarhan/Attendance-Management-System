@@ -221,12 +221,23 @@ import "../App.css"
 
 
 import React from 'react'
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
+
 
 export const Dashboard = () => {
+    const userDetails = useSelector((state) => state.userDetails)
+    let loading = userDetails?.loading;
+    let history = useHistory()
+    console.log("userdetails in dashboard", userDetails)
+
+    if (!loading && !userDetails) history.push("/")
+    console.log("profile comp redner")
     return (
         <div className="dashboard">
-            <Appbar />
-            <Sidebar />
+            {/* <Appbar />
+            <Sidebar /> */}
             Dashboard here
         </div>
     )

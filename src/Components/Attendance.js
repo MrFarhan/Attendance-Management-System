@@ -5,8 +5,8 @@ import "../App.css"
 export const Attendance = () => {
     return (
             <div className="dashboard">
-            <Appbar />
-            <Sidebar />
+            {/* <Appbar />
+            <Sidebar /> */}
         {/* <div> */}
             attendance here
             

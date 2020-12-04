@@ -19,13 +19,15 @@ import { Attendance } from './Components/Attendance';
 
 import { Dashboard } from './Components/Dashboard';
 import { Report } from './Components/Report';
+import { Appbar } from './Components/Appbar';
+import { Sidebar } from './Components/Sidebar';
 
 function App() {
 
   const loading = useSelector((val) => val.loading)
   let dispatch = useDispatch()
   const userDetails = useSelector((state) => state.userDetails)
-
+  let history = useHistory()
   useEffect(() => {
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
@@ -35,7 +37,10 @@ function App() {
           dispatch(loadingAction(false))
         })
       }
-      else dispatch(loadingAction(false))
+      else {
+        dispatch(userDetailsAction(false))
+        dispatch(loadingAction(false))
+      }
 
     });
     // eslint-disable-next-line
@@ -49,11 +54,13 @@ function App() {
   return (
     <Router>
       <div className="App">
+        <Route path={["/", '/dashboard', "/signup", '/dashboard/profile', '/attendance', '/test', '/report']} render={(() => <Appbar />)} />
+        <Route path={['/dashboard', "/signup", '/dashboard/profile', '/attendance', '/test', '/report']} render={(() => <Sidebar />)} />
         <Switch>
           <Route exact path="/"><Login /></Route>
           <Route exact path="/dashboard"><Dashboard /></Route>
           <Route path="/signup"><Signup /></Route>
-          <Route path="/dashboard/profile"><Profile /></Route>
+          <Route exact path="/dashboard/profile"><Profile /></Route>
           <Route path="/attendance"><Attendance /></Route>
           <Route path="/test"><Test /></Route>
           <Route path="/report"><Report /></Route>

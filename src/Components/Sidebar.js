@@ -24,25 +24,27 @@ const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
     },
-    appBar: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: drawerWidth,
+    // appBar: {
+    //     width: `calc(100% - ${drawerWidth}px)`,
+    //     marginLeft: drawerWidth,
 
-    },
-    drawer: {
-        width: drawerWidth,
-        flexShrink: 0,
-    },
+    // },
+    // drawer: {
+    //     width: drawerWidth,
+    //     flexShrink: 0,
+    // },
     drawerPaper: {
         width: drawerWidth,
+        backgroundColor: "#3f51b5",
+        color:"white"
     },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
-    content: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.default,
-        padding: theme.spacing(3),
-    },
+    // content: {
+    //     flexGrow: 1,
+    //     backgroundColor: theme.palette.background.default,
+    //     padding: theme.spacing(3),
+    // },
 }));
 
 export const Sidebar = () => {
@@ -76,9 +78,9 @@ export const Sidebar = () => {
 
     return (
         <div className={classes.root}>
-            <CssBaseline />
-            <Drawer
-                className={classes.drawer}
+            {/* <CssBaseline /> */}
+            <Drawer className="sidebar"
+                // className={classes.drawer  + " sidebar"}
                 variant="permanent"
                 classes={{
                     paper: classes.drawerPaper,
@@ -97,7 +99,5 @@ export const Sidebar = () => {
                 </List>
             </Drawer>
         </div>
-
-
     )
 }

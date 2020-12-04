@@ -132,15 +132,17 @@ export const Appbar = () => {
 
         });
         // eslint-disable-next-line
-    }, [])
+    }, [loading])
 
     if (loading) {
         return <p>...Loading</p>
     }
 
-    const clickHandle = ()=>{
+    const clickHandle = () => {
         history.push("/dashboard")
     }
+
+    console.log(userDetails, "userdetails in appbar")
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -149,7 +151,7 @@ export const Appbar = () => {
                     <Typography variant="h6" noWrap onClick={clickHandle} className="center">
                         Attendance management system
             </Typography>
-                    <span className="appbarRightSide" >
+                    {userDetails.firstName ? <span className="appbarRightSide" >
                         {checkin ? <Button variant="contained" onClick={((e) => Checkout(e))}>Check out</Button> : <Button variant="contained" onClick={((e) => Checkin(e))}>Check in</Button>}
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{userDetails?.firstName}
                         </span>
@@ -183,7 +185,7 @@ export const Appbar = () => {
                             <MenuItem onClick={profileFunc}>Profile setting</MenuItem>
                             <MenuItem onClick={LogoutFunc}>Log out</MenuItem>
                         </Menu>
-                    </span>
+                    </span> : null}
                 </Toolbar>
 
             </AppBar>

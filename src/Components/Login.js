@@ -13,7 +13,7 @@ require('firebase/auth')
 
 
 export const Login = () => {
-    const dispatch = useDispatch()
+    const dispatch =useDispatch()
     let history = useHistory()
     var user = firebase.auth().currentUser;
     const userDetails = useSelector((state) => state.userDetails)
@@ -82,10 +82,16 @@ export const Login = () => {
         history.push("/signup")
     }
 
-    if (!loadingred && userDetails) return <Redirect to="/dashboard" />
+    if (!loadingred && userDetails) history.push("/dashboard")
+
+
     return (
         <Form onSubmit={formik.handleSubmit} className="loginform">
+
+
             <Appbar />
+
+
             <Form.Group >
                 <Form.Label className="labels" htmlFor="email">Email address</Form.Label>
                 <Form.Control className="inputs" id="email" type="email" placeholder="Enter email" {...formik.getFieldProps('email')} autoFocus />
