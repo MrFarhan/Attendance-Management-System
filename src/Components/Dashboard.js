@@ -63,9 +63,10 @@ export const Dashboard = () => {
         const checkoutTimeStamp = attendance && attendance[today]?.checkedout
         var checkoutTime = new Date(checkoutTimeStamp).toString("hh:mm")
         var totalTime = checkinTimeStamp - checkoutTimeStamp
-        var hourWorked = Math.floor(Math.abs(totalTime / 3.6e+6)).toFixed(2)
+        var hourWorkedMinutes = Math.floor(Math.abs(totalTime / 60000)).toFixed(2)
+        var hourWorked = (hourWorkedMinutes/60)
         console.log("total time is ", hourWorked)
-        if (checkoutTime>0.001) {
+        if (checkoutTime) {
             setTotalhr(hourWorked)
         }
     }, [attendance])
@@ -88,7 +89,7 @@ export const Dashboard = () => {
                         <TableBody>
                             <TableCell align="right">{checkinTime ? checkinTime : "Not Checked in"}</TableCell>
                             <TableCell align="right">{checkoutTimeStamp ? checkoutTime : "-"}</TableCell>
-                            <TableCell align="right">{totalHr}</TableCell>
+                            <TableCell align="right">{totalHr} hours</TableCell>
                             <TableCell align="right">12 Hours</TableCell>
                         </TableBody>
                     </Table>
