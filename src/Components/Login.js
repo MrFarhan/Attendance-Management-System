@@ -3,12 +3,11 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import '../App.css'
 import { Form, Button } from 'react-bootstrap';
-import { Redirect, useHistory } from 'react-router-dom'
+import {  useHistory } from 'react-router-dom'
 import { FiLogIn } from 'react-icons/fi';
 import { useDispatch, useSelector } from "react-redux"
 import firebase from 'firebase'
 import { loadingAction, userDetailsAction } from '../Redux/Actions';
-import { Appbar } from './Appbar';
 require('firebase/auth')
 
 
@@ -17,9 +16,7 @@ export const Login = () => {
     let history = useHistory()
     var user = firebase.auth().currentUser;
     const userDetails = useSelector((state) => state.userDetails)
-    const loadingred = useSelector((val) => val.loading)
-
-
+    const loadingred = useSelector((state) => state.loading)
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged(function (user) {
@@ -88,10 +85,6 @@ export const Login = () => {
     return (
         <Form onSubmit={formik.handleSubmit} className="loginform">
 
-
-            <Appbar />
-
-
             <Form.Group >
                 <Form.Label className="labels" htmlFor="email">Email address</Form.Label>
                 <Form.Control className="inputs" id="email" type="email" placeholder="Enter email" {...formik.getFieldProps('email')} autoFocus />
@@ -109,7 +102,7 @@ export const Login = () => {
                 ) : null}</span>
             </Form.Group>
             <Form.Group className="inputcheckbox">
-                <Form.Check type="checkbox" label="Check me out" />
+                <Form.Check type="checkbox" label="Remember me" />
             </Form.Group>
             <Button variant="primary" type="submit" > <FiLogIn />Login</Button>
             <Button variant="link" onClick={SignupFunc}>Don't have an account</Button>

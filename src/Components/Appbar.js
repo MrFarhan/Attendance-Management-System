@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import "../App.css"
+import "../App.css";
 import pic from "./Circle-icons-profile.svg"
 import { useHistory } from "react-router-dom"
 import { userDetailsAction, loadingAction } from '../Redux/Actions';
@@ -45,23 +45,33 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+var today = new Date().toString("ddMMyyyy")
+console.log(today, "today")
 
 export const Appbar = () => {
-    const loading = useSelector((val) => val.loading)
-    let dispatch = useDispatch()
-    const classes = useStyles();
+    const loading = useSelector((state) => state.loading)
     const userDetails = useSelector((state) => state.userDetails)
+    let attendance = useSelector((state) => state.attendance)
+
+    let dispatch = useDispatch();
+    const classes = useStyles();
+
     const [anchorEl, setAnchorEl] = useState(false);
-    const [dp, setDp] = useState(userDetails?.dp || pic)
-    const [checkin, setCheckin] = useState(true)
+    let dp = userDetails?.dp || pic
+    const [checkin, setCheckin] = useState(false)
     let history = useHistory()
 
 
-    useEffect(() => {
-        setCheckin(false)
+    // useEffect(() => {
+
+    //     const checkinTimeStamp = attendance && attendance[today]?.checkedin
+    //     var checkinTime = new Date(checkinTimeStamp).toString("hh:mm")
+    //     const checkoutTimeStamp = attendance && attendance[today]?.checkedout
+    //     var checkoutTime = new Date(checkoutTimeStamp).toString("hh:mm")
+
+    // }, [attendance])
 
 
-    }, [userDetails?.checkin])
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -71,7 +81,6 @@ export const Appbar = () => {
     const profileFunc = () => {
         setAnchorEl(null);
         history.push("/dashboard/profile")
-        // Redirect("/profile")
     }
     const LogoutFunc = () => {
         setAnchorEl(null);
@@ -85,39 +94,31 @@ export const Appbar = () => {
 
     }
 
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-
-    today = mm + "-" + dd + "-" + yyyy;
-    console.log(today, "today")
-    // console.log(userDetails.dp, "dp")
-
     const Checkin = (e) => {
-        setCheckin(true)
+        const checkinTimeStamp = attendance && attendance[today]?.checkedin
+        // var checkinTime = new Date(checkinTimeStamp).toString("hh:mm")
+        if (checkinTimeStamp) {
+            setCheckin(true)
+        }
+
         const start = Date.now();
-        const started = new Date(start)
-        console.log(started, "started")
         let UID = firebase.auth().currentUser?.uid
         firebase.database().ref(`Attendance/${UID}/${today}`).set({
-            checkedin: start
+            checkedin: start,
+            checkedout: ""
+
         })
     }
 
     const Checkout = (e) => {
         const start = Date.now();
-        const started = new Date(start)
-        console.log(started, "started")
-
 
         let UID = firebase.auth().currentUser?.uid
         firebase.database().ref(`Attendance/${UID}/${today}`).update({
-            checkedout: start
+            checkedout: start,
         })
         setCheckin(false)
     }
-
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged(function (user) {
@@ -142,7 +143,6 @@ export const Appbar = () => {
         history.push("/dashboard")
     }
 
-    console.log(userDetails, "userdetails in appbar")
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -152,7 +152,9 @@ export const Appbar = () => {
                         Attendance management system
             </Typography>
                     {userDetails.firstName ? <span className="appbarRightSide" >
-                        {checkin ? <Button variant="contained" onClick={((e) => Checkout(e))}>Check out</Button> : <Button variant="contained" onClick={((e) => Checkin(e))}>Check in</Button>}
+                        {attendance && attendance[today]?.checkedin && !(attendance[today]?.checkedout) ?
+                            <Button variant="contained" onClick={((e) => Checkout(e))}>Check out</Button> :
+                            <Button variant="contained" disabled={attendance && attendance[today]?.checkedout} onClick={((e) => Checkin(e))}>Check in</Button>}
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{userDetails?.firstName}
                         </span>
 

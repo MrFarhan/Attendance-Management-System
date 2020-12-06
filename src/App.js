@@ -1,33 +1,32 @@
-import React, { useEffect, useState } from 'react'
-import { Route, BrowserRouter as Router, Switch, Redirect } from 'react-router-dom';
+import React, { useEffect } from 'react'
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+// eslint-disable-next-line 
+import firebaseData from "./firebase" //used for firebase initialization
+// eslint-disable-next-line 
+import firebase from "firebase"
+import { attendanceAction, loadingAction, userDetailsAction } from './Redux/Actions';
+
+// import componenets
 import { Login } from './Components/Login';
 import { Signup } from './Components/Signup';
 import { Test } from './Test';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Profile } from './Components/Profile';
-// eslint-disable-next-line 
-import firebaseData from "./firebase" //used for firebase initialization
-import { useDispatch, useSelector } from 'react-redux';
-// eslint-disable-next-line 
-import firebase from "firebase"
-import { loadingAction, userDetailsAction } from './Redux/Actions';
-import { makeStyles } from '@material-ui/core/styles';
-import "./App.css"
-import { useHistory } from "react-router-dom"
 import { Attendance } from './Components/Attendance';
-
 import { Dashboard } from './Components/Dashboard';
 import { Report } from './Components/Report';
 import { Appbar } from './Components/Appbar';
 import { Sidebar } from './Components/Sidebar';
 
+
 function App() {
 
   const loading = useSelector((val) => val.loading)
   let dispatch = useDispatch()
-  const userDetails = useSelector((state) => state.userDetails)
-  let history = useHistory()
+
+
   useEffect(() => {
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
@@ -40,6 +39,24 @@ function App() {
       else {
         dispatch(userDetailsAction(false))
         dispatch(loadingAction(false))
+      }
+
+    });
+    // eslint-disable-next-line
+  }, [])
+
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        const useruid = user.uid
+        firebase.database().ref(`Attendance/${useruid}/`).on("value", (res) => {
+          console.log(res?.val(), "firebase value")
+          dispatch(attendanceAction(res.val()))
+        })
+      }
+      else {
+        dispatch(attendanceAction(false))
       }
 
     });
@@ -67,8 +84,6 @@ function App() {
         </Switch>
       </div>
     </Router >
-
-
   );
 }
 

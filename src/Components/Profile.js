@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Redirect } from 'react-router-dom'
 import "../App.css"
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -9,7 +8,6 @@ import { Form, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import firebase from "firebase"
 import pic from "./Circle-icons-profile.svg"
-import { Appbar } from './Appbar';
 
 
 export const Profile = () => {
