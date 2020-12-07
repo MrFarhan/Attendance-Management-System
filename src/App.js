@@ -52,6 +52,7 @@ function App() {
         const useruid = user.uid
         firebase.database().ref(`Attendance/${useruid}/`).on("value", (res) => {
           console.log(res?.val(), "firebase value")
+          console.log(res?.val()?.role, "firebase value")
           dispatch(attendanceAction(res.val()))
         })
       }

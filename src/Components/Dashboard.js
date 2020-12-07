@@ -64,9 +64,9 @@ export const Dashboard = () => {
         var checkoutTime = new Date(checkoutTimeStamp).toString("hh:mm")
         var totalTime = checkinTimeStamp - checkoutTimeStamp
         var hourWorkedMinutes = Math.floor(Math.abs(totalTime / 60000)).toFixed(2)
-        var hourWorked = (hourWorkedMinutes/60)
+        var hourWorked = (hourWorkedMinutes / 60).toFixed(15)
         console.log("total time is ", hourWorked)
-        if (checkoutTime) {
+        if (Number(checkoutTime)) {
             setTotalhr(hourWorked)
         }
     }, [attendance])
@@ -75,26 +75,30 @@ export const Dashboard = () => {
     if (!loading && !userDetails) history.push("/")
     return (
         <div className="dashboard">
-            <div>
-                <TableContainer component={Paper}>
-                    <Table className={classes.table} aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell align="right">Check in</TableCell>
-                                <TableCell align="right">Check out</TableCell>
-                                <TableCell align="right">Total Time</TableCell>
-                                <TableCell align="right">Required Time</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            <TableCell align="right">{checkinTime ? checkinTime : "Not Checked in"}</TableCell>
-                            <TableCell align="right">{checkoutTimeStamp ? checkoutTime : "-"}</TableCell>
-                            <TableCell align="right">{totalHr} hours</TableCell>
-                            <TableCell align="right">12 Hours</TableCell>
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </div>
+
+            {userDetails.role === "user" ?
+                <div>
+                    <TableContainer component={Paper}>
+                        <Table className={classes.table} aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="right">Check in</TableCell>
+                                    <TableCell align="right">Check out</TableCell>
+                                    <TableCell align="right">Total Time</TableCell>
+                                    <TableCell align="right">Required Time</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                <TableCell align="right">{checkinTime ? checkinTime : "Not Checked in"}</TableCell>
+                                <TableCell align="right">{checkoutTimeStamp ? checkoutTime : "-"}</TableCell>
+                                <TableCell align="right">{totalHr} hours</TableCell>
+                                <TableCell align="right">12 Hours</TableCell>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </div>
+                :
+                <div>Admin Dashboard here</div>}
         </div>
     )
 }

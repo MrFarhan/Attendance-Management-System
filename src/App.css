@@ -163,7 +163,7 @@ color: white !important;
 }}
 
 .logo{
-  width:10em;
+  /* width:10em; */
   height: 4.11em;
   justify-content: center;
   align-items: center;

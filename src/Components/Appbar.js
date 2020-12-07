@@ -52,6 +52,7 @@ export const Appbar = () => {
     const loading = useSelector((state) => state.loading)
     const userDetails = useSelector((state) => state.userDetails)
     let attendance = useSelector((state) => state.attendance)
+    const [show, setShow] = useState(false)
 
     let dispatch = useDispatch();
     const classes = useStyles();
@@ -59,6 +60,7 @@ export const Appbar = () => {
     const [anchorEl, setAnchorEl] = useState(false);
     let dp = userDetails?.dp || pic
     const [checkin, setCheckin] = useState(false)
+
     let history = useHistory()
 
 
@@ -71,7 +73,13 @@ export const Appbar = () => {
 
     // }, [attendance])
 
-
+    // const showMenu = () => {
+    //     if (!(userDetails.role)) {
+    //         setShow(false)
+    //     } else if (userDetails.firstName) {
+    //         setShow(true)
+    //     }
+    // }
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -126,8 +134,12 @@ export const Appbar = () => {
                 const useruid = user.uid
                 firebase.database().ref(`Users/${useruid}/`).on("value", (res) => {
                     dispatch(userDetailsAction(res.val()))
+                    console.log(res.val(), "res.val")
                     dispatch(loadingAction(false))
                 })
+                // firebase.database().ref(`Users/${useruid}/`).on("value", (res)=>{
+
+                // })
             }
             else dispatch(loadingAction(false))
 
@@ -143,6 +155,7 @@ export const Appbar = () => {
         history.push("/dashboard")
     }
 
+    console.log(userDetails, "userDetails in appbar ")
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -151,10 +164,23 @@ export const Appbar = () => {
                     <Typography variant="h6" noWrap onClick={clickHandle} className="center">
                         Attendance management system
             </Typography>
+
+
+                    {/* {(!(userDetails.role)) ?  */}
+
+
+
                     {userDetails.firstName ? <span className="appbarRightSide" >
-                        {attendance && attendance[today]?.checkedin && !(attendance[today]?.checkedout) ?
-                            <Button variant="contained" onClick={((e) => Checkout(e))}>Check out</Button> :
-                            <Button variant="contained" disabled={attendance && attendance[today]?.checkedout} onClick={((e) => Checkin(e))}>Check in</Button>}
+
+                        {userDetails.role !== "Admin" ?
+                            (attendance && attendance[today]?.checkedin && !(attendance[today]?.checkedout) ?
+
+                                < Button variant="contained" onClick={((e) => Checkout(e))}>Check out</Button> :
+                                <Button variant="contained" disabled={attendance && attendance[today]?.checkedout} onClick={((e) => Checkin(e))}>Check in</Button>
+                            )
+
+                            : null}
+
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{userDetails?.firstName}
                         </span>
 
