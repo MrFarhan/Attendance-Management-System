@@ -27,8 +27,12 @@ var today = new Date().toString("ddMMyyyy")
 console.log(today, "today")
 
 export const Dashboard = () => {
+
     let dispatch = useDispatch()
     const userDetails = useSelector((state) => state.userDetails)
+    const allUserDetails = useSelector((state) => state.allUserDetails)
+    const allUsersAttendanceDetails = useSelector((state) => state.allUsersAttendanceDetails)
+
     let attendance = useSelector((state) => state.attendance)
     const [totalHr, setTotalhr] = useState(0)
     const checkinTimeStamp = attendance && attendance[today]?.checkedin
@@ -56,9 +60,7 @@ export const Dashboard = () => {
         // eslint-disable-next-line
     }, [loading])
 
-
     useEffect(() => {
-
         const checkinTimeStamp = attendance && attendance[today]?.checkedin
         const checkoutTimeStamp = attendance && attendance[today]?.checkedout
         var checkoutTime = new Date(checkoutTimeStamp).toString("hh:mm")
@@ -73,6 +75,23 @@ export const Dashboard = () => {
 
 
     if (!loading && !userDetails) history.push("/")
+    // console.log(allUserDetails,"all user detauks    ")
+    // console.log(Object.values(allUserDetails), "alluserdetiails")
+    // var data = Object.values(allUserDetails)
+    // data.map((item,index)=>{
+    //     console.log(item, "item", index,"index")
+    // })
+    // Object.values(data)
+    // console.log(Object.values(data), );
+
+    console.log(allUserDetails, "all user details")
+    var data = Object.values(allUserDetails)
+    console.log(data, "data")
+    data.map((item, index) => {
+        console.log(item.firstName, "item", index, "index")
+    })
+
+    // console.log(allUsersAttendanceDetails,"attendance details")
     return (
         <div className="dashboard">
 
@@ -98,7 +117,29 @@ export const Dashboard = () => {
                     </TableContainer>
                 </div>
                 :
-                <div>Admin Dashboard here</div>}
+                <div className="dashboard">
+
+                    <TableContainer component={Paper}>
+                        <Table className={classes.table} aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="right">Users</TableCell>
+                                    <TableCell align="right">Loggedin Status</TableCell>
+                                </TableRow>
+                            </TableHead>
+
+                            {data.map((item,index) => (
+                                <TableRow key={index}>
+                                    <TableCell component="th" scope="row">
+                                        {item.firstName}
+                                    </TableCell>
+                                    <TableCell align="right">particular 2</TableCell>
+                                </TableRow>
+                            ))}
+                        </Table>
+                    </TableContainer>
+
+                </div>}
         </div>
     )
 }

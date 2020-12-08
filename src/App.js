@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import firebaseData from "./firebase" //used for firebase initialization
 // eslint-disable-next-line 
 import firebase from "firebase"
-import { attendanceAction, loadingAction, userDetailsAction } from './Redux/Actions';
+import { attendanceAction, loadingAction, userDetailsAction, allUserDetailsAction,allUserAttendanceAction } from './Redux/Actions';
 
 // import componenets
 import { Login } from './Components/Login';
@@ -63,6 +63,32 @@ function App() {
     });
     // eslint-disable-next-line
   }, [])
+
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        firebase.database().ref(`Users/`).on("value", (res) => {
+          dispatch(allUserDetailsAction(res.val()))
+          // console.log(res.val(), "all user deta from firebase in app")
+        })
+      }
+    });
+    // eslint-disable-next-line
+  }, [])
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        firebase.database().ref(`Attendance/`).on("value", (res) => {
+          dispatch(allUserAttendanceAction(res.val()))
+          // console.log(res.val(), "all user deta from firebase in app")
+        })
+      }
+    });
+    // eslint-disable-next-line
+  }, [])
+
 
   if (loading) {
     return <p>...Loading</p>
