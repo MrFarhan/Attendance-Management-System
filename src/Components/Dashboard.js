@@ -123,17 +123,23 @@ export const Dashboard = () => {
                         <Table className={classes.table} aria-label="simple table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell align="right">Users</TableCell>
+                                    <TableCell align="right">First Name</TableCell>
+                                    <TableCell align="right">Email</TableCell>
+                                    <TableCell align="right">Gender</TableCell>
+                                    <TableCell align="right">Contact Number</TableCell>
                                     <TableCell align="right">Loggedin Status</TableCell>
                                 </TableRow>
                             </TableHead>
 
-                            {data.map((item,index) => (
+                            {data.map((item, index) => (
                                 <TableRow key={index}>
                                     <TableCell component="th" scope="row">
                                         {item.firstName}
                                     </TableCell>
-                                    <TableCell align="right">particular 2</TableCell>
+                                    <TableCell align="right">{item.email}</TableCell>
+                                    <TableCell align="right">{item.gender}</TableCell>
+                                    <TableCell align="right">{item.cNumber  }</TableCell>
+                                    <TableCell align="right">{item.checkedin? "Checked in" : "Checked out"}</TableCell>
                                 </TableRow>
                             ))}
                         </Table>

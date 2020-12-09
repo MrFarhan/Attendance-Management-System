@@ -116,6 +116,12 @@ export const Appbar = () => {
             checkedout: ""
 
         })
+
+        firebase.database().ref(`Users/${UID}/}`).set({
+            checkedin: start,
+            checkedout: ""
+
+        })
     }
 
     const Checkout = (e) => {
@@ -123,6 +129,9 @@ export const Appbar = () => {
 
         let UID = firebase.auth().currentUser?.uid
         firebase.database().ref(`Attendance/${UID}/${today}`).update({
+            checkedout: start,
+        })
+        firebase.database().ref(`Users/${UID}/`).update({
             checkedout: start,
         })
         setCheckin(false)
