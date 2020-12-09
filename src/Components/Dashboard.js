@@ -95,7 +95,7 @@ export const Dashboard = () => {
     return (
         <div className="dashboard">
 
-            {userDetails.role === "user" ?
+            {userDetails?.role === "user" ?
                 <div>
                     <TableContainer component={Paper}>
                         <Table className={classes.table} aria-label="simple table">

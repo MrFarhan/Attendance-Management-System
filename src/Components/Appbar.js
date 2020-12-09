@@ -155,7 +155,7 @@ export const Appbar = () => {
         history.push("/dashboard")
     }
 
-    console.log(userDetails, "userDetails in appbar ")
+    console.log(userDetails?.firstName, "userDetails in appbar ")
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -170,7 +170,7 @@ export const Appbar = () => {
 
 
 
-                    {userDetails.firstName ? <span className="appbarRightSide" >
+                    {userDetails?.firstName ? <span className="appbarRightSide" >
 
                         {userDetails.role !== "Admin" ?
                             (attendance && attendance[today]?.checkedin && !(attendance[today]?.checkedout) ?
