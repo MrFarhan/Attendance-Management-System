@@ -31,7 +31,7 @@ export const Dashboard = () => {
     let dispatch = useDispatch()
     const userDetails = useSelector((state) => state.userDetails)
     const allUserDetails = useSelector((state) => state.allUserDetails)
-    const allUsersAttendanceDetails = useSelector((state) => state.allUsersAttendanceDetails)
+    // const allUsersAttendanceDetails = useSelector((state) => state.allUsersAttendanceDetails)
 
     let attendance = useSelector((state) => state.attendance)
     const [totalHr, setTotalhr] = useState(0)
@@ -88,7 +88,7 @@ export const Dashboard = () => {
     var data = Object.values(allUserDetails)
     console.log(data, "data")
     data.map((item, index) => {
-        console.log(item.firstName, "item", index, "index")
+       return console.log(item.firstName, "item", index, "index")
     })
 
     // console.log(allUsersAttendanceDetails,"attendance details")

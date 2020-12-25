@@ -52,7 +52,7 @@ export const Appbar = () => {
     const loading = useSelector((state) => state.loading)
     const userDetails = useSelector((state) => state.userDetails)
     let attendance = useSelector((state) => state.attendance)
-    const [show, setShow] = useState(false)
+    // const [show, setShow] = useState(false)
 
     let dispatch = useDispatch();
     const classes = useStyles();
@@ -165,6 +165,7 @@ export const Appbar = () => {
     }
 
     console.log(userDetails?.firstName, "userDetails in appbar ")
+    console.log(checkin, "checkin")
     return (
         <div className={classes.root}>
             <CssBaseline />
