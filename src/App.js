@@ -33,7 +33,7 @@ function App() {
         const useruid = user.uid
         firebase.database().ref(`Users/${useruid}/`).on("value", (res) => {
           dispatch(userDetailsAction(res.val()))
-          console.log(res.val(), "current user details in app")
+          // console.log(res.val(), "current user details in app")
           dispatch(loadingAction(false))
         })
       }
@@ -52,9 +52,9 @@ function App() {
       if (user) {
         const useruid = user.uid
         firebase.database().ref(`Attendance/${useruid}/`).on("value", (res) => {
-          console.log(res?.val(), "firebase value")
-          console.log(res?.val()?.role, "firebase value")
-          dispatch(attendanceAction(res.val()))
+          // console.log(res?.val(), "firebase value")
+          // console.log(res?.val()?.role, "firebase value")
+          dispatch(attendanceAction(res?.val()))
         })
       }
       else {
@@ -71,7 +71,7 @@ function App() {
       if (user) {
         firebase.database().ref(`Users/`).on("value", (res) => {
           dispatch(allUserDetailsAction(res.val()))
-          // console.log(res.val(), "all user deta from firebase in app")
+          console.log(res.val(), "all user deta from firebase in app")
         })
       }
     });

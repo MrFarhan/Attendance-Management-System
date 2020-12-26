@@ -15,7 +15,7 @@ export const Profile = () => {
     const loading = useSelector((val) => val.loading)
     let history = useHistory()
     const [dp, uploadDp] = useState(userDetails?.dp || pic)
-    console.log(userDetails, "userDetails in profile ")
+    // console.log(userDetails, "userDetails in profile ")
 
     const formik = useFormik({
         initialValues: {
@@ -46,7 +46,7 @@ export const Profile = () => {
 
         }),
         onSubmit: values => {
-            console.log(JSON.stringify(values, null, 2));
+            // console.log(JSON.stringify(values, null, 2));
             UpdateFunc(values)
         },
     });
@@ -73,7 +73,7 @@ export const Profile = () => {
         let UID = firebase.auth()?.currentUser?.uid
         var file = e.target.files[0]
         firebase.storage().ref(`Users/${UID}/profilePic`).put(file).then(() => {
-            console.log("successfully uploaded profile picture")
+            // console.log("successfully uploaded profile picture")
             uploadDp(file)
         }).then(() => {
             firebase.storage().ref(`Users/${UID}/profilePic`).getDownloadURL().then(urlImg => {
@@ -84,7 +84,7 @@ export const Profile = () => {
     }
 
     if (!loading && !userDetails) history.push("/")
-    console.log("profile comp redner")
+    // console.log("profile comp redner")
 
     return (
         <div className="profileMain">

@@ -24,15 +24,16 @@ const useStyles = makeStyles({
 
 var today = new Date().toString("ddMMyyyy")
 
-console.log(today, "today")
+// console.log(today, "today")
 
 export const Dashboard = () => {
 
     let dispatch = useDispatch()
     const userDetails = useSelector((state) => state.userDetails)
     const allUserDetails = useSelector((state) => state.allUserDetails)
+    // const state = useSelector((state) => state)
     // const allUsersAttendanceDetails = useSelector((state) => state.allUsersAttendanceDetails)
-
+    // console.log(state, "stateeeeeeeeeeeeeeeeeee")
     let attendance = useSelector((state) => state.attendance)
     const [totalHr, setTotalhr] = useState(0)
     const checkinTimeStamp = attendance && attendance[today]?.checkedin
@@ -67,7 +68,7 @@ export const Dashboard = () => {
         var totalTime = checkinTimeStamp - checkoutTimeStamp
         var hourWorkedMinutes = Math.floor(Math.abs(totalTime / 60000)).toFixed(2)
         var hourWorked = (hourWorkedMinutes / 60).toFixed(15)
-        console.log("total time is ", hourWorked)
+        // console.log("total time is ", hourWorked)
         if (Number(checkoutTime)) {
             setTotalhr(hourWorked)
         }
@@ -84,12 +85,12 @@ export const Dashboard = () => {
     // Object.values(data)
     // console.log(Object.values(data), );
 
-    console.log(allUserDetails, "all user details")
+    // console.log(allUserDetails, "all user details")
     var data = Object.values(allUserDetails)
-    console.log(data, "data")
-    data.map((item, index) => {
-       return console.log(item.firstName, "item", index, "index")
-    })
+    // console.log(data, "data")
+    // data.map((item, index) => {
+    //     return console.log(item.firstName, "item", index, "index")
+    // })
 
     // console.log(allUsersAttendanceDetails,"attendance details")
     return (
@@ -123,11 +124,11 @@ export const Dashboard = () => {
                         <Table className={classes.table} aria-label="simple table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell align="right">First Name</TableCell>
-                                    <TableCell align="right">Email</TableCell>
-                                    <TableCell align="right">Gender</TableCell>
-                                    <TableCell align="right">Contact Number</TableCell>
-                                    <TableCell align="right">Loggedin Status</TableCell>
+                                    <TableCell >First Name</TableCell>
+                                    <TableCell >Email</TableCell>
+                                    <TableCell >Gender</TableCell>
+                                    <TableCell >Contact Number</TableCell>
+                                    {/* <TableCell align="right">Loggedin Status</TableCell> */}
                                 </TableRow>
                             </TableHead>
 
@@ -136,10 +137,11 @@ export const Dashboard = () => {
                                     <TableCell component="th" scope="row">
                                         {item.firstName}
                                     </TableCell>
-                                    <TableCell align="right">{item.email}</TableCell>
-                                    <TableCell align="right">{item.gender}</TableCell>
-                                    <TableCell align="right">{item.cNumber  }</TableCell>
-                                    <TableCell align="right">{item.checkedin? "Checked in" : "Checked out"}</TableCell>
+                                    <TableCell >{item.email}</TableCell>
+                                    <TableCell >{item.gender}</TableCell>
+                                    <TableCell >{item.cNumber}</TableCell>
+                                    {/* <TableCell align="right">{item?.checkedin && item?.checkedin?.length > 1  ? "Checked in" : "Checked out"}</TableCell> */}
+                                    {/* {console.log(item, "item")} */}
                                 </TableRow>
                             ))}
                         </Table>

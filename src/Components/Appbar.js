@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 var today = new Date().toString("ddMMyyyy")
-console.log(today, "today")
+// console.log(today, "today")
 
 export const Appbar = () => {
     const loading = useSelector((state) => state.loading)
@@ -59,6 +59,7 @@ export const Appbar = () => {
 
     const [anchorEl, setAnchorEl] = useState(false);
     let dp = userDetails?.dp || pic
+    // eslint-disable-next-line
     const [checkin, setCheckin] = useState(false)
 
     let history = useHistory()
@@ -113,13 +114,13 @@ export const Appbar = () => {
         let UID = firebase.auth().currentUser?.uid
         firebase.database().ref(`Attendance/${UID}/${today}`).set({
             checkedin: start,
-            checkedout: ""
+            // checkedout: null
 
         })
 
         firebase.database().ref(`Users/${UID}/}`).set({
             checkedin: start,
-            checkedout: ""
+            // checkedout: ""
 
         })
     }
@@ -143,7 +144,7 @@ export const Appbar = () => {
                 const useruid = user.uid
                 firebase.database().ref(`Users/${useruid}/`).on("value", (res) => {
                     dispatch(userDetailsAction(res.val()))
-                    console.log(res.val(), "res.val")
+                    // console.log(res.val(), "res.val")
                     dispatch(loadingAction(false))
                 })
                 // firebase.database().ref(`Users/${useruid}/`).on("value", (res)=>{
@@ -164,8 +165,8 @@ export const Appbar = () => {
         history.push("/dashboard")
     }
 
-    console.log(userDetails?.firstName, "userDetails in appbar ")
-    console.log(checkin, "checkin")
+    // console.log(userDetails?.firstName, "userDetails in appbar ")
+    // console.log(checkin, "checkin")
     return (
         <div className={classes.root}>
             <CssBaseline />

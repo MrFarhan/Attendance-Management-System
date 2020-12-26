@@ -52,8 +52,8 @@ export const Signup = () => {
 
         }),
         onSubmit: values => {
-            console.log(JSON.stringify(values, null, 2));
-            console.log(values, "values in signup form submission")
+            // console.log(JSON.stringify(values, null, 2));
+            // console.log(values, "values in signup form submission")
             SignupFunc(values)
         },
     });
@@ -62,7 +62,7 @@ export const Signup = () => {
 
         firebase.auth().createUserWithEmailAndPassword(values.email, values.password).then((res) => {
             let UID = firebase.auth().currentUser?.uid
-            console.log(res, "signup res")
+            // console.log(res, "signup res")
             firebase.database().ref('Users/' + UID).set({
                 firstName: values.firstName,
                 lastName: values.lastName,
