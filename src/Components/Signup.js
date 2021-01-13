@@ -22,7 +22,7 @@ export const Signup = () => {
             confirmPassword: "",
             gender: "",
             dateofBirth: "",
-            acceptedTerms: false
+            acceptedTerms: false,
 
         },
         validationSchema: Yup.object({
@@ -70,7 +70,8 @@ export const Signup = () => {
                 cNumber: values.cNumber,
                 gender: values.gender,
                 dateofBirth: values.dateofBirth,
-                isVerified: false
+                isVerified: false,
+                role:"user"
             })
             history.push("/")
 

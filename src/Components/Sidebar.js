@@ -22,12 +22,12 @@ const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
     },
- flexShrink: 0,
+    flexShrink: 0,
     // },
     drawerPaper: {
         width: drawerWidth,
         backgroundColor: "#3f51b5",
-        color:"white"
+        color: "white"
     },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
@@ -38,6 +38,8 @@ export const Sidebar = () => {
     const loading = useSelector((val) => val.loading)
     const classes = useStyles();
     let history = useHistory()
+    const userDetails = useSelector((state) => state.userDetails)
+
 
 
     var menu = [{ "Text": "Attendance", "route": "attendance" }, { "Text": "Report", "route": "report" }]
@@ -61,24 +63,25 @@ export const Sidebar = () => {
 
     return (
         <div className={classes.root}>
-            <Drawer className="sidebar"
-                variant="permanent"
-                classes={{
-                    paper: classes.drawerPaper,
-                }}
-                anchor="left"
-            >
-                <img src={logo} className="logo" onClick={clickHandle}  alt="company logo"/>
-                <Divider />
+            {userDetails.role === "user" ? null
+                : <Drawer className="sidebar"
+                    variant="permanent"
+                    classes={{
+                        paper: classes.drawerPaper,
+                    }}
+                    anchor="left"
+                >
+                    <img src={logo} className="logo" onClick={clickHandle} alt="company logo" />
+                    <Divider />
 
-                <List>
-                    {menu.map((item, index) => (
-                        <ListItem button key={index} onClick={(e) => { HandelClick(e) }}>
-                            <ListItemText primary={item?.Text} />
-                        </ListItem>
-                    ))}
-                </List>
-            </Drawer>
+                    <List>
+                        {menu.map((item, index) => (
+                            <ListItem button key={index} onClick={(e) => { HandelClick(e) }}>
+                                <ListItemText primary={item?.Text} />
+                            </ListItem>
+                        ))}
+                    </List>
+                </Drawer>}
         </div>
     )
 }

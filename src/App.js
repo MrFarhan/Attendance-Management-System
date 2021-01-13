@@ -33,7 +33,7 @@ function App() {
         const useruid = user.uid
         firebase.database().ref(`Users/${useruid}/`).on("value", (res) => {
           dispatch(userDetailsAction(res.val()))
-          // console.log(res.val(), "current user details in app")
+          console.log(res.val(), "current user details in app")
           dispatch(loadingAction(false))
         })
       }

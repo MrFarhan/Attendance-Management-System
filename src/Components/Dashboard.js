@@ -24,16 +24,12 @@ const useStyles = makeStyles({
 
 var today = new Date().toString("ddMMyyyy")
 
-// console.log(today, "today")
 
 export const Dashboard = () => {
 
     let dispatch = useDispatch()
     const userDetails = useSelector((state) => state.userDetails)
     const allUserDetails = useSelector((state) => state.allUserDetails)
-    // const state = useSelector((state) => state)
-    // const allUsersAttendanceDetails = useSelector((state) => state.allUsersAttendanceDetails)
-    // console.log(state, "stateeeeeeeeeeeeeeeeeee")
     let attendance = useSelector((state) => state.attendance)
     const [totalHr, setTotalhr] = useState(0)
     const checkinTimeStamp = attendance && attendance[today]?.checkedin
@@ -68,7 +64,6 @@ export const Dashboard = () => {
         var totalTime = checkinTimeStamp - checkoutTimeStamp
         var hourWorkedMinutes = Math.floor(Math.abs(totalTime / 60000)).toFixed(2)
         var hourWorked = (hourWorkedMinutes / 60).toFixed(15)
-        // console.log("total time is ", hourWorked)
         if (Number(checkoutTime)) {
             setTotalhr(hourWorked)
         }
@@ -76,27 +71,12 @@ export const Dashboard = () => {
 
 
     if (!loading && !userDetails) history.push("/")
-    // console.log(allUserDetails,"all user detauks    ")
-    // console.log(Object.values(allUserDetails), "alluserdetiails")
-    // var data = Object.values(allUserDetails)
-    // data.map((item,index)=>{
-    //     console.log(item, "item", index,"index")
-    // })
-    // Object.values(data)
-    // console.log(Object.values(data), );
-
-    // console.log(allUserDetails, "all user details")
     var data = Object.values(allUserDetails)
-    // console.log(data, "data")
-    // data.map((item, index) => {
-    //     return console.log(item.firstName, "item", index, "index")
-    // })
 
-    // console.log(allUsersAttendanceDetails,"attendance details")
     return (
         <div className="dashboard">
 
-            {userDetails?.role === "user" ?
+            {userDetails?.role === "authorized" ?
                 <div>
                     <TableContainer component={Paper}>
                         <Table className={classes.table} aria-label="simple table">
@@ -117,7 +97,7 @@ export const Dashboard = () => {
                         </Table>
                     </TableContainer>
                 </div>
-                :
+                : userDetails.role === "Admin" ?
                 <div className="dashboard">
 
                     <TableContainer component={Paper}>
@@ -147,7 +127,9 @@ export const Dashboard = () => {
                         </Table>
                     </TableContainer>
 
-                </div>}
+                </div> : <div><br/><br/><br/><h3>Kindly ask your administrator to authorize your account</h3></div>}
+
+
         </div>
     )
 }

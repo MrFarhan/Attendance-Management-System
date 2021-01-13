@@ -183,7 +183,7 @@ export const Appbar = () => {
 
                     {userDetails?.firstName ? <span className="appbarRightSide" >
 
-                        {userDetails.role !== "Admin" ?
+                        {userDetails.role !== "Admin" && userDetails.role !== "user" ?
                             (attendance && attendance[today]?.checkedin && !(attendance[today]?.checkedout) ?
 
                                 < Button variant="contained" onClick={((e) => Checkout(e))}>Check out</Button> :
