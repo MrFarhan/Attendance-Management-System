@@ -1,4 +1,5 @@
 import React from 'react'
+import { useState } from 'react'
 import { Button, Table } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 
@@ -6,6 +7,7 @@ export const UserAttendance = () => {
     const state = useSelector(state => state)
     const allUserDetails = state?.allUserDetails
     const allUserValues = Object.values(allUserDetails)
+    const [userName, setUserName] = useState("")
 
     return (
         <div>
@@ -17,7 +19,7 @@ export const UserAttendance = () => {
                 <br />
                 <div style={{ display: "flex" }}>
                     <div style={{ marginRight: "50px" }}>
-                        <select style={{ padding: "10px", fontSize: "20px" }} onChange={e => { console.log(e.target.value) }}>
+                        <select style={{ padding: "10px", fontSize: "20px" }} onChange={e => { setUserName(e.target.value) }}>
                             {allUserValues.map((item) => {
                                 return <option >{item.firstName}</option>
                             })}
@@ -39,8 +41,11 @@ export const UserAttendance = () => {
             <div style={{marginTop:"5em"}}>
                 <Table striped bordered hover>
                     <thead>
+                        
+                        <th colspan="6" >{userName}  </th>
                         <tr>
-                            <th>Day</th>
+                        
+                            <th>Date</th>
                             <th>Checkin</th>
                             <th>Checkout</th>
                             <th>Total time utilized</th>
