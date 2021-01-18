@@ -4,7 +4,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDispatch, useSelector } from 'react-redux';
 // eslint-disable-next-line 
 import firebase from "firebase"
-// import { Attendance } from './Components/Attendance';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -46,13 +45,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 var today = new Date().toString("ddMMyyyy")
-// console.log(today, "today")
 
 export const Appbar = () => {
     const loading = useSelector((state) => state.loading)
     const userDetails = useSelector((state) => state.userDetails)
     let attendance = useSelector((state) => state.attendance)
-    // const [show, setShow] = useState(false)
 
     let dispatch = useDispatch();
     const classes = useStyles();
@@ -118,7 +115,7 @@ export const Appbar = () => {
 
         })
 
-        firebase.database().ref(`Users/${UID}/}`).set({
+        firebase.database().ref(`Users/${UID}`).update({
             checkedin: start,
             // checkedout: ""
 
@@ -165,8 +162,6 @@ export const Appbar = () => {
         history.push("/dashboard")
     }
 
-    // console.log(userDetails?.firstName, "userDetails in appbar ")
-    // console.log(checkin, "checkin")
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -183,7 +178,7 @@ export const Appbar = () => {
 
                     {userDetails?.firstName ? <span className="appbarRightSide" >
 
-                        {userDetails.role !== "Admin" && userDetails.role !== "user" ?
+                        {userDetails.role !== "Admin" && userDetails.role !== "user" && userDetails.role === "authorized"?
                             (attendance && attendance[today]?.checkedin && !(attendance[today]?.checkedout) ?
 
                                 < Button variant="contained" onClick={((e) => Checkout(e))}>Check out</Button> :

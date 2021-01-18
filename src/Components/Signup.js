@@ -71,6 +71,7 @@ export const Signup = () => {
                 gender: values.gender,
                 dateofBirth: values.dateofBirth,
                 isVerified: false,
+                uid:UID,
                 role:"user"
             })
             history.push("/")
