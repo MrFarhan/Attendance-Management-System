@@ -7,12 +7,15 @@ export const UserAttendance = () => {
     const state = useSelector(state => state)
     const allUserDetails = state?.allUserDetails
     const allUserValues = Object.values(allUserDetails)
+
+
     const [uuid, setUuid] = useState("")
     // console.log(allUserValues, "all user values")
-
+    console.log(state, "state is")
+    console.log(allUserValues, "all user values is")
     const [userName, setUserName] = useState("")
     const [attendance, setAttendance] = useState("")
-    const [attendanceData, setAttendanceData] = useState("")
+    // const [attendanceData, setAttendanceData] = useState("")
 
 
 
@@ -36,8 +39,11 @@ export const UserAttendance = () => {
             if (item[0] === uuid)
                 return setAttendance(item ? item[1] : null)
         })
+        Object.entries(allUserValues).map(([index, value]) => {
+            if (value?.uid === uuid)
+            return setUserName(value?.firstName)
+        }) 
 
-  
     }
     // let temp = attendance ? attendance[1] : null
 
