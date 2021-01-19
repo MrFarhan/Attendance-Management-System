@@ -2,17 +2,20 @@ import React from 'react'
 import { useState } from 'react'
 import { Button, Table } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
+import NumberFormat from 'react-number-format';
+import moment from "moment"
 
 export const UserAttendance = () => {
     const state = useSelector(state => state)
     const allUserDetails = state?.allUserDetails
     const allUserValues = Object.values(allUserDetails)
+    // var NumberFormat = require('react-number-format');
 
 
     const [uuid, setUuid] = useState("")
     // console.log(allUserValues, "all user values")
-    console.log(state, "state is")
-    console.log(allUserValues, "all user values is")
+    // console.log(state, "state is")
+    // console.log(allUserValues, "all user values is")
     const [userName, setUserName] = useState("")
     const [attendance, setAttendance] = useState("")
     // const [attendanceData, setAttendanceData] = useState("")
@@ -41,8 +44,8 @@ export const UserAttendance = () => {
         })
         Object.entries(allUserValues).map(([index, value]) => {
             if (value?.uid === uuid)
-            return setUserName(value?.firstName)
-        }) 
+                return setUserName(value?.firstName)
+        })
 
     }
     // let temp = attendance ? attendance[1] : null
@@ -90,11 +93,16 @@ export const UserAttendance = () => {
                     </thead>
                     <tbody>
                         {attendance ? Object.entries(attendance)?.map(([key, value]) => {
+
+
+                            // console.log(Date.parse(value?.checkedin))
                             return <tr>
-                                <td>{key ? key : null}</td>
-                                <td>{value?.checkedin}</td>
-                                <td>{value?.checkedout}</td>
-                                <td>{(value?.checkedout) - (value?.checkedin)}</td>
+                                <td>{key ? key.replace(/(\d{2})(\d{2})(\d{3})/, "$1-$2-$3") : null}</td>
+                                <td>{value ? moment(value.checkedin).format('hh:mm:ss A') : null}</td>
+                                <td>{value ? moment(value.checkedout).format('hh:mm:ss A') : null}</td>
+                                {/* <td>{(((value?.checkedout) - (value?.checkedin)) / 3600).toFixed(1)}</td> */}
+                                <td><NumberFormat value={(((value?.checkedout) - (value?.checkedin)) / 3600).toFixed(1)} displayType={'text'} thousandSeparator={true} /></td>
+
                                 <td>8 Hours</td>
                             </tr>
                         }) : null}
