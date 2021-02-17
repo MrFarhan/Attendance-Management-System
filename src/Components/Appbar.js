@@ -27,6 +27,8 @@ const useStyles = makeStyles((theme) => ({
     appBar: {
         // width: `calc(100% - ${drawerWidth}px)`,
         marginLeft: drawerWidth,
+        display: "flex",
+        justifyContent:"center !important"
     },
     drawer: {
         width: drawerWidth,
@@ -61,24 +63,6 @@ export const Appbar = () => {
 
     let history = useHistory()
 
-
-    // useEffect(() => {
-
-    //     const checkinTimeStamp = attendance && attendance[today]?.checkedin
-    //     var checkinTime = new Date(checkinTimeStamp).toString("hh:mm")
-    //     const checkoutTimeStamp = attendance && attendance[today]?.checkedout
-    //     var checkoutTime = new Date(checkoutTimeStamp).toString("hh:mm")
-
-    // }, [attendance])
-
-    // const showMenu = () => {
-    //     if (!(userDetails.role)) {
-    //         setShow(false)
-    //     } else if (userDetails.firstName) {
-    //         setShow(true)
-    //     }
-    // }
-
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -102,7 +86,6 @@ export const Appbar = () => {
 
     const Checkin = (e) => {
         const checkinTimeStamp = attendance && attendance[today]?.checkedin
-        // var checkinTime = new Date(checkinTimeStamp).toString("hh:mm")
         if (checkinTimeStamp) {
             setCheckin(true)
         }
@@ -111,13 +94,11 @@ export const Appbar = () => {
         let UID = firebase.auth().currentUser?.uid
         firebase.database().ref(`Attendance/${UID}/${today}`).set({
             checkedin: start,
-            // checkedout: null
 
         })
 
         firebase.database().ref(`Users/${UID}`).update({
             checkedin: start,
-            // checkedout: ""
 
         })
     }
@@ -141,12 +122,9 @@ export const Appbar = () => {
                 const useruid = user.uid
                 firebase.database().ref(`Users/${useruid}/`).on("value", (res) => {
                     dispatch(userDetailsAction(res.val()))
-                    // console.log(res.val(), "res.val")
                     dispatch(loadingAction(false))
                 })
-                // firebase.database().ref(`Users/${useruid}/`).on("value", (res)=>{
 
-                // })
             }
             else dispatch(loadingAction(false))
 
@@ -166,19 +144,18 @@ export const Appbar = () => {
         <div className={classes.root}>
             <CssBaseline />
             <AppBar position="fixed" className={classes.appBar}>
-                <Toolbar>
-                    <Typography variant="h6" noWrap onClick={clickHandle} className="center">
+                <Toolbar >
+                    <Typography variant="h6" noWrap onClick={clickHandle} align="center !important">
                         Attendance management system
-            </Typography>
+                </Typography>
 
 
-                    {/* {(!(userDetails.role)) ?  */}
 
 
 
                     {userDetails?.firstName ? <span className="appbarRightSide" >
 
-                        {userDetails.role !== "Admin" && userDetails.role !== "user" && userDetails.role === "authorized"?
+                        {userDetails.role !== "Admin" && userDetails.role !== "user" && userDetails.role === "authorized" ?
                             (attendance && attendance[today]?.checkedin && !(attendance[today]?.checkedout) ?
 
                                 < Button variant="contained" onClick={((e) => Checkout(e))}>Check out</Button> :

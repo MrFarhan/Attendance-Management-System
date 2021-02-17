@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "#3f51b5",
         color: "white"
     },
-    // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
 
 }));
@@ -57,9 +56,9 @@ export const Sidebar = () => {
         return <p>...Loading</p>
     }
 
-    const clickHandle = () => {
-        history.push("/dashboard")
-    }
+    // const clickHandle = () => {
+    //     history.push("/dashboard")
+    // }
 
     return (
         <div className={classes.root}>
@@ -71,10 +70,10 @@ export const Sidebar = () => {
                     }}
                     anchor="left"
                 >
-                    <img src={logo} className="logo" onClick={clickHandle} alt="company logo" />
+                    {/* <img src={logo} className="logo" onClick={clickHandle} alt="company logo" /> */}
                     <Divider />
 
-                    <List>
+                    <List style={{marginTop:"5em"}}>
                         {menu.map((item, index) => (
                             <ListItem button key={index} onClick={(e) => { HandelClick(e) }}>
                                 <ListItemText primary={item?.Text} />

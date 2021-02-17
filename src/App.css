@@ -134,7 +134,7 @@ width: 70%;
 }
 
 .appbarRightSide{
-  margin-left: auto;
+  /* margin-left: auto; */
   height: 4.7em;
 
 }
@@ -187,4 +187,9 @@ color: white !important;
 
 .sidebar{
   background-color: red !important;
+}
+
+
+.MuiToolbar-regular{
+justify-content: center;
 }

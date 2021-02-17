@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux'
 import "../App.css"
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import '../App.css'
 import { Form, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import firebase from "firebase"

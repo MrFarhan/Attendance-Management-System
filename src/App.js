@@ -99,8 +99,8 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Route path={["/", '/dashboard', "/signup", '/dashboard/profile', '/attendance', '/test', '/report']} render={(() => <Appbar />)} />
         <Route path={['/dashboard', '/dashboard/profile', '/attendance', '/test', '/report']} render={(() => <Sidebar />)} />
+        <Route path={["/", '/dashboard', "/signup", '/dashboard/profile', '/attendance', '/test', '/report']} render={(() => <Appbar />)} />
         <Switch>
           <Route exact path="/"><Login /></Route>
           <Route exact path="/dashboard"><Dashboard /></Route>
