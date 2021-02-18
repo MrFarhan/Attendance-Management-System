@@ -12,13 +12,13 @@ import { attendanceAction, loadingAction, userDetailsAction, allUserDetailsActio
 // import componenets
 import { Login } from './Components/Login';
 import { Signup } from './Components/Signup';
-import { Test } from './Test';
+import Test from './Test';
 import { Profile } from './Components/Profile';
 import { Attendance } from './Components/Attendance';
 import { Dashboard } from './Components/Dashboard';
 import { Report } from './Components/Report';
-import { Appbar } from './Components/Appbar';
-import { Sidebar } from './Components/Sidebar';
+import Appbar  from './Components/Appbar';
+// import { Sidebar } from './Components/Sidebar';
 
 
 function App() {
@@ -99,8 +99,8 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Route path={['/dashboard', '/dashboard/profile', '/attendance', '/test', '/report']} render={(() => <Sidebar />)} />
-        <Route path={["/", '/dashboard', "/signup", '/dashboard/profile', '/attendance', '/test', '/report']} render={(() => <Appbar />)} />
+        {/* <Route path={['/dashboard', '/dashboard/profile', '/attendance',  '/report']} render={(() => <Sidebar />)} /> */}
+        <Route path={["/", '/dashboard', "/signup", '/dashboard/profile', '/attendance',  '/report']} render={(() => <Appbar />)} />
         <Switch>
           <Route exact path="/"><Login /></Route>
           <Route exact path="/dashboard"><Dashboard /></Route>
