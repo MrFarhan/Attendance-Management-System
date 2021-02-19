@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // eslint-disable-next-line 
-import firebaseData from "./firebase" //used for firebase initialization
+// import firebaseData from "./firebase" //used for firebase initialization
 // eslint-disable-next-line 
 import firebase from "firebase"
 import { attendanceAction, loadingAction, userDetailsAction, allUserDetailsAction,allUserAttendanceAction } from './Redux/Actions';
