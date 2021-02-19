@@ -86,7 +86,7 @@ export const Login = () => {
         <Form onSubmit={formik.handleSubmit} className="loginform">
 
             <Form.Group >
-                <Form.Label className="labels" htmlFor="email">Email address</Form.Label>
+                <Form.Label className="labels" htmlFor="email">Email</Form.Label>
                 <Form.Control className="inputs" id="email" type="email" placeholder="Enter email" {...formik.getFieldProps('email')} autoFocus />
                 <span className="inputerror">  {formik.touched.email && formik.errors.email ? (
                     <div>{formik.errors.email}</div>

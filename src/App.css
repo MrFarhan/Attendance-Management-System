@@ -7,7 +7,7 @@
   /* margin-bottom: 2em; */
 }
 .loginform{
-  width: 50%;
+  width: 40%;
   padding: 1em;
   /* display: flex;
   flex-direction: row; */
@@ -15,6 +15,21 @@
   align-items: center;
   /* width: 500px; */
   margin-top: 5em; 
+}
+
+
+@media screen and (max-width: 1024px){
+
+  .loginform{
+    width: 60%;
+    padding: 1.2em;
+    /* display: flex;
+    flex-direction: row; */
+    justify-content: center;
+    align-items: center;
+    /* width: 500px; */
+    margin-top: 5em; 
+  }
 }
 
 .labels{

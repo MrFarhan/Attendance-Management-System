@@ -42,13 +42,10 @@ const useStyles = makeStyles((theme) => ({
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
     },
-    [theme.breakpoints.up('md')]: {
+  },
+  appBarCustom: {
+    [theme.breakpoints.up('sm')]: {
       width: `100%`,
-      // marginLeft: drawerWidth,
-    },
-    [theme.breakpoints.up('xl')]: {
-      width: `100%`,
-      // marginLeft: drawerWidth,
     },
   },
   menuButton: {
@@ -56,6 +53,11 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       display: 'none',
     },
+  },
+  menuButtonCustom: {
+    marginRight: theme.spacing(2),
+    display: 'none',
+
   },
   // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
@@ -97,7 +99,7 @@ function Appbar(props) {
     }
   }
 
-//drawer handler
+  //drawer handler
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -197,14 +199,14 @@ function Appbar(props) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
+      <AppBar position="fixed" className={(userDetails.firstName) ? classes.appBar : classes.appBarCustom}>
         <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            className={classes.menuButton}
+            className={userDetails.firstName ? classes.menuButton : classes.menuButtonCustom}
           >
             <MenuIcon />
           </IconButton>
