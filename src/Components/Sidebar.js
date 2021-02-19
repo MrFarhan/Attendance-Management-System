@@ -13,7 +13,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import "../App.css"
 import { useHistory } from "react-router-dom"
-import logo from "./logo.png"
 
 
 const drawerWidth = 240;

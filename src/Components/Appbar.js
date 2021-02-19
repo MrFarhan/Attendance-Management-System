@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('se')]: {
       display: "flex",
       alignItem: "center",
-      display: 'none',
+      // display: 'none',
     },
   },
 

@@ -38,10 +38,13 @@ export const UserAttendance = () => {
     const Generate = () => {
         console.log(uuid, "e")
         const data = Object.entries(state?.allUsersAttendanceDetails)
+        // eslint-disable-next-line
         data.map((item) => {
             if (item[0] === uuid)
                 return setAttendance(item ? item[1] : null)
         })
+        
+        // eslint-disable-next-line
         Object.entries(allUserValues).map(([index, value]) => {
             if (value?.uid === uuid)
                 return setUserName(value?.firstName)

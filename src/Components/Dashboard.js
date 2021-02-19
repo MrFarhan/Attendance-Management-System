@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import "../App.css"
 import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+// import Table from '@material-ui/core/Table';
+// import TableBody from '@material-ui/core/TableBody';
+// import TableCell from '@material-ui/core/TableCell';
+// import TableContainer from '@material-ui/core/TableContainer';
+// import TableHead from '@material-ui/core/TableHead';
+// import TableRow from '@material-ui/core/TableRow';
+// import Paper from '@material-ui/core/Paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import firebase from "firebase"
@@ -31,14 +31,17 @@ export const Dashboard = () => {
     const userDetails = useSelector((state) => state.userDetails)
     const allUserDetails = useSelector((state) => state.allUserDetails)
     let attendance = useSelector((state) => state.attendance)
+        // eslint-disable-next-line
     const [totalHr, setTotalhr] = useState(0)
     const checkinTimeStamp = attendance && attendance[today]?.checkedin
+        // eslint-disable-next-line
     var checkinTime = checkinTimeStamp ? new Date(checkinTimeStamp).toString("hh:mm") : false
-
     const checkoutTimeStamp = attendance && attendance[today]?.checkedout
+    // eslint-disable-next-line
     var checkoutTime = checkoutTimeStamp ? new Date(checkoutTimeStamp).toString("hh:mm") : false
 
 
+// eslint-disable-next-line
     const classes = useStyles();
     let history = useHistory()
     let loading = userDetails?.loading;
@@ -69,8 +72,8 @@ export const Dashboard = () => {
         }
     }, [attendance])
 
-
     if (!loading && !userDetails) history.push("/")
+    // eslint-disable-next-line
     var data = Object.values(allUserDetails)
 
     return (
