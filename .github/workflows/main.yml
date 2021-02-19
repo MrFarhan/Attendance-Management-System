@@ -5,17 +5,15 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: [ ubuntu-latest ]
     steps:
-    - uses: actions/checkout@v1
-    - name: Build
-      run: |
-        npm install
-        npm run build
-    - name: Firebase Deploy
-      run: |
-        sudo npm install -g firebase-tools
-        firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
+      - name: Checkout Repo
+        uses: actions/checkout@v1
+      - name: Install dependencies
+        run: npm install
+      - name: build
+        run: npm run build
+      - name: firebase deploy
+        run:  firebase deploy --token ${{secrets.FIREBASE_TOKEN}}
