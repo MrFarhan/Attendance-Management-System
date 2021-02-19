@@ -74,62 +74,64 @@ export const Dashboard = () => {
     var data = Object.values(allUserDetails)
 
     return (
-        <div className="dashboard">
+    <div>Dashboard here</div>
+    // <div className="dashboard">
 
-            {userDetails?.role === "authorized" ?
-                <div>
-                    <TableContainer component={Paper}>
-                        <Table className={classes.table} aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell align="right">Check in</TableCell>
-                                    <TableCell align="right">Check out</TableCell>
-                                    <TableCell align="right">Total Time</TableCell>
-                                    <TableCell align="right">Required Time</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                <TableCell align="right">{checkinTime ? checkinTime : "Not Checked in"}</TableCell>
-                                <TableCell align="right">{checkoutTimeStamp ? checkoutTime : "-"}</TableCell>
-                                <TableCell align="right">{totalHr} hours</TableCell>
-                                <TableCell align="right">12 Hours</TableCell>
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </div>
-                : userDetails.role === "Admin" ?
-                <div className="dashboard">
+    //         {userDetails?.role === "authorized" ?
+    //             <div>
+    //                 <TableContainer component={Paper}>
+    //                     <Table className={classes.table} aria-label="simple table">
+    //                         <TableHead>
+    //                             <TableRow>
+    //                                 <TableCell align="right">Check in</TableCell>
+    //                                 <TableCell align="right">Check out</TableCell>
+    //                                 <TableCell align="right">Total Time</TableCell>
+    //                                 <TableCell align="right">Required Time</TableCell>
+    //                             </TableRow>
+    //                         </TableHead>
+    //                         <TableBody>
+    //                             <TableCell align="right">{checkinTime ? checkinTime : "Not Checked in"}</TableCell>
+    //                             <TableCell align="right">{checkoutTimeStamp ? checkoutTime : "-"}</TableCell>
+    //                             <TableCell align="right">{totalHr} hours</TableCell>
+    //                             <TableCell align="right">12 Hours</TableCell>
+    //                         </TableBody>
+    //                     </Table>
+    //                 </TableContainer>
+    //             </div>
+    //             : userDetails.role === "Admin" ?
+    //             <div className="dashboard">
 
-                    <TableContainer component={Paper}>
-                        <Table className={classes.table} aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell >First Name</TableCell>
-                                    <TableCell >Email</TableCell>
-                                    <TableCell >Gender</TableCell>
-                                    <TableCell >Contact Number</TableCell>
-                                    {/* <TableCell align="right">Loggedin Status</TableCell> */}
-                                </TableRow>
-                            </TableHead>
+    //                 <TableContainer component={Paper}>
+    //                     <Table className={classes.table} aria-label="simple table">
+    //                         <TableHead>
+    //                             <TableRow>
+    //                                 <TableCell >First Name</TableCell>
+    //                                 <TableCell >Email</TableCell>
+    //                                 <TableCell >Gender</TableCell>
+    //                                 <TableCell >Contact Number</TableCell>
+    //                                 {/* <TableCell align="right">Loggedin Status</TableCell> */}
+    //                             </TableRow>
+    //                         </TableHead>
 
-                            {data.map((item, index) => (
-                                <TableRow key={index}>
-                                    <TableCell component="th" scope="row">
-                                        {item.firstName}
-                                    </TableCell>
-                                    <TableCell >{item.email}</TableCell>
-                                    <TableCell >{item.gender}</TableCell>
-                                    <TableCell >{item.cNumber}</TableCell>
-                                    {/* <TableCell align="right">{item?.checkedin && item?.checkedin?.length > 1  ? "Checked in" : "Checked out"}</TableCell> */}
-                                    {/* {console.log(item, "item")} */}
-                                </TableRow>
-                            ))}
-                        </Table>
-                    </TableContainer>
+    //                         {data.map((item, index) => (
+    //                             <TableRow key={index}>
+    //                                 <TableCell component="th" scope="row">
+    //                                     {item.firstName}
+    //                                 </TableCell>
+    //                                 <TableCell >{item.email}</TableCell>
+    //                                 <TableCell >{item.gender}</TableCell>
+    //                                 <TableCell >{item.cNumber}</TableCell>
+    //                                 {/* <TableCell align="right">{item?.checkedin && item?.checkedin?.length > 1  ? "Checked in" : "Checked out"}</TableCell> */}
+    //                                 {/* {console.log(item, "item")} */}
+    //                             </TableRow>
+    //                         ))}
+    //                     </Table>
+    //                 </TableContainer>
 
-                </div> : <div><br/><br/><br/><h3>Kindly ask your administrator to authorize your account</h3></div>}
+    //             </div> : <div><br/><br/><br/><h3>Kindly ask your administrator to authorize your account</h3></div>}
 
 
-        </div>
+    //     </div>
+    
     )
 }

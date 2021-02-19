@@ -149,10 +149,32 @@ width: 70%;
 }
 
 .appbarRightSide{
-  /* margin-left: auto; */
+  display: flex;
+  align-items: center;
+  /* margin-left: 10%; */
   height: 4.7em;
 
 }
+
+@media screen and (min-width:1234px ){
+  .appbarRightSide{
+    display: flex;
+    align-items: center;
+    margin-left: 50%;
+    height: 4.7em;
+  
+  }
+}
+
+/* @media screen and (min-width:400px){
+  .appbarRightSide{
+    display: flex;
+    align-items: center;
+    margin-left: 50%;
+    height: 4.7em;
+  
+  }
+} */
 
 .makeStyles-drawerPaper-4{
 background-color: #3f51b5 !important;

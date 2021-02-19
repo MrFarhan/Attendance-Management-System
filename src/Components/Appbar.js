@@ -68,6 +68,21 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
+  checkBtn: {
+    // marginRight: theme.spacing(2),
+    [theme.breakpoints.up('se')]: {
+      display: 'none',
+    },
+  },
+  dp: {
+    // marginRight: theme.spacing(2),
+    [theme.breakpoints.up('se')]: {
+      display: "flex",
+      alignItem: "center",
+      display: 'none',
+    },
+  },
+
 }));
 
 var today = new Date().toString("ddMMyyyy")
@@ -108,7 +123,7 @@ function Appbar(props) {
     <div>
       <div className={classes.toolbar} />
       <Divider />
-      <List style={{ marginTop: "5em" }}>
+      <List >
         {menu.map((item, index) => (
           <ListItem button key={index} onClick={(e) => { HandelClick(e) }}>
             <ListItemText primary={item?.Text} />
@@ -211,7 +226,7 @@ function Appbar(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Attendance Management System
+            Attendance Management System &nbsp;&nbsp;&nbsp;
           </Typography>
 
 
@@ -220,16 +235,16 @@ function Appbar(props) {
             {userDetails.role !== "Admin" && userDetails.role !== "user" && userDetails.role === "authorized" ?
               (attendance && attendance[today]?.checkedin && !(attendance[today]?.checkedout) ?
 
-                < Button variant="contained" onClick={((e) => Checkout(e))}>Check out</Button> :
-                <Button variant="contained" disabled={attendance && attendance[today]?.checkedout} onClick={((e) => Checkin(e))}>Check in</Button>
+                < Button variant="contained" onClick={((e) => Checkout(e))} className={classes.checkBtn}>Check out</Button> :
+                <Button variant="contained" className={classes.checkBtn} disabled={attendance && attendance[today]?.checkedout} onClick={((e) => Checkin(e))} >Check in</Button>
               )
 
               : null}
 
-            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{userDetails?.firstName}
-            </span>
+            {/* <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{userDetails?.firstName}
+            </span> */}
 
-            <IconButton
+            <IconButton className={classes.dp}
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
