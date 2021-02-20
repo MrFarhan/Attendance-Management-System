@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
   },
   checkBtn: {
     // marginRight: theme.spacing(2),
-    [theme.breakpoints.up('se')]: {
+    [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
   },
