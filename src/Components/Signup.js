@@ -5,9 +5,46 @@ import '../App.css'
 import { Form, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import firebase from "firebase"
-import Layout from './Layout';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 
 
+
+const useStyles = makeStyles((theme) => ({
+
+    appBarCustom: {
+        [theme.breakpoints.up('sm')]: {
+            width: `100%`,
+            // marginBottom:"2em"
+
+        },
+    },
+    menuButtonCustom: {
+        marginRight: theme.spacing(2),
+        display: 'none',
+
+    },
+    signupFormMain: {
+        marginTop: "5em",
+        [theme.breakpoints.up('md')]: {
+            width: `40%`,
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "5em"
+
+        },
+
+    },
+    signupForm: {
+        [theme.breakpoints.up('md')]: {
+            width: `140%`,
+        },
+
+    },
+    toolbar: theme.mixins.toolbar,
+}));
 
 
 export const Signup = () => {
@@ -95,11 +132,19 @@ export const Signup = () => {
     const LoginFunc = () => {
         history.push("/")
     }
+    const classes = useStyles();
 
     return (
-        // <Layout>
-            <Form onSubmit={formik.handleSubmit} className="loginform">
-                {/* <Appbar /> */}
+        <div className={classes.signupFormMain} >
+
+            <AppBar position="fixed" className={classes.appBarCustom} >
+                <Toolbar>
+
+                    <Typography variant="h6" noWrap>
+                        Attendance Management System &nbsp;&nbsp;&nbsp;</Typography>
+                </Toolbar>
+            </AppBar>
+            <Form onSubmit={formik.handleSubmit} className={classes.signupForm}>
                 <Form.Group>
                     <Form.Label className="labels" htmlFor="firstName">First Name</Form.Label>
                     <Form.Control id="firstName" type="text" placeholder="Enter email" {...formik.getFieldProps('firstName')} autoFocus />
@@ -164,8 +209,6 @@ export const Signup = () => {
                     ) : null}</div></div>
                 </Form.Group>
 
-
-
                 <Form.Group>
                     <Form.Label className="labels">Password</Form.Label>
                     <Form.Control id="password" type="password" placeholder="Password" {...formik.getFieldProps('password')} />
@@ -193,6 +236,6 @@ export const Signup = () => {
                 <Button variant="primary" type="submit" > Sign up</Button>
                 <Button variant="link" type="button" onClick={LoginFunc}>Already have an account</Button>
             </Form>
-        // </Layout>
+        </div>
     );
 };

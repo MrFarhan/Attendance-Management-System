@@ -8,24 +8,19 @@ import { FiLogIn } from 'react-icons/fi';
 import { useDispatch, useSelector } from "react-redux"
 import firebase from 'firebase'
 import { loadingAction, userDetailsAction } from '../Redux/Actions';
-import Layout from './Layout';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 require('firebase/auth')
 
 
-const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
 
     appBarCustom: {
         [theme.breakpoints.up('sm')]: {
             width: `100%`,
-            // marginBottom:"2em"
 
         },
     },
@@ -41,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
             display: "flex", 
             justifyContent: "center", 
             marginTop: "5em"
-            // marginBottom:"2em"
 
         },
 
@@ -49,8 +43,6 @@ const useStyles = makeStyles((theme) => ({
     loginForm: {
         [theme.breakpoints.up('md')]: {
             width: `140%`,
-
-            // marginBottom:"2em"
 
         },
 
