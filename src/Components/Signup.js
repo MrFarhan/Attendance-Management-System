@@ -5,6 +5,7 @@ import '../App.css'
 import { Form, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import firebase from "firebase"
+import Layout from './Layout';
 
 
 
@@ -96,109 +97,102 @@ export const Signup = () => {
     }
 
     return (
-        <Form onSubmit={formik.handleSubmit} className="loginform">
-            {/* <Appbar /> */}
-            <Form.Group>
-                <Form.Label className="labels" htmlFor="firstName">First Name</Form.Label>
-                <Form.Control id="firstName" type="text" placeholder="Enter email" {...formik.getFieldProps('firstName')} autoFocus />
-                <span className="inputerror">  {formik.touched.firstName && formik.errors.firstName ? (
-                    <div>{formik.errors.firstName}</div>
-                ) : null}</span>
-            </Form.Group>
+        // <Layout>
+            <Form onSubmit={formik.handleSubmit} className="loginform">
+                {/* <Appbar /> */}
+                <Form.Group>
+                    <Form.Label className="labels" htmlFor="firstName">First Name</Form.Label>
+                    <Form.Control id="firstName" type="text" placeholder="Enter email" {...formik.getFieldProps('firstName')} autoFocus />
+                    <span className="inputerror">  {formik.touched.firstName && formik.errors.firstName ? (
+                        <div>{formik.errors.firstName}</div>
+                    ) : null}</span>
+                </Form.Group>
 
-            <Form.Group>
-                <Form.Label className="labels" htmlFor="lastName">Last Name</Form.Label>
-                <Form.Control id="lastName" type="text" placeholder="Enter email" {...formik.getFieldProps('lastName')} />
-                <span className="inputerror">  {formik.touched.lastName && formik.errors.lastName ? (
-                    <div>{formik.errors.lastName}</div>
-                ) : null}</span>
-            </Form.Group>
+                <Form.Group>
+                    <Form.Label className="labels" htmlFor="lastName">Last Name</Form.Label>
+                    <Form.Control id="lastName" type="text" placeholder="Enter email" {...formik.getFieldProps('lastName')} />
+                    <span className="inputerror">  {formik.touched.lastName && formik.errors.lastName ? (
+                        <div>{formik.errors.lastName}</div>
+                    ) : null}</span>
+                </Form.Group>
 
-            <Form.Group>
-                <Form.Label className="labels" htmlFor="email">Email address</Form.Label>
-                <Form.Control id="email" type="email" placeholder="Enter email" {...formik.getFieldProps('email')} />
-                <span className="inputerror">  {formik.touched.email && formik.errors.email ? (
-                    <div>{formik.errors.email}</div>
-                ) : null}</span>
-            </Form.Group>
+                <Form.Group>
+                    <Form.Label className="labels" htmlFor="email">Email address</Form.Label>
+                    <Form.Control id="email" type="email" placeholder="Enter email" {...formik.getFieldProps('email')} />
+                    <span className="inputerror">  {formik.touched.email && formik.errors.email ? (
+                        <div>{formik.errors.email}</div>
+                    ) : null}</span>
+                </Form.Group>
 
-            <Form.Group>
-                <Form.Label className="labels" htmlFor="cNumber">Phone Number</Form.Label>
-                <Form.Control id="cNumber" type="number" placeholder="Enter your mobile number" {...formik.getFieldProps('cNumber')} />
-                <span className="inputerror">  {formik.touched.cNumber && formik.errors.cNumber ? (
-                    <div>{formik.errors.cNumber}</div>
-                ) : null}</span>
-            </Form.Group>
+                <Form.Group>
+                    <Form.Label className="labels" htmlFor="cNumber">Phone Number</Form.Label>
+                    <Form.Control id="cNumber" type="number" placeholder="Enter your mobile number" {...formik.getFieldProps('cNumber')} />
+                    <span className="inputerror">  {formik.touched.cNumber && formik.errors.cNumber ? (
+                        <div>{formik.errors.cNumber}</div>
+                    ) : null}</span>
+                </Form.Group>
 
-            <Form.Group {...formik.getFieldProps('dateofBirth')}>
-                <Form.Label className="labels" htmlFor="dateofBirth">Select your date of birth</Form.Label>
-                <Form.Control id="dateofBirth" type="date" placeholder="Select your date of birth" />
-                <span className="inputerror">  {formik.touched.dateofBirth && formik.errors.dateofBirth ? (
-                    <div>{formik.errors.dateofBirth}</div>
-                ) : null}</span>
-            </Form.Group>
+                <Form.Group {...formik.getFieldProps('dateofBirth')}>
+                    <Form.Label className="labels" htmlFor="dateofBirth">Select your date of birth</Form.Label>
+                    <Form.Control id="dateofBirth" type="date" placeholder="Select your date of birth" />
+                    <span className="inputerror">  {formik.touched.dateofBirth && formik.errors.dateofBirth ? (
+                        <div>{formik.errors.dateofBirth}</div>
+                    ) : null}</span>
+                </Form.Group>
 
 
-            <Form.Group style={{ display: "flex" }} {...formik.getFieldProps('gender')} >
-                <Form.Label style={{ marginRight: "1rem" }}>
-                    Gender
+                <Form.Group style={{ display: "flex" }} {...formik.getFieldProps('gender')} >
+                    <Form.Label style={{ marginRight: "1rem" }}>
+                        Gender
                 </Form.Label>
-                {/* <div  > */}
-                <Form.Check style={{justifyContent:"flex-start"}}
-                    type="radio"
-                    label="Male"
-                    name="gender"
-                    id="Male"
-                    value="Male"
-                />
-                <Form.Check
-                    type="radio"
-                    label="Female"
-                    name="gender"
-                    id="Female"
-                    value="Female"
-                />
-                {/* </div> */}
-                <div>                <br/><div className="inputerror" style={{marginLeft:"-13em"}}>  {formik.touched.gender && formik.errors.gender ? (
-                    <div>{formik.errors.gender}</div>
-                ) : null}</div></div>
-            </Form.Group>
+                    <Form.Check style={{ justifyContent: "flex-start" }}
+                        type="radio"
+                        label="Male"
+                        name="gender"
+                        id="Male"
+                        value="Male"
+                    />
+                    <Form.Check
+                        type="radio"
+                        label="Female"
+                        name="gender"
+                        id="Female"
+                        value="Female"
+                    />
+                    <div>                <br /><div className="inputerror" style={{ marginLeft: "-13em" }}>  {formik.touched.gender && formik.errors.gender ? (
+                        <div>{formik.errors.gender}</div>
+                    ) : null}</div></div>
+                </Form.Group>
 
 
 
-            <Form.Group>
-                <Form.Label className="labels">Password</Form.Label>
-                <Form.Control id="password" type="password" placeholder="Password" {...formik.getFieldProps('password')} />
-                <span className="inputerror">{formik.touched.password && formik.errors.password ? (
-                    <div>{formik.errors.password}</div>
-                ) : null}</span>
-            </Form.Group>
+                <Form.Group>
+                    <Form.Label className="labels">Password</Form.Label>
+                    <Form.Control id="password" type="password" placeholder="Password" {...formik.getFieldProps('password')} />
+                    <span className="inputerror">{formik.touched.password && formik.errors.password ? (
+                        <div>{formik.errors.password}</div>
+                    ) : null}</span>
+                </Form.Group>
 
-            <Form.Group>
-                <Form.Label className="labels">Confirm Password</Form.Label>
-                <Form.Control id="confirmPassword" type="password" placeholder="confirm Password" {...formik.getFieldProps('confirmPassword')} />
-                <span className="inputerror">{formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-                    <div>{formik.errors.confirmPassword}</div>
-                ) : null}</span>
-            </Form.Group>
+                <Form.Group>
+                    <Form.Label className="labels">Confirm Password</Form.Label>
+                    <Form.Control id="confirmPassword" type="password" placeholder="confirm Password" {...formik.getFieldProps('confirmPassword')} />
+                    <span className="inputerror">{formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+                        <div>{formik.errors.confirmPassword}</div>
+                    ) : null}</span>
+                </Form.Group>
 
+                <Form.Group>
+                    <div>
+                        <Form.Check style={{ display: "flex", marginTop: "0.199rem" }} type="checkbox" label="I hereby agree all terms of services " {...formik.getFieldProps('acceptedTerms')} />
+                        <span className="inputerror">{formik.touched.acceptedTerms && formik.errors.acceptedTerms ? (
+                            <div>{formik.errors.acceptedTerms}</div>
+                        ) : null}</span></div>
+                </Form.Group>
 
-            {/* style={{display:"flex", width:"100%"}} */}
-            <Form.Group>
-                <div>
-                    <Form.Check style={{ display: "flex", marginTop: "0.199rem" }} type="checkbox" label="I hereby agree all terms of services " {...formik.getFieldProps('acceptedTerms')} />
-                    <span className="inputerror">{formik.touched.acceptedTerms && formik.errors.acceptedTerms ? (
-                        <div>{formik.errors.acceptedTerms}</div>
-                    ) : null}</span></div>
-            </Form.Group>
-            {/* 
-                    <Field type="checkbox" name="tandc" className="form-check-input" id="tandc" />
-                    <ErrorMessage name="tandc" component="div" className="invalid-feedback" />
-                    <label htmlFor="tandc" >I agree to the Terms and Conditions
-                                </label> */}
-
-            <Button variant="primary" type="submit" > Sign up</Button>
-            <Button variant="link" type="button" onClick={LoginFunc}>Already have an account</Button>
-        </Form>
+                <Button variant="primary" type="submit" > Sign up</Button>
+                <Button variant="link" type="button" onClick={LoginFunc}>Already have an account</Button>
+            </Form>
+        // </Layout>
     );
 };

@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import firebaseData from "./firebase" //used for firebase initialization
 // eslint-disable-next-line 
 import firebase from "firebase"
-import { attendanceAction, loadingAction, userDetailsAction, allUserDetailsAction,allUserAttendanceAction } from './Redux/Actions';
+import { attendanceAction, loadingAction, userDetailsAction, allUserDetailsAction, allUserAttendanceAction } from './Redux/Actions';
 
 // import componenets
 import { Login } from './Components/Login';
@@ -17,8 +17,6 @@ import { Profile } from './Components/Profile';
 import { Attendance } from './Components/Attendance';
 import { Dashboard } from './Components/Dashboard';
 import { Report } from './Components/Report';
-import Appbar  from './Components/Appbar';
-// import { Sidebar } from './Components/Sidebar';
 
 
 function App() {
@@ -52,8 +50,6 @@ function App() {
       if (user) {
         const useruid = user.uid
         firebase.database().ref(`Attendance/${useruid}/`).on("value", (res) => {
-          // console.log(res?.val(), "firebase value")
-          // console.log(res?.val()?.role, "firebase value")
           dispatch(attendanceAction(res?.val()))
         })
       }
@@ -83,7 +79,6 @@ function App() {
       if (user) {
         firebase.database().ref(`Attendance/`).on("value", (res) => {
           dispatch(allUserAttendanceAction(res.val()))
-          // console.log(res.val(), "all user deta from firebase in app")
         })
       }
     });
@@ -99,8 +94,6 @@ function App() {
   return (
     <Router>
       <div className="App">
-        {/* <Route path={['/dashboard', '/dashboard/profile', '/attendance',  '/report']} render={(() => <Sidebar />)} /> */}
-        <Route path={["/", '/dashboard', "/signup", '/dashboard/profile', '/attendance',  '/report']} render={(() => <Appbar />)} />
         <Switch>
           <Route exact path="/"><Login /></Route>
           <Route exact path="/dashboard"><Dashboard /></Route>

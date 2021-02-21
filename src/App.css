@@ -5,31 +5,25 @@
   text-align: center;
 
 }
-.loginform{
-  width: 40%;
+/* .loginform{
+  width: 40% ;
   padding: 1em;
-  /* display: flex;
-  flex-direction: row; */
   justify-content: center;
   align-items: center;
-  /* width: 500px; */
   margin-top: 5em; 
 }
+ */
 
-
-@media screen and (max-width: 1024px){
+/* @media screen and (max-width: 1024px){
 
   .loginform{
     width: 60%;
     padding: 1.2em;
-    /* display: flex;
-    flex-direction: row; */
     justify-content: center;
     align-items: center;
-    /* width: 500px; */
     margin-top: 5em; 
   }
-}
+} */
 
 .labels{
 display: flex;
@@ -41,75 +35,19 @@ display: flex;
   color: red;
 }
 
-/* .inputcheckbox{
-  display: flex;
-
-} */
-/* .radiobtngroup{
-  width: auto;
-}
-.radiobtn{
-  display: flex;
-  width: 5em;
-}
-
-.radiosubsec{
-  display: flex;
-  position: relative;
-  align-items: center;
-  font-size: inherit;
-  justify-content: center;
-} */
-
-
-
-.dashboardMain{
-  /* width: 100% ; */
-  
-  display: flex;
- 
-}
-
-.test{
-  width: 20%;
-  height: 500px;
-  display: flex;
-  float: left;
-  flex-direction: column;
-}
-
-.mainappbarbody{
-  display: flex;
-  /* margin-left: 20%; */
-}
-
-.firstpaper{
-  margin-left: 70%;
-  width: 17em;
-  justify-content: flex-end;
-}
-
-.sideNav{
-  background-color: red;
-}
-
-
 .profileMain{
   width: 50vw ;
   height: 50vh;
-  margin-top: 5em;
 }
 
-/* #Female.form-check-input{
-  margin-top:"8em !important"
-} */
-
-#formcheck-api-regular{
+.profilePagePic{
   width: 7em;
-  height: 8em !important ;
-  border-radius: 1em;
+  height: 7em !important ;
+  border-radius: 4em;
   align-items: left;
   display: flex;
+  margin-bottom: 0.7em;
+
 }
 
 .dpIcon{
@@ -121,9 +59,6 @@ display: flex;
 .appbarRightSide{
   display: flex;
   align-items: center;
-  /* margin-left: 10%; */
-  /* height: 4.7em; */
-
 }
 
 @media screen and (min-width:1234px ){
@@ -137,67 +72,14 @@ display: flex;
 }
 
 
-
-/* @media screen and (min-width:400px){
-  .appbarRightSide{
-    display: flex;
-    align-items: center;
-    margin-left: 50%;
-    height: 4.7em;
-  
-  }
-} */
-
-.makeStyles-drawerPaper-4{
-background-color: #3f51b5 !important;
-color: white !important;
-}
-
-.makeStyles-drawerPaper-10{
-  background-color: #3f51b5 !important;
-  color: white !important;
-  
-}
-
-
-.makeStyles-drawerPaper-22{
-  background-color: #3f51b5 !important;
-  color: white !important;
-}
-
 @media (min-width: 600px){
 .appbarRightSide {
     min-height: 64px;
 }}
 
-.logo{
-  /* width:10em; */
-  height: 4.11em;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 0.5em;
-}
-
-.MuiTypography-noWrap{
-  margin-left: 15em;
-}
-
-.center{
-  margin-left: 18em !important;
-}
-
 .dashboard{
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5em;
 }
 
-.sidebar{
-  background-color: red !important;
-}
-
-
-.MuiToolbar-regular{
-justify-content: center;
-}

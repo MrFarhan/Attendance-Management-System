@@ -3,16 +3,63 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import '../App.css'
 import { Form, Button } from 'react-bootstrap';
-import {  useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { FiLogIn } from 'react-icons/fi';
 import { useDispatch, useSelector } from "react-redux"
 import firebase from 'firebase'
 import { loadingAction, userDetailsAction } from '../Redux/Actions';
+import Layout from './Layout';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 require('firebase/auth')
 
 
+const drawerWidth = 200;
+
+const useStyles = makeStyles((theme) => ({
+
+    appBarCustom: {
+        [theme.breakpoints.up('sm')]: {
+            width: `100%`,
+            // marginBottom:"2em"
+
+        },
+    },
+    menuButtonCustom: {
+        marginRight: theme.spacing(2),
+        display: 'none',
+
+    },
+    loginFormMain: {
+        marginTop: "5em",
+        [theme.breakpoints.up('md')]: {
+            width: `40%`,
+            display: "flex", 
+            justifyContent: "center", 
+            marginTop: "5em"
+            // marginBottom:"2em"
+
+        },
+
+    },
+    loginForm: {
+        [theme.breakpoints.up('md')]: {
+            width: `140%`,
+
+            // marginBottom:"2em"
+
+        },
+
+    },
+    toolbar: theme.mixins.toolbar,
+}));
+
 export const Login = () => {
-    const dispatch =useDispatch()
+    const dispatch = useDispatch()
     let history = useHistory()
     var user = firebase.auth().currentUser;
     const userDetails = useSelector((state) => state.userDetails)
@@ -52,6 +99,7 @@ export const Login = () => {
 
 
     const LoginFunc = (email, pass) => {
+
         firebase.auth().signInWithEmailAndPassword(email, pass)
             .then(() => {
                 firebase.database().ref(`Users/${firebase.auth().currentUser?.uid}/`).on("value", (res) => {
@@ -82,30 +130,42 @@ export const Login = () => {
     if (!loadingred && userDetails) history.push("/dashboard")
 
 
+    const classes = useStyles();
+
     return (
-        <Form onSubmit={formik.handleSubmit} className="loginform">
+        <div className={classes.loginFormMain} >
+            <AppBar position="fixed" className={classes.appBarCustom} >
+                <Toolbar>
 
-            <Form.Group >
-                <Form.Label className="labels" htmlFor="email">Email</Form.Label>
-                <Form.Control className="inputs" id="email" type="email" placeholder="Enter email" {...formik.getFieldProps('email')} autoFocus />
-                <span className="inputerror">  {formik.touched.email && formik.errors.email ? (
-                    <div>{formik.errors.email}</div>
-                ) : null}</span>
-            </Form.Group>
+                    <Typography variant="h6" noWrap>
+                        Attendance Management System &nbsp;&nbsp;&nbsp;</Typography>
+                </Toolbar>
+            </AppBar>
 
 
-            <Form.Group >
-                <Form.Label className="labels">Password</Form.Label>
-                <Form.Control className="inputs" id="password" type="password" placeholder="Password" {...formik.getFieldProps('password')} />
-                <span className="inputerror">{formik.touched.password && formik.errors.password ? (
-                    <div>{formik.errors.password}</div>
-                ) : null}</span>
-            </Form.Group>
-            <Form.Group style={{display:"flex"}}>
-                <Form.Check type="checkbox" label="Remember me" />
-            </Form.Group>
-            <Button variant="primary" type="submit" > <FiLogIn />Login</Button>
-            <Button variant="link" onClick={SignupFunc}>Don't have an account</Button>
-        </Form>
+            <Form onSubmit={formik.handleSubmit} className={classes.loginForm}  >
+                <Form.Group >
+                    <Form.Label className="labels" htmlFor="email">Email</Form.Label>
+                    <Form.Control id="email" type="email" placeholder="Enter email" {...formik.getFieldProps('email')} autoFocus />
+                    <span className="inputerror">  {formik.touched.email && formik.errors.email ? (
+                        <div>{formik.errors.email}</div>
+                    ) : null}</span>
+                </Form.Group>
+
+
+                <Form.Group >
+                    <Form.Label className="labels">Password</Form.Label>
+                    <Form.Control id="password" type="password" placeholder="Password" {...formik.getFieldProps('password')} />
+                    <span className="inputerror">{formik.touched.password && formik.errors.password ? (
+                        <div>{formik.errors.password}</div>
+                    ) : null}</span>
+                </Form.Group>
+                <Form.Group style={{display:"flex"}}>
+                    <Form.Check type="checkbox" label="Remember me" />
+                </Form.Group>
+                <Button variant="primary" type="submit" > <FiLogIn />Login</Button>
+                <Button variant="link" onClick={SignupFunc}>Don't have an account</Button>
+            </Form>
+        </div>
     );
 };

@@ -1,29 +1,15 @@
-// import React from 'react';
-// import AppBar from '@material-ui/core/AppBar';
+import { Button } from 'react-bootstrap';
+import React from 'react'
+import Layout from './Components/Layout'
 
+const Test = () => {
 
-// const Test = () => {
-
-
-//   return (
-//     <div>
-//       <AppBar position="fixed" className={classes.appBar}>
-//         <Toolbar>
-//           <IconButton
-//             color="inherit"
-//             aria-label="open drawer"
-//             edge="start"
-//             onClick={handleDrawerToggle}
-//             className={classes.menuButton}
-//           >
-//             <MenuIcon />
-//           </IconButton>
-//           <Typography variant="h6" noWrap>
-//             Attendance Management System
-//           </Typography>
-//         </Toolbar>
-//       </AppBar>    </div>
-//   )
-// }
-
-// export default Test
+    return (
+        <div>
+            <Layout >
+                <h1>User test cases here with Hello world</h1>
+            </Layout>
+        </div>
+    )
+}
+export default Test;
