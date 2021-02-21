@@ -69,7 +69,6 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
   },
   checkBtn: {
-    // marginRight: theme.spacing(2),
     [theme.breakpoints.down('sm')]: {
       display: 'none',
     },

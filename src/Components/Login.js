@@ -101,7 +101,7 @@ export const Login = () => {
                     <div>{formik.errors.password}</div>
                 ) : null}</span>
             </Form.Group>
-            <Form.Group className="inputcheckbox">
+            <Form.Group style={{display:"flex"}}>
                 <Form.Check type="checkbox" label="Remember me" />
             </Form.Group>
             <Button variant="primary" type="submit" > <FiLogIn />Login</Button>

@@ -14,7 +14,6 @@ export const Profile = () => {
     const loading = useSelector((val) => val.loading)
     let history = useHistory()
     const [dp, uploadDp] = useState(userDetails?.dp || pic)
-    // console.log(userDetails, "userDetails in profile ")
 
     const formik = useFormik({
         initialValues: {
@@ -63,16 +62,13 @@ export const Profile = () => {
             dp: dp,
             isVerified: false
         }).then().catch((e) => console.log(e, "error"))
-
         history.push("/")
-
     }
 
     const imgUpload = (e) => {
         let UID = firebase.auth()?.currentUser?.uid
         var file = e.target.files[0]
         firebase.storage().ref(`Users/${UID}/profilePic`).put(file).then(() => {
-            // console.log("successfully uploaded profile picture")
             uploadDp(file)
         }).then(() => {
             firebase.storage().ref(`Users/${UID}/profilePic`).getDownloadURL().then(urlImg => {
@@ -83,26 +79,24 @@ export const Profile = () => {
     }
 
     if (!loading && !userDetails) history.push("/")
-    // console.log("profile comp redner")
 
     return (
         <div className="profileMain">
-            <div className="profileNav">
-
-                {/* <Appbar /> */}
-                <Form onSubmit={formik.handleSubmit} className="loginformProfile">
-
+            <div >
+                <Form onSubmit={formik.handleSubmit}>
                     <div className="mb-3">
                         <Form.File >
-                            <img src={dp} id="formcheck-api-regular" alt="Profile pic" />
+                            <img src={dp} id="formcheck-api-regular" alt="Profile pic" style={{ marginBottom: "0.7em", borderRadius: "4em" }} />
+
                             <Form.File.Input onChange={((e) => imgUpload(e))} />
+
                         </Form.File>
                     </div>
 
 
                     <Form.Group>
                         <Form.Label className="labels" htmlFor="firstName">First Name</Form.Label>
-                        <Form.Control className="inputs" id="firstName" type="text" placeholder="Enter email" {...formik.getFieldProps('firstName')} autoFocus />
+                        <Form.Control id="firstName" type="text" placeholder="Enter email" {...formik.getFieldProps('firstName')} autoFocus />
                         <span className="inputerror">  {formik.touched.firstName && formik.errors.firstName ? (
                             <div>{formik.errors.firstName}</div>
                         ) : null}</span>
@@ -110,7 +104,7 @@ export const Profile = () => {
 
                     <Form.Group>
                         <Form.Label className="labels" htmlFor="lastName">Last Name</Form.Label>
-                        <Form.Control className="inputs" id="lastName" type="text" placeholder="Enter email" {...formik.getFieldProps('lastName')} />
+                        <Form.Control id="lastName" type="text" placeholder="Enter email" {...formik.getFieldProps('lastName')} />
                         <span className="inputerror">  {formik.touched.lastName && formik.errors.lastName ? (
                             <div>{formik.errors.lastName}</div>
                         ) : null}</span>
@@ -118,7 +112,7 @@ export const Profile = () => {
 
                     <Form.Group>
                         <Form.Label className="labels" htmlFor="email">Email address</Form.Label>
-                        <Form.Control className="inputs" id="email" type="email" placeholder="Enter email" {...formik.getFieldProps('email')} />
+                        <Form.Control id="email" type="email" placeholder="Enter email" {...formik.getFieldProps('email')} />
                         <span className="inputerror">  {formik.touched.email && formik.errors.email ? (
                             <div>{formik.errors.email}</div>
                         ) : null}</span>
@@ -127,7 +121,7 @@ export const Profile = () => {
 
                     <Form.Group>
                         <Form.Label className="labels" htmlFor="cNumber">Phone Number</Form.Label>
-                        <Form.Control className="inputs" id="cNumber" type="number" placeholder="Enter your mobile number" {...formik.getFieldProps('cNumber')} />
+                        <Form.Control id="cNumber" type="number" placeholder="Enter your mobile number" {...formik.getFieldProps('cNumber')} />
                         <span className="inputerror">  {formik.touched.cNumber && formik.errors.cNumber ? (
                             <div>{formik.errors.cNumber}</div>
                         ) : null}</span>
@@ -135,41 +129,38 @@ export const Profile = () => {
 
                     <Form.Group >
                         <Form.Label className="labels" htmlFor="dateofBirth">Select your date of birth</Form.Label>
-                        <Form.Control className="inputs" id="dateofBirth" type="date" placeholder="Select your date of birth" {...formik.getFieldProps('dateofBirth')} disabled />
+                        <Form.Control id="dateofBirth" type="date" placeholder="Select your date of birth" {...formik.getFieldProps('dateofBirth')} disabled />
                         <span className="inputerror">  {formik.touched.dateofBirth && formik.errors.dateofBirth ? (
                             <div>{formik.errors.dateofBirth}</div>
                         ) : null}</span>
                     </Form.Group>
 
 
-                    <Form.Group {...formik.getFieldProps('gender')} className="inputcheckbox" >
-                        <Form.Label className="radiobtngroup">
+
+                    <Form.Group style={{ display: "flex" }} {...formik.getFieldProps('gender')} >
+                        <Form.Label style={{ marginRight: "1rem" }}>
                             Gender
                 </Form.Label>
-                        <div className="radiosubsec" >
-                            <Form.Check className="radiobtn"
-                                type="radio"
-                                label="Male"
-                                name="gender"
-                                id="Male"
-                                value="Male"
-                                checked={formik?.values?.['gender'] === 'Male'} disabled
-                            />
-                            <Form.Check className="radiobtn"
-                                type="radio"
-                                label="Female"
-                                name="gender"
-                                id="Female"
-                                value="Female"
-                                checked={formik?.values?.['gender'] === 'Female'} disabled
-                            />
-                        </div>
-                        <div className="inputerror">  {formik.touched.gender && formik.errors.gender ? (
+                        {/* <div  > */}
+                        <Form.Check style={{ justifyContent: "flex-start" }}
+                            type="radio"
+                            label="Male"
+                            name="gender"
+                            id="Male"
+                            value="Male"
+                        />
+                        <Form.Check
+                            type="radio"
+                            label="Female"
+                            name="gender"
+                            id="Female"
+                            value="Female"
+                        />
+                        {/* </div> */}
+                        <div>                <br /><div className="inputerror" style={{ marginLeft: "-13em" }}>  {formik.touched.gender && formik.errors.gender ? (
                             <div>{formik.errors.gender}</div>
-                        ) : null}</div>
+                        ) : null}</div></div>
                     </Form.Group>
-
-
                     <Button variant="primary" type="submit" > Update</Button>
                 </Form>
 
