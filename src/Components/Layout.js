@@ -30,6 +30,7 @@ const drawerWidth = 200;
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
+        width:"inherit"
     },
     drawer: {
         [theme.breakpoints.up('sm')]: {
@@ -61,9 +62,11 @@ const useStyles = makeStyles((theme) => ({
     },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
+  
     drawerPaper: {
         width: drawerWidth,
     },
+    
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
@@ -73,12 +76,12 @@ const useStyles = makeStyles((theme) => ({
             display: 'none',
         },
     },
-    dp: {
-        [theme.breakpoints.up('se')]: {
-            display: "flex",
-            alignItem: "center",
-        },
-    },
+    // dp: {
+    //     [theme.breakpoints.up('se')]: {
+    //         display: "flex",
+    //         alignItem: "center",
+    //     },
+    // },
     main: {
         [theme.breakpoints.up('sm')]: {
             width: `calc(100% - ${drawerWidth}px)`,
@@ -212,8 +215,8 @@ const Layout = ({ children }) => {
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <AppBar position="fixed" className={(userDetails.firstName) ? classes.appBar : classes.appBarCustom}>
-                <Toolbar>
+            <AppBar position="fixed" className={(userDetails.firstName) ? classes.appBar : classes.appBarCustom} >
+                <Toolbar style={{justifyContent:"space-between"}}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -227,7 +230,7 @@ const Layout = ({ children }) => {
                         Attendance Management System &nbsp;&nbsp;&nbsp;</Typography>
 
 
-                    {userDetails?.firstName ? <span className="appbarRightSide" >
+                    {userDetails?.firstName ? <span >
 
                         {userDetails.role !== "Admin" && userDetails.role !== "user" && userDetails.role === "authorized" ?
                             (attendance && attendance[today]?.checkedin && !(attendance[today]?.checkedout) ?
@@ -277,7 +280,7 @@ const Layout = ({ children }) => {
             {!userDetails.firstName ? <></>
                 :
 
-                <div>
+                <div style={{width:"inherit"}}>
                     <nav className={classes.drawer} aria-label="mailbox folders">
                         <Hidden smUp implementation="css">
                             <Drawer

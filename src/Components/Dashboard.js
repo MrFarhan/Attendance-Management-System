@@ -16,15 +16,20 @@ import Layout from './Layout';
 require("datejs")
 
 
-const useStyles = makeStyles({
-    table: {
-        minWidth: 650,
-    },
-});
+const drawerWidth = 200;
+
+const useStyles = makeStyles((theme) => ({
+    // table: {
+    //     [theme.breakpoints.up('md')]: {
+    //         width: `calc(100% - ${drawerWidth}px)`,
+    //         marginLeft: `0px`,            
+    //     },
+    // },
+}));
 
 
 var today = new Date().toString("ddMMyyyy")
-console.log("today is: ", today)
+// console.log("today is: ", today)
 
 
 export const Dashboard = () => {
@@ -79,12 +84,13 @@ export const Dashboard = () => {
     var data = Object.values(allUserDetails)
 
     return (
-        <Layout>
-            <div >
+
+        <Layout >
+            <div style={{marginTop:"3em"}} >
                 {userDetails?.role === "authorized" ?
                     <div>
                         <TableContainer component={Paper}>
-                            <Table  aria-label="simple table">
+                            <Table aria-label="simple table">
                                 <TableHead>
                                     <TableRow>
                                         <TableCell align="right">Check in</TableCell>
@@ -93,6 +99,7 @@ export const Dashboard = () => {
                                         <TableCell align="right">Required Time</TableCell>
                                     </TableRow>
                                 </TableHead>
+
                                 <TableBody>
                                     <TableCell align="right">{checkinTime ? checkinTime : "Not Checked in"}</TableCell>
                                     <TableCell align="right">{checkoutTimeStamp ? checkoutTime : "-"}</TableCell>
@@ -103,37 +110,35 @@ export const Dashboard = () => {
                         </TableContainer>
                     </div>
                     : userDetails.role === "Admin" ?
-                        <div >
-
-                            <TableContainer component={Paper}>
-                                <Table aria-label="simple table">
+                        < div className={classes.table}>
+                            <TableContainer >
+                                <Table style={{ overflow: "scroll", minWidth: "45em" }}>
                                     <TableHead>
                                         <TableRow>
                                             <TableCell >First Name</TableCell>
-                                            <TableCell >Email</TableCell>
+                                            <TableCell >Email address</TableCell>
                                             <TableCell >Gender</TableCell>
                                             <TableCell >Contact Number</TableCell>
                                         </TableRow>
                                     </TableHead>
 
-                                    {data.map((item, index) => (
-                                        <TableRow key={index}>
-                                            <TableCell component="th" scope="row">
-                                                {item.firstName}
-                                            </TableCell>
-                                            <TableCell >{item.email}</TableCell>
-                                            <TableCell >{item.gender}</TableCell>
-                                            <TableCell >{item.cNumber}</TableCell>
-                                        </TableRow>
-                                    ))}
+                                    <TableBody>
+                                        {data.map((item, index) => (
+                                            <TableRow key={index}>
+                                                <TableCell >{item.firstName}</TableCell>
+                                                <TableCell >{item.email}</TableCell>
+                                                <TableCell >{item.gender}</TableCell>
+                                                <TableCell >{item.cNumber}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
                                 </Table>
                             </TableContainer>
 
-                        </div> : <div><br /><br /><br /><h3>Kindly ask your administrator to authorize your account</h3></div>}
-
-
+                        </div> : <div><h3>Kindly ask your administrator to authorize your account</h3></div>}
             </div>
 
         </Layout>
+
     )
 }

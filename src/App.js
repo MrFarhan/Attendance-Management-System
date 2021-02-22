@@ -12,7 +12,7 @@ import { attendanceAction, loadingAction, userDetailsAction, allUserDetailsActio
 // import componenets
 import { Login } from './Components/Login';
 import { Signup } from './Components/Signup';
-import Test from './Test';
+// import Test from './Test';
 import { Profile } from './Components/Profile';
 import { Attendance } from './Components/Attendance';
 import { Dashboard } from './Components/Dashboard';
@@ -100,7 +100,7 @@ function App() {
           <Route path="/signup"><Signup /></Route>
           <Route exact path="/dashboard/profile"><Profile /></Route>
           <Route path="/attendance"><Attendance /></Route>
-          <Route path="/test"><Test /></Route>
+          {/* <Route path="/test"><Test /></Route> */}
           <Route path="/report"><Report /></Route>
         </Switch>
       </div>
