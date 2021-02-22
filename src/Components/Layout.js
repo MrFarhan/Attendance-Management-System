@@ -22,6 +22,7 @@ import pic from "./Circle-icons-profile.svg"
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { Button } from '@material-ui/core';
+require("datejs")
 
 
 const drawerWidth = 200;
@@ -87,6 +88,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 var today = new Date().toString("ddMMyyyy")
+console.log("today is, ", today)
 
 
 const Layout = ({ children }) => {
@@ -205,6 +207,8 @@ const Layout = ({ children }) => {
     if (loading) {
         return <p>...Loading</p>
     }
+
+    // console.log("user details are ",userDetails)
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -308,7 +312,7 @@ const Layout = ({ children }) => {
                         <div className={classes.toolbar} />
                         <div className={classes.main}>
                             {children}
-                            </div>
+                        </div>
                     </main>
                 </div>
             }

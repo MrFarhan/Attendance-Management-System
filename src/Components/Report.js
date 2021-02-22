@@ -5,7 +5,7 @@ import Layout from './Layout'
 export const Report = () => {
     return (
         <Layout>
-            <div className="dashboard">
+            <div >
                 Reports here
         </div>
         </Layout>

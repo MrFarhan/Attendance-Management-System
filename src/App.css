@@ -5,25 +5,6 @@
   text-align: center;
 
 }
-/* .loginform{
-  width: 40% ;
-  padding: 1em;
-  justify-content: center;
-  align-items: center;
-  margin-top: 5em; 
-}
- */
-
-/* @media screen and (max-width: 1024px){
-
-  .loginform{
-    width: 60%;
-    padding: 1.2em;
-    justify-content: center;
-    align-items: center;
-    margin-top: 5em; 
-  }
-} */
 
 .labels{
 display: flex;
@@ -60,6 +41,10 @@ display: flex;
   display: flex;
   align-items: center;
 }
+@media (min-width: 600px){
+.appbarRightSide {
+    min-height: 64px;
+}}
 
 @media screen and (min-width:1234px ){
   .appbarRightSide{
@@ -72,14 +57,4 @@ display: flex;
 }
 
 
-@media (min-width: 600px){
-.appbarRightSide {
-    min-height: 64px;
-}}
-
-.dashboard{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 

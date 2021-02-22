@@ -24,6 +24,7 @@ const useStyles = makeStyles({
 
 
 var today = new Date().toString("ddMMyyyy")
+console.log("today is: ", today)
 
 
 export const Dashboard = () => {
@@ -79,14 +80,11 @@ export const Dashboard = () => {
 
     return (
         <Layout>
-
-            {/* <div>Dashboard here</div> */}
-            <div className="dashboard">
-
+            <div >
                 {userDetails?.role === "authorized" ?
                     <div>
                         <TableContainer component={Paper}>
-                            <Table className={classes.table} aria-label="simple table">
+                            <Table  aria-label="simple table">
                                 <TableHead>
                                     <TableRow>
                                         <TableCell align="right">Check in</TableCell>
@@ -105,17 +103,16 @@ export const Dashboard = () => {
                         </TableContainer>
                     </div>
                     : userDetails.role === "Admin" ?
-                        <div className="dashboard">
+                        <div >
 
                             <TableContainer component={Paper}>
-                                <Table className={classes.table} aria-label="simple table">
+                                <Table aria-label="simple table">
                                     <TableHead>
                                         <TableRow>
                                             <TableCell >First Name</TableCell>
                                             <TableCell >Email</TableCell>
                                             <TableCell >Gender</TableCell>
                                             <TableCell >Contact Number</TableCell>
-                                            {/* <TableCell align="right">Loggedin Status</TableCell> */}
                                         </TableRow>
                                     </TableHead>
 
@@ -127,8 +124,6 @@ export const Dashboard = () => {
                                             <TableCell >{item.email}</TableCell>
                                             <TableCell >{item.gender}</TableCell>
                                             <TableCell >{item.cNumber}</TableCell>
-                                            {/* <TableCell align="right">{item?.checkedin && item?.checkedin?.length > 1  ? "Checked in" : "Checked out"}</TableCell> */}
-                                            {/* {console.log(item, "item")} */}
                                         </TableRow>
                                     ))}
                                 </Table>
