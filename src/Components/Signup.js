@@ -49,6 +49,8 @@ const useStyles = makeStyles((theme) => ({
 
 export const Signup = () => {
     let history = useHistory()
+    const legalAge = new Date.parse("-18year");
+    // console.log("18 years back date is: ",legalAge)
 
     const formik = useFormik({
         initialValues: {
@@ -82,7 +84,8 @@ export const Signup = () => {
                 .required('Required')
                 .oneOf([Yup.ref('password'), null], 'Passwords must match'),
             dateofBirth: Yup.date()
-                .required('Date of brith is Required'),
+                .required('Date of brith is Required')
+                .max(legalAge, "you must be eighteen years old"),
             gender: Yup.mixed()
                 .required('Gender is Required')
                 .oneOf(['Male', 'Female']),
@@ -95,8 +98,6 @@ export const Signup = () => {
 
         }),
         onSubmit: values => {
-            // console.log(JSON.stringify(values, null, 2));
-            // console.log(values, "values in signup form submission")
             SignupFunc(values)
         },
     });
