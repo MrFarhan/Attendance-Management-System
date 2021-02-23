@@ -19,6 +19,7 @@ display: flex;
 .profileMain{
   width: 50vw ;
   height: 50vh;
+  justify-content: center !important;
 }
 
 .profilePagePic{

@@ -8,7 +8,33 @@ import { useHistory } from 'react-router-dom';
 import firebase from "firebase"
 import pic from "./Circle-icons-profile.svg"
 import Layout from './Layout';
+import { makeStyles } from '@material-ui/core/styles';
 
+
+const useStyles = makeStyles((theme) => ({
+
+    signupFormMain: {
+        width: "100%",
+        justifyContent:"center",
+        [theme.breakpoints.up('xl')]: {
+            width: `70%`,
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "5em"
+
+        },
+
+    },
+    signupForm: {
+        width: `70%`,
+        justifyContent: "center",
+        [theme.breakpoints.up('xl')]: {
+            width: `70%`
+        },
+
+    },
+    toolbar: theme.mixins.toolbar,
+}));
 
 export const Profile = () => {
     const userDetails = useSelector((state) => state.userDetails)
@@ -80,21 +106,18 @@ export const Profile = () => {
     }
 
     if (!loading && !userDetails) history.push("/")
+    const classes = useStyles();
 
     return (
         <Layout>
-            <div className="profileMain">
-                <div >
-                    <Form onSubmit={formik.handleSubmit}>
+            <div className={classes.signupFormMain} >
+                    <Form onSubmit={formik.handleSubmit} className={classes.signupForm}>
                         <div className="mb-3">
                             <Form.File >
                                 <img src={dp} className="profilePagePic" alt="Profile pic" />
-
                                 <Form.File.Input onChange={((e) => imgUpload(e))} />
-
                             </Form.File>
                         </div>
-
 
                         <Form.Group>
                             <Form.Label className="labels" htmlFor="firstName">First Name</Form.Label>
@@ -140,10 +163,7 @@ export const Profile = () => {
 
 
                         <Form.Group style={{ display: "flex" }} {...formik.getFieldProps('gender')} >
-                            <Form.Label style={{ marginRight: "1rem" }}>
-                                Gender
-                </Form.Label>
-                            {/* <div  > */}
+                            <Form.Label style={{ marginRight: "1rem" }}>Gender</Form.Label>
                             <Form.Check style={{ justifyContent: "flex-start" }}
                                 type="radio"
                                 label="Male"
@@ -158,7 +178,6 @@ export const Profile = () => {
                                 id="Female"
                                 value="Female"
                             />
-                            {/* </div> */}
                             <div>                <br /><div className="inputerror" style={{ marginLeft: "-13em" }}>  {formik.touched.gender && formik.errors.gender ? (
                                 <div>{formik.errors.gender}</div>
                             ) : null}</div></div>
@@ -166,7 +185,6 @@ export const Profile = () => {
                         <Button variant="primary" type="submit" > Update</Button>
                     </Form>
 
-                </div >
             </div >
         </Layout>
     )

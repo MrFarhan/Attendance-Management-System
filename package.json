@@ -12,6 +12,7 @@
     "datejs": "^1.0.0-rc3",
     "firebase": "^8.1.1",
     "formik": "^2.2.5",
+    "moment": "^2.29.1",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.0",
     "react-datepicker": "^3.3.0",
