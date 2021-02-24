@@ -37,8 +37,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Profile = () => {
-    const userDetails = useSelector((state) => state.userDetails)
-    const loading = useSelector((val) => val.loading)
+    const state = useSelector((state)=>state.state)
+    const userDetails =  state.userDetails
+    const loading = state.loading
     let history = useHistory()
     const [dp, uploadDp] = useState(userDetails?.dp || pic)
 

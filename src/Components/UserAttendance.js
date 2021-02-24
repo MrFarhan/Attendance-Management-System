@@ -14,45 +14,9 @@ export const UserAttendance = () => {
     const [userName, setUserName] = useState("")
     const [attendance, setAttendance] = useState("")
     const [period, setPeriod] = useState()
+    console.log("state is :", state)
 
-    // const Generate = () => {
-    //     console.log(uuid, "e")
-    //     const data = Object.entries(state?.allUsersAttendanceDetails)
-    //     // eslint-disable-next-line
-    //     data.map((item) => {
-    //         if (item[0] === uuid && period.toString() === "Period") 
-    //         return item[1]?.map((item1,index)=>{
-    //             return console.log("item1 is ", item1)
-    //         })
-    //         // {
-    //         //     return console.log(item ? item[1] : null)
-    //         // } 
-    //         else if (item[0] === uuid && period.toString() === "Current Month") {
-    //             // return console.log("current month")
-    //             return console.log(item ? item[1] : null)
-    //         } else if (item[0] === uuid && period.toString() === "Last Month") {
-    //             // return console.log("Last Month")
-    //             return console.log(item ? item[1] : null)
-
-    //         } else if (item[0] === uuid && period.toString() === "Since joining") {
-    //             // return console.log("Since joining")
-    //             return console.log(item ? item[1] : null)
-    //         } else return setAttendance(item ? item[1] : null)
-    //     })
-
-    //     // eslint-disable-next-line
-    //     Object.entries(allUserValues).map(([index, value]) => {
-    //         if (value?.uid === uuid)
-    //             return setUserName(value?.firstName)
-    //     })
-
-    // }
-
-
-
-
-
-    const Generate = () => {
+     const Generate = () => {
         // for attendance of uuid selected user
         const data = Object.entries(state?.allUsersAttendanceDetails)
         // eslint-disable-next-line

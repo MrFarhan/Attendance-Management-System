@@ -35,9 +35,10 @@ var today = new Date().toString("ddMMyyyy")
 export const Dashboard = () => {
 
     let dispatch = useDispatch()
-    const userDetails = useSelector((state) => state.userDetails)
-    const allUserDetails = useSelector((state) => state.allUserDetails)
-    let attendance = useSelector((state) => state.attendance)
+    const state = useSelector((state)=>state)
+    const userDetails = state.userDetails
+    const allUserDetails = state.allUserDetails
+    let attendance =  state.attendance
     // eslint-disable-next-line
     const [totalHr, setTotalhr] = useState(0)
     const checkinTimeStamp = attendance && attendance[today]?.checkedin

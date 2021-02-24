@@ -33,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
         marginTop: "5em",
         [theme.breakpoints.up('md')]: {
             width: `40%`,
-            display: "flex", 
-            justifyContent: "center", 
+            display: "flex",
+            justifyContent: "center",
             marginTop: "5em"
 
         },
@@ -54,8 +54,9 @@ export const Login = () => {
     const dispatch = useDispatch()
     let history = useHistory()
     var user = firebase.auth().currentUser;
-    const userDetails = useSelector((state) => state.userDetails)
-    const loadingred = useSelector((state) => state.loading)
+    const state = useSelector((state) => state)
+    const userDetails = state.userDetails
+    const loadingred = state.loading
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged(function (user) {
@@ -152,7 +153,7 @@ export const Login = () => {
                         <div>{formik.errors.password}</div>
                     ) : null}</span>
                 </Form.Group>
-                <Form.Group style={{display:"flex"}}>
+                <Form.Group style={{ display: "flex" }}>
                     <Form.Check type="checkbox" label="Remember me" />
                 </Form.Group>
                 <Button variant="primary" type="submit" > <FiLogIn />Login</Button>

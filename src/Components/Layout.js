@@ -76,12 +76,6 @@ const useStyles = makeStyles((theme) => ({
             display: 'none',
         },
     },
-    // dp: {
-    //     [theme.breakpoints.up('se')]: {
-    //         display: "flex",
-    //         alignItem: "center",
-    //     },
-    // },
     main: {
         [theme.breakpoints.up('sm')]: {
             width: `calc(100% - ${drawerWidth}px)`,
@@ -90,24 +84,31 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-var today = new Date().toString("ddMMyyyy")
-console.log("today is, ", today)
+var currentMonth = new Date().getMonth();
+var today = new Date().toISOString().split("T")[0]
 
+// var today = new Date().toString("ddMMyyyy")
+// console.log("today is, ", today)
+// console.log("current date in date.now",new Date())
 
 const Layout = ({ children }) => {
     // const { window } = props;
     const classes = useStyles();
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
-    const loading = useSelector((state) => state.loading)
-    const userDetails = useSelector((state) => state.userDetails)
-    let attendance = useSelector((state) => state.attendance)
+    const state = useSelector((state)=>state)
+    const loading = state.loading
+    const userDetails = state.userDetails
+    let attendance = state.attendance
     const [anchorEl, setAnchorEl] = useState(false);
     let dp = userDetails?.dp || pic
     // eslint-disable-next-line
     const [checkin, setCheckin] = useState(false)
     let history = useHistory()
     let dispatch = useDispatch();
+    console.log("attendance is : ", attendance)
+    // console.log("checkined  is : ", attendance[currentMonth][today])
+    console.log("today is ",today)
 
     // side bar items and click handler
     var menu = [{ "Text": "Attendance", "route": "attendance" }, { "Text": "Report", "route": "report" }]
@@ -160,14 +161,14 @@ const Layout = ({ children }) => {
     }
 
     const Checkin = (e) => {
-        const checkinTimeStamp = attendance && attendance[today]?.checkedin
+        const checkinTimeStamp = attendance && attendance[currentMonth][today]?.checkedin
         if (checkinTimeStamp) {
             setCheckin(true)
         }
 
         const start = Date.now();
         let UID = firebase.auth().currentUser?.uid
-        firebase.database().ref(`Attendance/${UID}/${today}`).set({
+        firebase.database().ref(`Attendance/${UID}/${currentMonth}/${today}`).set({
             checkedin: start,
 
         })
@@ -182,7 +183,7 @@ const Layout = ({ children }) => {
         const start = Date.now();
 
         let UID = firebase.auth().currentUser?.uid
-        firebase.database().ref(`Attendance/${UID}/${today}`).update({
+        firebase.database().ref(`Attendance/${UID}/${currentMonth}/${today}`).update({
             checkedout: start,
         })
         firebase.database().ref(`Users/${UID}/`).update({
@@ -233,10 +234,10 @@ const Layout = ({ children }) => {
                     {userDetails?.firstName ? <span >
 
                         {userDetails.role !== "Admin" && userDetails.role !== "user" && userDetails.role === "authorized" ?
-                            (attendance && attendance[today]?.checkedin && !(attendance[today]?.checkedout) ?
+                            (attendance && attendance[currentMonth] && attendance[currentMonth][today]?.checkedin && !(attendance[currentMonth][today].checkedout) ?
 
                                 < Button variant="contained" onClick={((e) => Checkout(e))} className={classes.checkBtn}>Check out</Button> :
-                                <Button variant="contained" className={classes.checkBtn} disabled={attendance && attendance[today]?.checkedout} onClick={((e) => Checkin(e))} >Check in</Button>
+                                <Button variant="contained" className={classes.checkBtn} disabled={attendance && attendance[currentMonth] && attendance[currentMonth][today]?.checkedout} onClick={((e) => Checkin(e))} >Check in</Button>
                             )
 
                             : null}
