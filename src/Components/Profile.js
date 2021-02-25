@@ -38,8 +38,8 @@ const useStyles = makeStyles((theme) => ({
 
 export const Profile = () => {
     const state = useSelector((state)=>state.state)
-    const userDetails =  state.userDetails
-    const loading = state.loading
+    const userDetails =  state?.userDetails
+    const loading = state?.loading
     let history = useHistory()
     const [dp, uploadDp] = useState(userDetails?.dp || pic)
 

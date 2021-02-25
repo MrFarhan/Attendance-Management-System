@@ -11,8 +11,9 @@ import Paper from '@material-ui/core/Paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import firebase from "firebase"
-import { userDetailsAction, loadingAction } from '../Redux/Actions';
+import { userDetailsAction, loadingAction, allUserDetailsAction } from '../Redux/Actions';
 import Layout from './Layout';
+import { Button } from 'react-bootstrap';
 require("datejs")
 
 
@@ -35,12 +36,13 @@ var today = new Date().toString("ddMMyyyy")
 export const Dashboard = () => {
 
     let dispatch = useDispatch()
-    const state = useSelector((state)=>state)
+    const state = useSelector((state) => state)
     const userDetails = state.userDetails
     const allUserDetails = state.allUserDetails
-    let attendance =  state.attendance
+    let attendance = state.attendance
     // eslint-disable-next-line
     const [totalHr, setTotalhr] = useState(0)
+    // const [Block, setBlock] = useState()
     const checkinTimeStamp = attendance && attendance[today]?.checkedin
     // eslint-disable-next-line
     var checkinTime = checkinTimeStamp ? new Date(checkinTimeStamp).toString("hh:mm") : false
@@ -80,14 +82,52 @@ export const Dashboard = () => {
         }
     }, [attendance])
 
+
     if (!loading && !userDetails) history.push("/")
     // eslint-disable-next-line
     var data = Object.values(allUserDetails)
 
+    const UnBlock = (e) => {
+        firebase.database().ref(`Users/${e}`).update({
+            role: "user"
+        })
+        return console.log("e.target.value", e)
+    }
+
+    const Block = (e) => {
+        firebase.database().ref(`Users/${e}`).update({
+            role: "Blocked"
+        })
+
+
+        return console.log("e.target.value", e)
+    }
+
+    // useEffect(() => {
+    //     firebase.auth().onAuthStateChanged(function (user) {
+    //         if (user) {
+    //             firebase.database().ref(`Users/`).on("value", (res) => {
+    //                 dispatch(allUserDetailsAction(res.val()))
+    //                 // console.log(res.val(), "all user deta from firebase in app")
+    //             })
+    //         }
+    //     });
+    //     // eslint-disable-next-line
+    // }, [Block])
+
+    const Verified = (e) => {
+        firebase.database().ref(`Users/${e}`).update({
+            isVerified: true
+        })
+
+
+        return console.log("e.target.value", e)
+    }
+
     return (
 
         <Layout >
-            <div style={{marginTop:"3em"}} >
+            <div style={{ marginTop: "3em" }} >
                 {userDetails?.role === "authorized" ?
                     <div>
                         <TableContainer component={Paper}>
@@ -120,16 +160,34 @@ export const Dashboard = () => {
                                             <TableCell >Email address</TableCell>
                                             <TableCell >Gender</TableCell>
                                             <TableCell >Contact Number</TableCell>
+                                            <TableCell >Action</TableCell>
+                                            <TableCell >View Profile</TableCell>
                                         </TableRow>
                                     </TableHead>
 
                                     <TableBody>
                                         {data.map((item, index) => (
-                                            <TableRow key={index}>
+                                            <TableRow key={index} >
                                                 <TableCell >{item.firstName}</TableCell>
-                                                <TableCell >{item.email}</TableCell>
+                                                <TableCell ><a href={`mailto:${item.email}`} style={{ textDecoration: "none", color: "black" }}>{item.email}</a></TableCell>
                                                 <TableCell >{item.gender}</TableCell>
-                                                <TableCell >{item.cNumber}</TableCell>
+                                                <TableCell ><a href={`tel:${item.cNumber}`} style={{ textDecoration: "none", color: "black" }}>{item.cNumber}</a></TableCell>
+                                                <TableCell >
+
+                                                    {item.role !== "Blocked" ? <Button variant="danger" onClick={() => Block(item.uid)}>Block</Button>
+                                                        : <Button variant="danger" onClick={() => UnBlock(item.uid)}>Unblock</Button>}
+                                                            &nbsp;
+                                                        {item.isVerified ? <Button variant="warning" onClick={() => Verified(item.uid)} disabled={item.isVerified}> Verified</Button>:<Button variant="warning" onClick={() => Verified(item.uid)} disabled={item.isVerified}>Not Verified</Button>}
+
+                                                    {/* {
+                                                        item.isVerified ? <Button variant="warning" onClick={() => Verified(item.uid)}>Verified</Button> :
+                                                            <Button variant="warning" onClick={() => Verified(item.uid)}>Not Verified</Button>
+                                                    } */}
+
+
+
+                                                </TableCell>
+                                                <TableCell ><Button variant="light">Edit Profile</Button></TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
@@ -139,7 +197,7 @@ export const Dashboard = () => {
                         </div> : <div><h3>Kindly ask your administrator to authorize your account</h3></div>}
             </div>
 
-        </Layout>
+        </Layout >
 
     )
 }

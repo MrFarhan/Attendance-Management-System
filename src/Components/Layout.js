@@ -106,17 +106,17 @@ const Layout = ({ children }) => {
     const [checkin, setCheckin] = useState(false)
     let history = useHistory()
     let dispatch = useDispatch();
-    console.log("attendance is : ", attendance)
     // console.log("checkined  is : ", attendance[currentMonth][today])
-    console.log("today is ",today)
 
     // side bar items and click handler
-    var menu = [{ "Text": "Attendance", "route": "attendance" }, { "Text": "Report", "route": "report" }]
+    var menu = [{ "Text": "Dashboard", "route": "dashboard" },{ "Text": "Attendance", "route": "attendance" }, { "Text": "Report", "route": "report" }]
     const HandelClick = (e) => {
         if (e.target.innerText === "Attendance") {
             history.push("/attendance")
         } else if (e.target.innerText === "Report") {
             history.push("/report")
+        }else if (e.target.innerText === "Dashboard") {
+            history.push("/")
         }
     }
 
