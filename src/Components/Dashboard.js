@@ -13,40 +13,65 @@ import { useHistory } from 'react-router-dom';
 import firebase from "firebase"
 import { userDetailsAction, loadingAction, allUserDetailsAction } from '../Redux/Actions';
 import Layout from './Layout';
-import { Button } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import pic from "./Circle-icons-profile.svg"
+
 require("datejs")
 
 
 const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
-    // table: {
-    //     [theme.breakpoints.up('md')]: {
-    //         width: `calc(100% - ${drawerWidth}px)`,
-    //         marginLeft: `0px`,            
-    //     },
-    // },
+
+    signupFormMain: {
+        width: "100%",
+        justifyContent: "center",
+        [theme.breakpoints.up('xl')]: {
+            width: `70%`,
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "5em"
+
+        },
+
+    },
+    signupForm: {
+        width: `70%`,
+        justifyContent: "center",
+        [theme.breakpoints.up('xl')]: {
+            width: `70%`
+        },
+
+    },
+    toolbar: theme.mixins.toolbar,
 }));
 
 
-var today = new Date().toString("ddMMyyyy")
-// console.log("today is: ", today)
-
+var currentMonth = new Date().getMonth();
+var today = new Date().toISOString().split("T")[0]
 
 export const Dashboard = () => {
+
+    const [show, setShow] = useState(false);
+    const handleShow = () => setShow(true);
+    const handleClose = () => setShow(false);
 
     let dispatch = useDispatch()
     const state = useSelector((state) => state)
     const userDetails = state.userDetails
     const allUserDetails = state.allUserDetails
+    const [selectedUser, updateSelectedUser] = useState({})
     let attendance = state.attendance
     // eslint-disable-next-line
     const [totalHr, setTotalhr] = useState(0)
     // const [Block, setBlock] = useState()
-    const checkinTimeStamp = attendance && attendance[today]?.checkedin
+    const checkinTimeStamp = attendance && attendance[currentMonth][today]?.checkedin
     // eslint-disable-next-line
     var checkinTime = checkinTimeStamp ? new Date(checkinTimeStamp).toString("hh:mm") : false
-    const checkoutTimeStamp = attendance && attendance[today]?.checkedout
+    const checkoutTimeStamp = attendance && attendance[currentMonth][today]?.checkedout
     // eslint-disable-next-line
     var checkoutTime = checkoutTimeStamp ? new Date(checkoutTimeStamp).toString("hh:mm") : false
 
@@ -71,8 +96,8 @@ export const Dashboard = () => {
     }, [loading])
 
     useEffect(() => {
-        const checkinTimeStamp = attendance && attendance[today]?.checkedin
-        const checkoutTimeStamp = attendance && attendance[today]?.checkedout
+        const checkinTimeStamp = attendance && attendance[currentMonth][today]?.checkedin
+        const checkoutTimeStamp = attendance && attendance[currentMonth][today]?.checkedout
         var checkoutTime = new Date(checkoutTimeStamp).toString("hh:mm")
         var totalTime = checkinTimeStamp - checkoutTimeStamp
         var hourWorkedMinutes = Math.floor(Math.abs(totalTime / 60000)).toFixed(2)
@@ -98,37 +123,92 @@ export const Dashboard = () => {
         firebase.database().ref(`Users/${e}`).update({
             role: "Blocked"
         })
-
-
         return console.log("e.target.value", e)
     }
 
-    // useEffect(() => {
-    //     firebase.auth().onAuthStateChanged(function (user) {
-    //         if (user) {
-    //             firebase.database().ref(`Users/`).on("value", (res) => {
-    //                 dispatch(allUserDetailsAction(res.val()))
-    //                 // console.log(res.val(), "all user deta from firebase in app")
-    //             })
-    //         }
-    //     });
-    //     // eslint-disable-next-line
-    // }, [Block])
 
     const Verified = (e) => {
         firebase.database().ref(`Users/${e}`).update({
             isVerified: true
         })
-
-
         return console.log("e.target.value", e)
     }
+
+    function EditProfile(e) {
+        // console.log("selected user is : ", e)
+        updateSelectedUser(e)
+        return (
+            <>{handleShow()}</>
+        );
+    }
+    const dp = selectedUser?.dp
+    // { console.log("selected User is", selectedUser) }
+
+    // useEffect(() => {
+    //     formik()
+    // }, [selectedUser])
+
+    const formik = useFormik({
+        enableReinitialize: true,
+        initialValues: {
+            firstName: selectedUser.firstName,
+            lastName: selectedUser.lastName,
+            email: selectedUser.email,
+            cNumber: selectedUser.cNumber,
+            password: selectedUser?.password,
+            gender: selectedUser?.gender,
+            dateofBirth: selectedUser?.dateofBirth,
+            accountCreatedOn: selectedUser?.accountCreatedOn
+
+        },
+        validationSchema: Yup.object({
+            firstName: Yup.string()
+                .max(15, 'Must be 15 characters or less')
+                .required('Required'),
+            lastName: Yup.string()
+                .max(20, 'Must be 20 characters or less')
+                .required('Required'),
+            email: Yup.string()
+                .email('Invalid email address')
+                .required('Required'),
+            dateofBirth: Yup.date(),
+            gender: Yup.mixed()
+                .oneOf(['Male', 'Female'], "please select your gender"),
+            cNumber: Yup.number()
+
+        }),
+        onSubmit: values => {
+            // console.log(JSON.stringify(values, null, 2));
+            // UpdateFunc(values)
+        },
+    });
+
+    // const UpdateFunc = (values) => {
+    //     let UID = selectedUser?.uid
+
+    //     firebase.database().ref("Users/" + UID).update({
+    //         firstName: values.firstName,
+    //         lastName: values.lastName,
+    //         email: values.email,
+    //         cNumber: values.cNumber,
+    //         gender: values.gender,
+    //         dateofBirth: values.dateofBirth,
+    //         dp: dp,
+    //     }).then(console.log("successfully updated")).catch((e) => console.log(e, "error"))
+    //     history.push("/")
+    // }
+
+    // if (!loading && !userDetails) history.push("/")
+    // console.log("gender props is : ", ...formik.getFieldProps)
 
     return (
 
         <Layout >
             <div style={{ marginTop: "3em" }} >
+
+
                 {userDetails?.role === "authorized" ?
+
                     <div>
                         <TableContainer component={Paper}>
                             <Table aria-label="simple table">
@@ -152,6 +232,87 @@ export const Dashboard = () => {
                     </div>
                     : userDetails.role === "Admin" ?
                         < div className={classes.table}>
+
+                            <Modal show={show} onHide={handleClose} animation={false} centered style={{ marginTop: "50px" }}>
+                                <Modal.Header closeButton>
+                                    <Modal.Title>User Profile</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+
+                                    <div className={classes.signupFormMain} >
+                                        <Form onSubmit={formik.handleSubmit} className={classes.signupForm}>
+                                            <div className="mb-3">
+                                                {selectedUser?.dp?.length > 2 ? <img src={dp} className="profilePagePic" alt="Profile pic" /> : <h6>NO DP</h6>}
+                                            </div>
+
+                                            <Form.Group>
+                                                <Form.Label className="labels" htmlFor="firstName">First Name</Form.Label>
+                                                <Form.Control id="firstName" type="text" placeholder="Enter email" {...formik.getFieldProps('firstName')} disabled />
+                                            </Form.Group>
+
+                                            <Form.Group>
+                                                <Form.Label className="labels" htmlFor="lastName">Last Name</Form.Label>
+                                                <Form.Control id="lastName" type="text" placeholder="Enter email" {...formik.getFieldProps('lastName')} disabled />
+                                            </Form.Group>
+
+                                            <Form.Group>
+                                                <Form.Label className="labels" htmlFor="email">Email address</Form.Label>
+                                                <Form.Control id="email" type="email" placeholder="Enter email" {...formik.getFieldProps('email')} disabled />
+                                            </Form.Group>
+
+
+                                            <Form.Group>
+                                                <Form.Label className="labels" htmlFor="cNumber">Phone Number</Form.Label>
+                                                <Form.Control id="cNumber" type="number" placeholder="Enter your mobile number" {...formik.getFieldProps('cNumber')} disabled />
+                                            </Form.Group>
+
+                                            <Form.Group >
+                                                <Form.Label className="labels" htmlFor="dateofBirth">Select your date of birth</Form.Label>
+                                                <Form.Control id="dateofBirth" type="date" placeholder="Select your date of birth" {...formik.getFieldProps('dateofBirth')} disabled />
+                                            </Form.Group>
+
+
+
+                                            <Form.Group style={{ display: "flex" }} {...formik.getFieldProps('gender')} >
+                                                <Form.Label style={{ marginRight: "1rem" }}>Gender</Form.Label>
+                                                <Form.Check style={{ justifyContent: "flex-start" }}
+                                                    type="radio"
+                                                    label="Male"
+                                                    name="gender"
+                                                    id="Male"
+                                                    value="Male"
+                                                    checked={formik?.values?.['gender'] === 'Male'} disabled
+
+                                                />
+                                                <Form.Check
+                                                    type="radio"
+                                                    label="Female"
+                                                    name="gender"
+                                                    id="Female"
+                                                    value="Female"
+                                                    checked={formik?.values?.['gender'] === 'Female'} disabled
+
+                                                />
+                                            </Form.Group>
+
+                                            <Form.Group >
+                                                <Form.Label className="labels" htmlFor="accountCreatedOn">Account created on :</Form.Label>
+                                                <Form.Control id="accountCreatedOn" type="text" {...formik.getFieldProps('accountCreatedOn')} disabled />
+                                            </Form.Group>
+
+                                            <Button variant="secondary" onClick={handleClose}>  Close</Button>
+                                        </Form>
+
+                                    </div >
+
+
+
+
+
+                                </Modal.Body>
+                            </Modal>
+
+
                             <TableContainer >
                                 <Table style={{ overflow: "scroll", minWidth: "45em" }}>
                                     <TableHead>
@@ -177,17 +338,12 @@ export const Dashboard = () => {
                                                     {item.role !== "Blocked" ? <Button variant="danger" onClick={() => Block(item.uid)}>Block</Button>
                                                         : <Button variant="danger" onClick={() => UnBlock(item.uid)}>Unblock</Button>}
                                                             &nbsp;
-                                                        {item.isVerified ? <Button variant="warning" onClick={() => Verified(item.uid)} disabled={item.isVerified}> Verified</Button>:<Button variant="warning" onClick={() => Verified(item.uid)} disabled={item.isVerified}>Not Verified</Button>}
-
-                                                    {/* {
-                                                        item.isVerified ? <Button variant="warning" onClick={() => Verified(item.uid)}>Verified</Button> :
-                                                            <Button variant="warning" onClick={() => Verified(item.uid)}>Not Verified</Button>
-                                                    } */}
-
+                                                        {item.isVerified ? <Button variant="warning" onClick={() => Verified(item.uid)} disabled={item.isVerified}> Verified</Button> : <Button variant="warning" onClick={() => Verified(item.uid)} disabled={item.isVerified}>Not Verified</Button>}
 
 
                                                 </TableCell>
-                                                <TableCell ><Button variant="light">Edit Profile</Button></TableCell>
+                                                <TableCell ><Button variant="light" onClick={() => EditProfile(item)}>View Profile</Button></TableCell>
+
                                             </TableRow>
                                         ))}
                                     </TableBody>

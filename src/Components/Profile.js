@@ -37,21 +37,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Profile = () => {
-    const state = useSelector((state)=>state.state)
+    const state = useSelector((state)=>state)
     const userDetails =  state?.userDetails
     const loading = state?.loading
     let history = useHistory()
     const [dp, uploadDp] = useState(userDetails?.dp || pic)
+    console.log("user details are : ", state)
 
     const formik = useFormik({
         initialValues: {
-            firstName: userDetails.firstName,
-            lastName: userDetails.lastName,
-            email: userDetails.email,
-            cNumber: userDetails.cNumber,
-            password: userDetails.password,
-            gender: userDetails.gender,
-            dateofBirth: userDetails.dateofBirth,
+            firstName: userDetails?.firstName,
+            lastName: userDetails?.lastName,
+            email: userDetails?.email,
+            cNumber: userDetails?.cNumber,
+            password: userDetails?.password,
+            gender: userDetails?.gender,
+            dateofBirth: userDetails?.dateofBirth,
 
         },
         validationSchema: Yup.object({
@@ -171,6 +172,7 @@ export const Profile = () => {
                                 name="gender"
                                 id="Male"
                                 value="Male"
+                                checked={formik?.values?.['gender'] === 'Male'} disabled
                             />
                             <Form.Check
                                 type="radio"
@@ -178,6 +180,7 @@ export const Profile = () => {
                                 name="gender"
                                 id="Female"
                                 value="Female"
+                                checked={formik?.values?.['gender'] === 'Female'} disabled
                             />
                             <div>                <br /><div className="inputerror" style={{ marginLeft: "-13em" }}>  {formik.touched.gender && formik.errors.gender ? (
                                 <div>{formik.errors.gender}</div>

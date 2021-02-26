@@ -101,6 +101,7 @@ export const Signup = () => {
             SignupFunc(values)
         },
     });
+    var today = new Date().toISOString()
 
     const SignupFunc = (values) => {
 
@@ -115,7 +116,8 @@ export const Signup = () => {
                 dateofBirth: values.dateofBirth,
                 isVerified: false,
                 uid: UID,
-                role: "user"
+                role: "user",
+                accountCreatedOn:today
             })
             history.push("/")
 
