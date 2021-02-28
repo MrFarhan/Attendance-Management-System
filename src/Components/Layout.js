@@ -30,7 +30,7 @@ const drawerWidth = 200;
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
-        width:"inherit"
+        width: "inherit"
     },
     drawer: {
         [theme.breakpoints.up('sm')]: {
@@ -62,11 +62,11 @@ const useStyles = makeStyles((theme) => ({
     },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
-  
+
     drawerPaper: {
         width: drawerWidth,
     },
-    
+
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
@@ -84,8 +84,14 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+// var today = new Date().toISOString().split("T")[0]
+var today = new Date().toLocaleString().split(",")[0].replaceAll("/", "-");
+
 var currentMonth = new Date().getMonth();
-var today = new Date().toISOString().split("T")[0]
+currentMonth = currentMonth + 1
+
+var currentYear = new Date().getFullYear()
+console.log("today is ", today)
 
 // var today = new Date().toString("ddMMyyyy")
 // console.log("today is, ", today)
@@ -96,7 +102,7 @@ const Layout = ({ children }) => {
     const classes = useStyles();
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
-    const state = useSelector((state)=>state)
+    const state = useSelector((state) => state)
     const loading = state.loading
     const userDetails = state.userDetails
     let attendance = state.attendance
@@ -109,13 +115,13 @@ const Layout = ({ children }) => {
     // console.log("checkined  is : ", attendance[currentMonth][today])
 
     // side bar items and click handler
-    var menu = [{ "Text": "Dashboard", "route": "dashboard" },{ "Text": "Attendance", "route": "attendance" }, { "Text": "Report", "route": "report" }]
+    var menu = [{ "Text": "Dashboard", "route": "dashboard" }, { "Text": "Attendance", "route": "attendance" }, { "Text": "Report", "route": "report" }]
     const HandelClick = (e) => {
         if (e.target.innerText === "Attendance") {
             history.push("/attendance")
         } else if (e.target.innerText === "Report") {
             history.push("/report")
-        }else if (e.target.innerText === "Dashboard") {
+        } else if (e.target.innerText === "Dashboard") {
             history.push("/")
         }
     }
@@ -161,14 +167,14 @@ const Layout = ({ children }) => {
     }
 
     const Checkin = (e) => {
-        const checkinTimeStamp = attendance && attendance[currentMonth][today]?.checkedin
+        const checkinTimeStamp = attendance && attendance[currentYear] && attendance[currentMonth] && attendance[currentYear][currentMonth][today]?.checkedin
         if (checkinTimeStamp) {
             setCheckin(true)
         }
 
         const start = Date.now();
         let UID = firebase.auth().currentUser?.uid
-        firebase.database().ref(`Attendance/${UID}/${currentMonth}/${today}`).set({
+        firebase.database().ref(`Attendance/${UID}/${currentYear}/${currentMonth}/${today}`).set({
             checkedin: start,
 
         })
@@ -183,7 +189,7 @@ const Layout = ({ children }) => {
         const start = Date.now();
 
         let UID = firebase.auth().currentUser?.uid
-        firebase.database().ref(`Attendance/${UID}/${currentMonth}/${today}`).update({
+        firebase.database().ref(`Attendance/${UID}/${currentYear}/${currentMonth}/${today}`).update({
             checkedout: start,
         })
         firebase.database().ref(`Users/${UID}/`).update({
@@ -217,7 +223,7 @@ const Layout = ({ children }) => {
         <div className={classes.root}>
             <CssBaseline />
             <AppBar position="fixed" className={(userDetails.firstName) ? classes.appBar : classes.appBarCustom} >
-                <Toolbar style={{justifyContent:"space-between"}}>
+                <Toolbar style={{ justifyContent: "space-between" }}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -234,10 +240,10 @@ const Layout = ({ children }) => {
                     {userDetails?.firstName ? <span >
 
                         {userDetails.role !== "Admin" && userDetails.role !== "user" && userDetails.role === "authorized" ?
-                            (attendance && attendance[currentMonth] && attendance[currentMonth][today]?.checkedin && !(attendance[currentMonth][today].checkedout) ?
+                            (attendance && attendance[currentYear] && attendance[currentMonth] && attendance[currentYear][currentMonth][today]?.checkedin && !(attendance[currentYear][currentMonth][today].checkedout) ?
 
                                 < Button variant="contained" onClick={((e) => Checkout(e))} className={classes.checkBtn}>Check out</Button> :
-                                <Button variant="contained" className={classes.checkBtn} disabled={attendance && attendance[currentMonth] && attendance[currentMonth][today]?.checkedout} onClick={((e) => Checkin(e))} >Check in</Button>
+                                <Button variant="contained" className={classes.checkBtn} disabled={attendance && attendance[currentYear] && attendance[currentMonth] && attendance[currentYear][currentMonth][today]?.checkedout} onClick={((e) => Checkin(e))} >Check in</Button>
                             )
 
                             : null}
@@ -281,7 +287,7 @@ const Layout = ({ children }) => {
             {!userDetails.firstName ? <></>
                 :
 
-                <div style={{width:"inherit"}}>
+                <div style={{ width: "inherit" }}>
                     <nav className={classes.drawer} aria-label="mailbox folders">
                         <Hidden smUp implementation="css">
                             <Drawer

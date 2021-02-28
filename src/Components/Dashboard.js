@@ -11,18 +11,15 @@ import Paper from '@material-ui/core/Paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import firebase from "firebase"
-import { userDetailsAction, loadingAction, allUserDetailsAction } from '../Redux/Actions';
+import { userDetailsAction, loadingAction } from '../Redux/Actions';
 import Layout from './Layout';
 import { Form, Button } from 'react-bootstrap';
 import { Modal } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import pic from "./Circle-icons-profile.svg"
 
 require("datejs")
 
-
-const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
 
@@ -50,8 +47,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
+var today = new Date().toLocaleString().split(",")[0].replaceAll("/", "-");
+
 var currentMonth = new Date().getMonth();
-var today = new Date().toISOString().split("T")[0]
+currentMonth = currentMonth + 1
+
+var currentYear = new Date().getFullYear()
+
 
 export const Dashboard = () => {
 
@@ -67,11 +69,10 @@ export const Dashboard = () => {
     let attendance = state.attendance
     // eslint-disable-next-line
     const [totalHr, setTotalhr] = useState(0)
-    // const [Block, setBlock] = useState()
-    const checkinTimeStamp = attendance && attendance[currentMonth][today]?.checkedin
+    const checkinTimeStamp = attendance && attendance[currentYear] && attendance[currentMonth] && attendance[currentYear][currentMonth][today]?.checkedin
     // eslint-disable-next-line
     var checkinTime = checkinTimeStamp ? new Date(checkinTimeStamp).toString("hh:mm") : false
-    const checkoutTimeStamp = attendance && attendance[currentMonth][today]?.checkedout
+    const checkoutTimeStamp = attendance && attendance[currentYear] && attendance[currentMonth] && attendance[currentYear][currentMonth][today]?.checkedout
     // eslint-disable-next-line
     var checkoutTime = checkoutTimeStamp ? new Date(checkoutTimeStamp).toString("hh:mm") : false
 
@@ -96,8 +97,8 @@ export const Dashboard = () => {
     }, [loading])
 
     useEffect(() => {
-        const checkinTimeStamp = attendance && attendance[currentMonth][today]?.checkedin
-        const checkoutTimeStamp = attendance && attendance[currentMonth][today]?.checkedout
+        const checkinTimeStamp = attendance && attendance[currentYear] && attendance[currentMonth] && attendance[currentYear][currentMonth][today]?.checkedin
+        const checkoutTimeStamp = attendance && attendance[currentYear] && attendance[currentMonth] && attendance[currentYear][currentMonth][today]?.checkedout
         var checkoutTime = new Date(checkoutTimeStamp).toString("hh:mm")
         var totalTime = checkinTimeStamp - checkoutTimeStamp
         var hourWorkedMinutes = Math.floor(Math.abs(totalTime / 60000)).toFixed(2)
@@ -135,18 +136,12 @@ export const Dashboard = () => {
     }
 
     function EditProfile(e) {
-        // console.log("selected user is : ", e)
         updateSelectedUser(e)
         return (
             <>{handleShow()}</>
         );
     }
     const dp = selectedUser?.dp
-    // { console.log("selected User is", selectedUser) }
-
-    // useEffect(() => {
-    //     formik()
-    // }, [selectedUser])
 
     const formik = useFormik({
         enableReinitialize: true,
@@ -183,30 +178,13 @@ export const Dashboard = () => {
         },
     });
 
-    // const UpdateFunc = (values) => {
-    //     let UID = selectedUser?.uid
 
-    //     firebase.database().ref("Users/" + UID).update({
-    //         firstName: values.firstName,
-    //         lastName: values.lastName,
-    //         email: values.email,
-    //         cNumber: values.cNumber,
-    //         gender: values.gender,
-    //         dateofBirth: values.dateofBirth,
-    //         dp: dp,
-    //     }).then(console.log("successfully updated")).catch((e) => console.log(e, "error"))
-    //     history.push("/")
-    // }
-
-    // if (!loading && !userDetails) history.push("/")
-    // console.log("gender props is : ", ...formik.getFieldProps)
+    if (!loading && !userDetails) history.push("/")
 
     return (
 
         <Layout >
             <div style={{ marginTop: "3em" }} >
-
-
                 {userDetails?.role === "authorized" ?
 
                     <div>
