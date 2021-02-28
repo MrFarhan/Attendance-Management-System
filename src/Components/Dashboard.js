@@ -17,7 +17,6 @@ import { Form, Button } from 'react-bootstrap';
 import { Modal } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-// import moment from "moment"
 require("datejs")
 
 
@@ -69,10 +68,10 @@ export const Dashboard = () => {
     let attendance = state.attendance
     // eslint-disable-next-line
     const [totalHr, setTotalhr] = useState(0)
-    const checkinTimeStamp = attendance && attendance[currentYear] && attendance[currentYear][currentMonth][today]?.checkedin
+    const checkinTimeStamp = attendance && attendance[currentYear] && attendance[currentYear][currentMonth] && attendance[currentYear][currentMonth][today] && attendance[currentYear][currentMonth][today]?.checkedin
     // eslint-disable-next-line
     var checkinTime = checkinTimeStamp ? new Date(checkinTimeStamp).toLocaleTimeString() : false
-    const checkoutTimeStamp = attendance && attendance[currentYear] && attendance[currentYear][currentMonth][today]?.checkedout
+    const checkoutTimeStamp = attendance && attendance[currentYear] && attendance[currentYear][currentMonth] && attendance[currentYear][currentMonth][today]?.checkedout
     // eslint-disable-next-line
     var checkoutTime = checkoutTimeStamp ? new Date(checkoutTimeStamp).toLocaleTimeString() : false
 
@@ -97,8 +96,8 @@ export const Dashboard = () => {
     }, [loading])
 
     useEffect(() => {
-        const checkinTimeStamp = attendance && attendance[currentYear] && attendance[currentYear][currentMonth][today]?.checkedin
-        const checkoutTimeStamp = attendance && attendance[currentYear] && attendance[currentYear][currentMonth][today]?.checkedout
+        const checkinTimeStamp = attendance && attendance[currentYear] && attendance[currentYear][currentMonth] && attendance[currentYear][currentMonth][today]?.checkedin
+        const checkoutTimeStamp = attendance && attendance[currentYear] && attendance[currentYear][currentMonth] && attendance[currentYear][currentMonth][today]?.checkedout
         // var checkoutTime = new Date(checkoutTimeStamp).toString("hh:mm A")
         var checkoutTime = new Date(checkoutTimeStamp).toLocaleTimeString()
         var totalTime = checkinTimeStamp - checkoutTimeStamp
@@ -116,7 +115,7 @@ export const Dashboard = () => {
 
     const UnBlock = (e) => {
         firebase.database().ref(`Users/${e}`).update({
-            role: "user"
+            role: "Authorized"
         })
         return console.log("e.target.value", e)
     }
@@ -185,7 +184,7 @@ export const Dashboard = () => {
 
         <Layout >
             <div style={{ marginTop: "3em" }} >
-                {userDetails?.role === "authorized" ?
+                {userDetails && userDetails?.isVerified && userDetails?.role === "Authorized" ?
 
                     <div>
                         <TableContainer component={Paper}>
@@ -199,7 +198,7 @@ export const Dashboard = () => {
                                     </TableRow>
                                 </TableHead>
 
-{/* 
+                                {/* 
                                 <td>{item[1] ? moment(item[1]["checkedin"]).format('hh:mm:ss A') : null}</td>
                                 <td>{item[1] ? moment(item[1]["checkedout"]).format('hh:mm:ss A') : null}</td> */}
 
@@ -212,9 +211,9 @@ export const Dashboard = () => {
                             </Table>
                         </TableContainer>
                     </div>
-                    : userDetails.role === "Admin" ?
+                    : userDetails?.role === "Admin" ?
+                        //modal to be shown on view profile 
                         < div className={classes.table}>
-
                             <Modal show={show} onHide={handleClose} animation={false} centered style={{ marginTop: "50px" }}>
                                 <Modal.Header closeButton>
                                     <Modal.Title>User Profile</Modal.Title>
@@ -253,8 +252,6 @@ export const Dashboard = () => {
                                                 <Form.Control id="dateofBirth" type="date" placeholder="Select your date of birth" {...formik.getFieldProps('dateofBirth')} disabled />
                                             </Form.Group>
 
-
-
                                             <Form.Group style={{ display: "flex" }} {...formik.getFieldProps('gender')} >
                                                 <Form.Label style={{ marginRight: "1rem" }}>Gender</Form.Label>
                                                 <Form.Check style={{ justifyContent: "flex-start" }}
@@ -287,10 +284,6 @@ export const Dashboard = () => {
 
                                     </div >
 
-
-
-
-
                                 </Modal.Body>
                             </Modal>
 
@@ -309,7 +302,8 @@ export const Dashboard = () => {
                                     </TableHead>
 
                                     <TableBody>
-                                        {data.map((item, index) => (
+
+                                        {data.filter(item=> item.role !== "Admin").map((item, index) => (
                                             <TableRow key={index} >
                                                 <TableCell >{item.firstName}</TableCell>
                                                 <TableCell ><a href={`mailto:${item.email}`} style={{ textDecoration: "none", color: "black" }}>{item.email}</a></TableCell>
@@ -320,7 +314,7 @@ export const Dashboard = () => {
                                                     {item.role !== "Blocked" ? <Button variant="danger" onClick={() => Block(item.uid)}>Block</Button>
                                                         : <Button variant="danger" onClick={() => UnBlock(item.uid)}>Unblock</Button>}
                                                             &nbsp;
-                                                        {item.isVerified ? <Button variant="warning" onClick={() => Verified(item.uid)} disabled={item.isVerified}> Verified</Button> : <Button variant="warning" onClick={() => Verified(item.uid)} disabled={item.isVerified}>Not Verified</Button>}
+                                                        {item.isVerified ? <Button variant="warning" onClick={() => Verified(item.uid)} disabled={item.isVerified}> Verified</Button> : <Button variant="warning" onClick={() => Verified(item.uid)} disabled={item.isVerified}>Verify</Button>}
 
 
                                                 </TableCell>

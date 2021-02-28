@@ -123,7 +123,7 @@ export const Profile = () => {
 
                         <Form.Group>
                             <Form.Label className="labels" htmlFor="firstName">First Name</Form.Label>
-                            <Form.Control id="firstName" type="text" placeholder="Enter email" {...formik.getFieldProps('firstName')} autoFocus />
+                            <Form.Control id="firstName" type="text" placeholder="Enter First Name" {...formik.getFieldProps('firstName')} autoFocus />
                             <span className="inputerror">  {formik.touched.firstName && formik.errors.firstName ? (
                                 <div>{formik.errors.firstName}</div>
                             ) : null}</span>
@@ -131,7 +131,7 @@ export const Profile = () => {
 
                         <Form.Group>
                             <Form.Label className="labels" htmlFor="lastName">Last Name</Form.Label>
-                            <Form.Control id="lastName" type="text" placeholder="Enter email" {...formik.getFieldProps('lastName')} />
+                            <Form.Control id="lastName" type="text" placeholder="Enter Last Name" {...formik.getFieldProps('lastName')} />
                             <span className="inputerror">  {formik.touched.lastName && formik.errors.lastName ? (
                                 <div>{formik.errors.lastName}</div>
                             ) : null}</span>
@@ -139,7 +139,7 @@ export const Profile = () => {
 
                         <Form.Group>
                             <Form.Label className="labels" htmlFor="email">Email address</Form.Label>
-                            <Form.Control id="email" type="email" placeholder="Enter email" {...formik.getFieldProps('email')} />
+                            <Form.Control id="email" type="email" placeholder="Enter Email" {...formik.getFieldProps('email')} disabled/>
                             <span className="inputerror">  {formik.touched.email && formik.errors.email ? (
                                 <div>{formik.errors.email}</div>
                             ) : null}</span>

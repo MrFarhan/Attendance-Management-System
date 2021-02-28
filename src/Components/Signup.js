@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
     appBarCustom: {
         [theme.breakpoints.up('sm')]: {
             width: `100%`,
-            // marginBottom:"2em"
 
         },
     },
@@ -48,9 +47,15 @@ const useStyles = makeStyles((theme) => ({
 
 
 export const Signup = () => {
+
     let history = useHistory()
     const legalAge = new Date.parse("-18year");
+    const [signuperror, setSignuperror] = React.useState()
     // console.log("18 years back date is: ",legalAge)
+    const phoneReg = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+
+
+
 
     const formik = useFormik({
         initialValues: {
@@ -89,17 +94,18 @@ export const Signup = () => {
             gender: Yup.mixed()
                 .required('Gender is Required')
                 .oneOf(['Male', 'Female']),
-            cNumber: Yup.number()
-                .required('Contact Number is Required'),
+            cNumber: Yup.string()
+                .matches(phoneReg, 'Invalid format - Number must be at least 11 ')
+                .required("Phone number is required")
+                .max(11, "Phone number must be 11 charactors long"),
             acceptedTerms: Yup.boolean()
                 .required("Kindly accept our terms and conditions to proceed with signup ")
                 .oneOf([true], "Terms and condition acceptance is mandatory")
-
-
         }),
         onSubmit: values => {
             SignupFunc(values)
         },
+
     });
     var today = new Date().toISOString()
 
@@ -116,8 +122,8 @@ export const Signup = () => {
                 dateofBirth: values.dateofBirth,
                 isVerified: false,
                 uid: UID,
-                role: "user",
-                accountCreatedOn:today
+                role: "Authorized",
+                accountCreatedOn: today
             })
             history.push("/")
 
@@ -125,11 +131,13 @@ export const Signup = () => {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
+
+            setSignuperror(errorMessage)
+
             console.log(errorCode, "error code" + errorMessage, "error message")
             // ...
         });
     }
-
 
 
     const LoginFunc = () => {
@@ -150,7 +158,7 @@ export const Signup = () => {
             <Form onSubmit={formik.handleSubmit} className={classes.signupForm}>
                 <Form.Group>
                     <Form.Label className="labels" htmlFor="firstName">First Name</Form.Label>
-                    <Form.Control id="firstName" type="text" placeholder="Enter email" {...formik.getFieldProps('firstName')} autoFocus />
+                    <Form.Control id="firstName" type="text" placeholder="Enter First Name" {...formik.getFieldProps('firstName')} autoFocus />
                     <span className="inputerror">  {formik.touched.firstName && formik.errors.firstName ? (
                         <div>{formik.errors.firstName}</div>
                     ) : null}</span>
@@ -158,7 +166,7 @@ export const Signup = () => {
 
                 <Form.Group>
                     <Form.Label className="labels" htmlFor="lastName">Last Name</Form.Label>
-                    <Form.Control id="lastName" type="text" placeholder="Enter email" {...formik.getFieldProps('lastName')} />
+                    <Form.Control id="lastName" type="text" placeholder="Enter Last Name" {...formik.getFieldProps('lastName')} />
                     <span className="inputerror">  {formik.touched.lastName && formik.errors.lastName ? (
                         <div>{formik.errors.lastName}</div>
                     ) : null}</span>
@@ -166,10 +174,19 @@ export const Signup = () => {
 
                 <Form.Group>
                     <Form.Label className="labels" htmlFor="email">Email address</Form.Label>
-                    <Form.Control id="email" type="email" placeholder="Enter email" {...formik.getFieldProps('email')} />
+                    <Form.Control id="email" type="email" placeholder="Enter Email Address" {...formik.getFieldProps('email')} {...formik.handleChange}
+                        onFocus={() => {
+                            setSignuperror("");
+                        }}
+                    />
                     <span className="inputerror">  {formik.touched.email && formik.errors.email ? (
                         <div>{formik.errors.email}</div>
                     ) : null}</span>
+
+                    <span className="inputerror">  {formik.touched.email && signuperror && signuperror.length ? (
+                        <div>{signuperror}</div>
+                    ) : null}</span>
+
                 </Form.Group>
 
                 <Form.Group>

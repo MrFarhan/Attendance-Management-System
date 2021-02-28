@@ -167,7 +167,7 @@ const Layout = ({ children }) => {
     }
 
     const Checkin = (e) => {
-        const checkinTimeStamp = attendance && attendance[currentYear] && attendance[currentYear][currentMonth][today]?.checkedin
+        const checkinTimeStamp = attendance && attendance[currentYear] && attendance[currentYear][currentMonth] && attendance[currentYear][currentMonth][today]?.checkedin
         if (checkinTimeStamp) {
             setCheckin(true)
         }
@@ -217,19 +217,17 @@ const Layout = ({ children }) => {
     if (loading) {
         return <p>...Loading</p>
     }
-
-    // console.log("user details are ",userDetails)
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <AppBar position="fixed" className={(userDetails.firstName) ? classes.appBar : classes.appBarCustom} >
+            <AppBar position="fixed" className={(userDetails && userDetails?.firstName) ? classes.appBar : classes.appBarCustom} >
                 <Toolbar style={{ justifyContent: "space-between" }}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
                         edge="start"
                         onClick={handleDrawerToggle}
-                        className={userDetails.firstName ? classes.menuButton : classes.menuButtonCustom}
+                        className={userDetails?.firstName ? classes.menuButton : classes.menuButtonCustom}
                     >
                         <MenuIcon />
                     </IconButton>
@@ -239,11 +237,11 @@ const Layout = ({ children }) => {
 
                     {userDetails?.firstName ? <span >
 
-                        {userDetails.role !== "Admin" && userDetails.role !== "user" && userDetails.role === "authorized" ?
-                            (attendance && attendance[currentYear] && attendance[currentYear][currentMonth][today]?.checkedin && !(attendance[currentYear][currentMonth][today].checkedout) ?
+                        {userDetails?.role !== "Admin" && userDetails?.role !== "Blocked" && userDetails?.isVerified && userDetails?.role === "Authorized" ?
+                            (attendance && attendance[currentYear] && attendance[currentYear][currentMonth] && attendance[currentYear][currentMonth][today]?.checkedin && !(attendance[currentYear][currentMonth][today].checkedout) ?
 
                                 < Button variant="contained" onClick={((e) => Checkout(e))} className={classes.checkBtn}>Check out</Button> :
-                                <Button variant="contained" className={classes.checkBtn} disabled={attendance && attendance[currentYear] && attendance[currentYear][currentMonth][today]?.checkedout} onClick={((e) => Checkin(e))} >Check in</Button>
+                                <Button variant="contained" className={classes.checkBtn} disabled={attendance && attendance[currentYear] && attendance[currentYear][currentMonth] && attendance[currentYear][currentMonth][today]?.checkedout} onClick={((e) => Checkin(e))} >Check in</Button>
                             )
 
                             : null}
