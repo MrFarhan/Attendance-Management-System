@@ -156,8 +156,8 @@ export const Login = () => {
                 <Form.Group style={{ display: "flex" }}>
                     <Form.Check type="checkbox" label="Remember me" />
                 </Form.Group>
-                <Button variant="primary" type="submit" > <FiLogIn />Login</Button>
-                <Button variant="link" onClick={SignupFunc}>Don't have an account</Button>
+                <Button variant="primary" type="submit" >  Login<FiLogIn /></Button>
+                <Button variant="link" onClick={SignupFunc}>Don't have an account ?</Button>
             </Form>
         </div>
     );

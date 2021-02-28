@@ -22,6 +22,8 @@ import pic from "./Circle-icons-profile.svg"
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { Button } from '@material-ui/core';
+import moment from "moment"
+
 require("datejs")
 
 
@@ -88,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
 var currentYear = new Date().getFullYear()
 var currentMonth = new Date().getMonth();
 currentMonth = currentMonth + 1
-var today = new Date().toLocaleString().split(",")[0].replaceAll("/", "-");
+// var today = new Date().toLocaleString().split(",")[0].replaceAll("/", "-");
 
 // console.log("today is ", today)
 
@@ -102,6 +104,8 @@ const Layout = ({ children }) => {
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const state = useSelector((state) => state)
+    const [today, setToday] = useState()
+
     const loading = state.loading
     const userDetails = state.userDetails
     let attendance = state.attendance
@@ -168,10 +172,11 @@ const Layout = ({ children }) => {
     const Checkin = (e) => {
         const checkinTimeStamp = attendance && attendance[currentYear] && attendance[currentYear][currentMonth] && attendance[currentYear][currentMonth][today]?.checkedin
         if (checkinTimeStamp) {
+            console.log("today in checkin is ", today)
             setCheckin(true)
         }
 
-        const start = Date.now();
+        const start = today;
         let UID = firebase.auth().currentUser?.uid
         firebase.database().ref(`Attendance/${UID}/${currentYear}/${currentMonth}/${today}`).set({
             checkedin: start,
@@ -180,7 +185,7 @@ const Layout = ({ children }) => {
 
         firebase.database().ref(`Users/${UID}`).update({
             checkedin: start,
-            checkedout:""
+            checkedout: ""
 
         })
     }
@@ -194,7 +199,7 @@ const Layout = ({ children }) => {
         })
         firebase.database().ref(`Users/${UID}/`).update({
             checkedout: start,
-            checkedin:null
+            checkedin: null
         })
         setCheckin(false)
     }
@@ -214,10 +219,36 @@ const Layout = ({ children }) => {
         });
         // eslint-disable-next-line
     }, [loading])
+    // useEffect(() => {
+        firebase.database().ref('currentTime/').update({ time: firebase.database.ServerValue.TIMESTAMP })
+            .then(function (data) {
+                firebase.database().ref('currentTime/')
+                    .once('value')
+                    .then(function (data) {
+
+                        // setToday(data.val()['time'])
+                        // t = t+1000
+                        setToday(data.val()['time'])
+                        console.log('server time: ', moment(data.val()['time']).format("M-DD-YYYY"));
+
+                    }, function serverTimeErr(err) {
+                        console.log('coulnd nt reach to the server time !');
+                    });
+            }, function (err) {
+                console.log('set time error:', err)
+            });
+    // }, [today])
+
+
 
     if (loading) {
         return <p>...Loading</p>
     }
+
+
+
+
+
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -242,7 +273,7 @@ const Layout = ({ children }) => {
                             (attendance && attendance[currentYear] && attendance[currentYear][currentMonth] && attendance[currentYear][currentMonth][today]?.checkedin && !(attendance[currentYear][currentMonth][today].checkedout) ?
 
                                 < Button variant="contained" onClick={((e) => Checkout(e))} className={classes.checkBtn}>Check out</Button> :
-                                <Button variant="contained" className={classes.checkBtn} disabled={attendance && attendance[currentYear] && attendance[currentYear][currentMonth] && attendance[currentYear][currentMonth][today]?.checkedout} onClick={((e) => Checkin(e))} >Check in</Button>
+                                <Button variant="contained" className={classes.checkBtn} disabled={attendance && attendance[currentYear] && attendance[currentYear][currentMonth] && attendance[currentYear][currentMonth][today] && attendance[currentYear][currentMonth][today]?.checkedout} onClick={((e) => Checkin(e))} >Check in</Button>
                             )
 
                             : null}

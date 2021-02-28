@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import "../App.css"
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, InputGroup, FormControl } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import firebase from "firebase"
 import pic from "./Circle-icons-profile.svg"
@@ -44,6 +44,7 @@ export const Profile = () => {
     const [dp, uploadDp] = useState(userDetails?.dp || pic)
     const [uploadError, setUploadError] = useState("")
     // console.log("user details are : ", state)
+    const phoneReg = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
     const formik = useFormik({
         initialValues: {
@@ -71,8 +72,10 @@ export const Profile = () => {
             gender: Yup.mixed()
                 .required('Required')
                 .oneOf(['Male', 'Female'], "please select your gender"),
-            cNumber: Yup.number()
-
+            cNumber: Yup.string()
+                .matches(phoneReg, 'Number must be at least 11 ')
+                .required("Phone number is required")
+                .max(10, "Phone number must be 11 charactors long"),
         }),
         onSubmit: values => {
             // console.log(JSON.stringify(values, null, 2));
@@ -90,7 +93,7 @@ export const Profile = () => {
             lastName: values.lastName,
             cNumber: values.cNumber,
             dp: dp,
-            weekEnd:values.weekEnd
+            weekEnd: values.weekEnd
         }).then().catch((e) => console.log(e, "error"))
         history.push("/")
     }
@@ -153,14 +156,19 @@ export const Profile = () => {
                         ) : null}</span>
                     </Form.Group>
 
+                    <>
+                        <Form.Label className="labels" htmlFor="cNumber" style={{ display: "flex" }}>Phone Number</Form.Label>
+                        <InputGroup style={{ marginBottom: "1rem" }}>
+                            <InputGroup.Text>+92</InputGroup.Text>
+                            <Form.Control id="cNumber" type="number" placeholder="Enter your mobile number" {...formik.getFieldProps('cNumber')} />
+                            </InputGroup>
+                            <span className="inputerror" style={{ marginBottom: "1rem",marginTop:"-1rem" }}>  {formik.touched.cNumber && formik.errors.cNumber ? (
+                                <div>{formik.errors.cNumber}</div>
+                            ) : null}</span>
 
-                    <Form.Group>
-                        <Form.Label className="labels" htmlFor="cNumber">Phone Number</Form.Label>
-                        <Form.Control id="cNumber" type="number" placeholder="Enter your mobile number" {...formik.getFieldProps('cNumber')} />
-                        <span className="inputerror">  {formik.touched.cNumber && formik.errors.cNumber ? (
-                            <div>{formik.errors.cNumber}</div>
-                        ) : null}</span>
-                    </Form.Group>
+
+                    </>
+
 
                     <Form.Group >
                         <Form.Label className="labels" htmlFor="dateofBirth">Select your date of birth</Form.Label>
@@ -182,7 +190,7 @@ export const Profile = () => {
                             value="Male"
                             checked={formik?.values?.['gender'] === 'Male'} disabled
                         />
-                        <Form.Check
+                        <Form.Check style={{marginLeft:"1rem"}}
                             type="radio"
                             label="Female"
                             name="gender"
@@ -208,11 +216,11 @@ export const Profile = () => {
                             <option value="Sunday" >Sunday</option>
                         </select>
                     </Form.Group>
-                    
+
                     <Button variant="primary" type="submit" > Update</Button>
                 </Form>
 
             </div >
-        </Layout>
+        </Layout >
     )
 }

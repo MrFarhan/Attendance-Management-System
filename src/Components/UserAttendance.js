@@ -116,9 +116,10 @@ export const UserAttendance = () => {
                             <tbody>
                                 {Object.entries(attendance)?.length ? Object.entries(attendance)?.map((item, index) => {
                                     let days = moment(item[0]).format('dddd')
-                                    if (item[1]['checkedin']) {
-                                        presentDays = presentDays + 1
-                                        let tempUtilizedTime = ((item[1]["checkedout"] - item[1]["checkedin"]) / (1000 * 3600 * 24))
+                                    if (item[1]['checkedin'])
+                                    presentDays = presentDays + 1
+                                    if (item[1]['checkedin'] && item[1]['checkedout'] ) {
+                                        let tempUtilizedTime = ((item[1]["checkedout"] - item[1]["checkedin"]) / (1000 * 3600))
                                         utilizedTime += tempUtilizedTime
                                     }
 
@@ -132,8 +133,8 @@ export const UserAttendance = () => {
                                                 <td colSpan={"4"}>Holiday </td> :
                                                 <>
                                                     <td>{item[1] && moment(item[1]["checkedin"]).format('hh:mm:ss A')}</td>
-                                                    <td>{item[1]["checkedout"] && !item[1]["checkedout"].length ? moment(item[1]["checkedout"]).format('hh:mm:ss A') : "Not checked out"}</td>
-                                                    <td>{item[1]["checkedout"] && !item[1]["checkedout"].length ?  <NumberFormat value={((item[1]["checkedout"] - item[1]["checkedin"]) / (3.6e+6)).toFixed(1)} displayType={'text'} thousandSeparator={true} /> : 0}</td>
+                                                    <td>{item[1]["checkedout"] ? moment(item[1]["checkedout"]).format('hh:mm:ss A') : 0}</td>
+                                                    <td>{!!item[1]["checkedin"] && !!item[1]["checkedout"]  ?  <NumberFormat value={((item[1]["checkedout"] - item[1]["checkedin"]) / (3.6e+6)).toFixed(1)} displayType={'text'} thousandSeparator={true} /> : 0}</td>
                                                     <td>8 Hours</td>
                                                 </>
 

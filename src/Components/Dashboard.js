@@ -22,6 +22,8 @@ import moment from "moment"
 require("datejs")
 
 
+
+
 const useStyles = makeStyles((theme) => ({
 
     signupFormMain: {
@@ -48,8 +50,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-var today = new Date().toLocaleString().split(",")[0].replaceAll("/", "-");
 
+// var today = new Date().toLocaleString().split(",")[0].replaceAll("/", "-");
+// console.log("tday is ", today)
 var currentMonth = new Date().getMonth();
 currentMonth = currentMonth + 1
 
@@ -58,9 +61,11 @@ var currentYear = new Date().getFullYear()
 
 export const Dashboard = () => {
 
+
     const [show, setShow] = useState(false);
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
+    const [today, setToday] = useState()
 
     let dispatch = useDispatch()
     const state = useSelector((state) => state)
@@ -77,6 +82,22 @@ export const Dashboard = () => {
     // eslint-disable-next-line
     var checkoutTime = checkoutTimeStamp ? new Date(checkoutTimeStamp).toLocaleTimeString() : false
 
+    firebase.database().ref('currentTime/').update({ time: firebase.database.ServerValue.TIMESTAMP })
+        .then(function (data) {
+            firebase.database().ref('currentTime/')
+                .once('value')
+                .then(function (data) {
+
+                    setToday(data.val()['time'])
+                    // t = t+1000
+                    console.log('server time: ', moment(today).format("M-DD-YYYY"));
+
+                }, function serverTimeErr(err) {
+                    console.log('coulnd nt reach to the server time !');
+                });
+        }, function (err) {
+            console.log('set time error:', err)
+        });
 
     // eslint-disable-next-line
     const classes = useStyles();
@@ -103,7 +124,7 @@ export const Dashboard = () => {
         // var checkoutTime = new Date(checkoutTimeStamp).toString("hh:mm A")
         var checkoutTime = new Date(checkoutTimeStamp).toLocaleTimeString()
         var totalTime = checkoutTimeStamp - checkinTimeStamp
-        var hourWorked = (totalTime / 3.6e+6).toFixed(2)
+        var hourWorked = (totalTime / (1000 * 3600)).toFixed(2)
         // var hourWorked = (hourWorkedMinutes / 60).toFixed(15)
         console.log("hourWorked are : ", hourWorked)
         if (hourWorked) {
@@ -203,7 +224,7 @@ export const Dashboard = () => {
                                 <TableBody>
                                     <TableCell align="right">{checkinTime ? checkinTime : "Not Checked in"}</TableCell>
                                     <TableCell align="right">{checkoutTimeStamp ? checkoutTime : "-"}</TableCell>
-                                    <TableCell align="right">{totalHr} hours</TableCell>
+                                    <TableCell align="right">{checkinTime && checkoutTimeStamp ? `${totalHr} hours` : "0 Hours"}</TableCell>
                                     <TableCell align="right">12 Hours</TableCell>
                                 </TableBody>
                             </Table>
@@ -309,8 +330,8 @@ export const Dashboard = () => {
                                                 <TableCell ><a href={`tel:${item.cNumber}`} style={{ textDecoration: "none", color: "black" }}>{item.cNumber}</a></TableCell>
                                                 <TableCell >
 
-                                                    {item.role !== "Blocked" ? <Button variant="danger" onClick={() => Block(item.uid)}>Block</Button>
-                                                        : <Button variant="danger" onClick={() => UnBlock(item.uid)}>Unblock</Button>}
+                                                    {item.role !== "Blocked" ? <Button variant="danger" onClick={() => Block(item.uid)} disabled={!item.isVerified}>Block</Button>
+                                                        : <Button variant="danger" onClick={() => UnBlock(item.uid)} disabled={!item.isVerified}>Unblock</Button>}
                                                             &nbsp;
                                                         {item.isVerified ? <Button variant="warning" onClick={() => Verified(item.uid)} disabled={item.isVerified}> Verified</Button> : <Button variant="warning" onClick={() => Verified(item.uid)} disabled={item.isVerified}>Verify</Button>}
 

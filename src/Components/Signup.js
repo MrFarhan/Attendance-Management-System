@@ -2,7 +2,7 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import '../App.css'
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, InputGroup } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import firebase from "firebase"
 import { makeStyles } from '@material-ui/core/styles';
@@ -97,7 +97,7 @@ export const Signup = () => {
             cNumber: Yup.string()
                 .matches(phoneReg, 'Invalid format - Number must be at least 11 ')
                 .required("Phone number is required")
-                .max(11, "Phone number must be 11 charactors long"),
+                .max(10, "Phone number must be 11 charactors long"),
             acceptedTerms: Yup.boolean()
                 .required("Kindly accept our terms and conditions to proceed with signup ")
                 .oneOf([true], "Terms and condition acceptance is mandatory")
@@ -189,13 +189,19 @@ export const Signup = () => {
 
                 </Form.Group>
 
-                <Form.Group>
-                    <Form.Label className="labels" htmlFor="cNumber">Phone Number</Form.Label>
-                    <Form.Control id="cNumber" type="number" placeholder="Enter your mobile number" {...formik.getFieldProps('cNumber')} />
-                    <span className="inputerror">  {formik.touched.cNumber && formik.errors.cNumber ? (
+                <>
+                    <Form.Label className="labels" htmlFor="cNumber" style={{ display: "flex" }}>Phone Number</Form.Label>
+                    <InputGroup style={{ marginBottom: "1rem" }}>
+                        <InputGroup.Text>+92</InputGroup.Text>
+                        <Form.Control id="cNumber" type="number" placeholder="Enter your mobile number" {...formik.getFieldProps('cNumber')} />
+                    </InputGroup>
+                    <span className="inputerror" style={{ marginBottom: "1rem", marginTop: "-1rem" }}>  {formik.touched.cNumber && formik.errors.cNumber ? (
                         <div>{formik.errors.cNumber}</div>
                     ) : null}</span>
-                </Form.Group>
+
+
+                </>
+
 
                 <Form.Group {...formik.getFieldProps('dateofBirth')}>
                     <Form.Label className="labels" htmlFor="dateofBirth">Select your date of birth</Form.Label>
@@ -217,16 +223,19 @@ export const Signup = () => {
                         id="Male"
                         value="Male"
                     />
-                    <Form.Check
+                    <Form.Check style={{marginLeft:"1rem"}}
                         type="radio"
                         label="Female"
                         name="gender"
                         id="Female"
                         value="Female"
                     />
-                    <div>                <br /><div className="inputerror" style={{ marginLeft: "-13em" }}>  {formik.touched.gender && formik.errors.gender ? (
-                        <div>{formik.errors.gender}</div>
-                    ) : null}</div></div>
+                    <div>
+                        <br />
+                        <div className="inputerror" style={{ marginLeft: "-13em" }}>  {formik.touched.gender && formik.errors.gender ? (
+                            <div>{formik.errors.gender}</div>
+                        ) : null}</div>
+                    </div>
                 </Form.Group>
 
                 <Form.Group>
@@ -254,7 +263,7 @@ export const Signup = () => {
                 </Form.Group>
 
                 <Button variant="primary" type="submit" > Sign up</Button>
-                <Button variant="link" type="button" onClick={LoginFunc}>Already have an account</Button>
+                <Button variant="link" type="button" onClick={LoginFunc}>Already have an account ?</Button>
             </Form>
         </div>
     );
