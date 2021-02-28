@@ -17,7 +17,7 @@ import { Form, Button } from 'react-bootstrap';
 import { Modal } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-
+// import moment from "moment"
 require("datejs")
 
 
@@ -69,12 +69,12 @@ export const Dashboard = () => {
     let attendance = state.attendance
     // eslint-disable-next-line
     const [totalHr, setTotalhr] = useState(0)
-    const checkinTimeStamp = attendance && attendance[currentYear] && attendance[currentMonth] && attendance[currentYear][currentMonth][today]?.checkedin
+    const checkinTimeStamp = attendance && attendance[currentYear] && attendance[currentYear][currentMonth][today]?.checkedin
     // eslint-disable-next-line
-    var checkinTime = checkinTimeStamp ? new Date(checkinTimeStamp).toString("hh:mm") : false
-    const checkoutTimeStamp = attendance && attendance[currentYear] && attendance[currentMonth] && attendance[currentYear][currentMonth][today]?.checkedout
+    var checkinTime = checkinTimeStamp ? new Date(checkinTimeStamp).toLocaleTimeString() : false
+    const checkoutTimeStamp = attendance && attendance[currentYear] && attendance[currentYear][currentMonth][today]?.checkedout
     // eslint-disable-next-line
-    var checkoutTime = checkoutTimeStamp ? new Date(checkoutTimeStamp).toString("hh:mm") : false
+    var checkoutTime = checkoutTimeStamp ? new Date(checkoutTimeStamp).toLocaleTimeString() : false
 
 
     // eslint-disable-next-line
@@ -97,9 +97,10 @@ export const Dashboard = () => {
     }, [loading])
 
     useEffect(() => {
-        const checkinTimeStamp = attendance && attendance[currentYear] && attendance[currentMonth] && attendance[currentYear][currentMonth][today]?.checkedin
-        const checkoutTimeStamp = attendance && attendance[currentYear] && attendance[currentMonth] && attendance[currentYear][currentMonth][today]?.checkedout
-        var checkoutTime = new Date(checkoutTimeStamp).toString("hh:mm")
+        const checkinTimeStamp = attendance && attendance[currentYear] && attendance[currentYear][currentMonth][today]?.checkedin
+        const checkoutTimeStamp = attendance && attendance[currentYear] && attendance[currentYear][currentMonth][today]?.checkedout
+        // var checkoutTime = new Date(checkoutTimeStamp).toString("hh:mm A")
+        var checkoutTime = new Date(checkoutTimeStamp).toLocaleTimeString()
         var totalTime = checkinTimeStamp - checkoutTimeStamp
         var hourWorkedMinutes = Math.floor(Math.abs(totalTime / 60000)).toFixed(2)
         var hourWorked = (hourWorkedMinutes / 60).toFixed(15)
@@ -179,8 +180,7 @@ export const Dashboard = () => {
     });
 
 
-    if (!loading && !userDetails) history.push("/")
-
+    // if (!loading && !userDetails) history.push("/")
     return (
 
         <Layout >
@@ -198,6 +198,10 @@ export const Dashboard = () => {
                                         <TableCell align="right">Required Time</TableCell>
                                     </TableRow>
                                 </TableHead>
+
+{/* 
+                                <td>{item[1] ? moment(item[1]["checkedin"]).format('hh:mm:ss A') : null}</td>
+                                <td>{item[1] ? moment(item[1]["checkedout"]).format('hh:mm:ss A') : null}</td> */}
 
                                 <TableBody>
                                     <TableCell align="right">{checkinTime ? checkinTime : "Not Checked in"}</TableCell>

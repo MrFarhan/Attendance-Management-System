@@ -14,14 +14,13 @@ export const UserAttendance = () => {
     const state = useSelector(state => state)
     const allUserDetails = state?.allUserDetails
     const allUserValues = Object.values(allUserDetails)
-    const [uuid, setUuid] = useState("")
+    const [uuid, setUuid] = useState(state?.userDetails?.role === "Admin" ? "" : state?.userDetails?.uid)
     const [userName, setUserName] = useState("")
     const [attendance, setAttendance] = useState("")
     const [year, setYear] = useState()
     // var attendanceData;
     // console.log(year, "year is ")
-    const pageLimit = 31
-    console.log(pageLimit, "page limit")
+    // const pageLimit = 31
     const [currentPage, setCurrentPage] = useState(1);
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     // var today = new Date().toLocaleString().split(",")[0];
@@ -51,10 +50,9 @@ export const UserAttendance = () => {
     }, [currentPage])
 
     useEffect(() => {
-
+        console.log("uuid is ", uuid)
         setAttendance(false)
     }, [year, uuid])
-
     return (
         <Layout>
             <div>
@@ -63,10 +61,12 @@ export const UserAttendance = () => {
                     <Form onSubmit={(e) => e.preventDefault()}>
                         <span style={{ padding: "1em" }}>
                             <select style={{ padding: "0.5em" }} onChange={e => setUuid(e?.target?.value)} required={true}>
-                                <option value="">User</option>
-                                {allUserValues?.map((item) => {
-                                    return <option value={item?.uid} >{item?.firstName}</option>
-                                })}
+                                {state.userDetails.role === "Admin" ? <>
+                                    <option disabled={true} value={""}>User</option>
+                                    {allUserValues?.map((item) => {
+                                        return <option value={item?.uid} >{item?.firstName}</option>
+                                    })}</> : <option value={state.userDetails?.uid} >{state.userDetails?.firstName}</option>
+                                }
                             </select>
                         </span>
 
@@ -103,7 +103,7 @@ export const UserAttendance = () => {
                                     <td>{item[0] ? moment(item[0]).format('DD-MM-YYYY') : null}</td>
                                     <td>{item[1] ? moment(item[1]["checkedin"]).format('hh:mm:ss A') : null}</td>
                                     <td>{item[1] ? moment(item[1]["checkedout"]).format('hh:mm:ss A') : null}</td>
-                                    <td><NumberFormat value={((item[1]["checkedout"] - item[1]["checkedin"]) / 3600).toFixed(1)} displayType={'text'} thousandSeparator={true} /></td>
+                                    <td><NumberFormat value={((item[1]["checkedout"] - item[1]["checkedin"]) / (1000 * 3600 * 24)).toFixed(1)} displayType={'text'} thousandSeparator={true} /></td>
                                     <td>8 Hours</td>
                                 </tr>
                             }) : <tr>
