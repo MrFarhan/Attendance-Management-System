@@ -17,8 +17,11 @@ export const UserAttendance = () => {
     const [userName, setUserName] = useState("")
     const [attendance, setAttendance] = useState("")
     const [year, setYear] = useState()
+    // var [presentDays, setPresentDays] = useState(0)
     const [month, setMonth] = useState(1)
     console.log("month is ", month)
+    let presentDays = 0
+    let utilizedTime = 0
 
     // const [currentPage, setCurrentPage] = useState(1);
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -66,18 +69,18 @@ export const UserAttendance = () => {
                                 <select required={true} style={{ padding: "0.5em" }} onChange={e => setMonth(e.target.value)
                                 }>
                                     <option value="">Month</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                    <option value="11">11</option>
-                                    <option value="12">12</option>
+                                    <option value="1">January</option>
+                                    <option value="2">February</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
                                 </select>
                             </span>
 
@@ -109,7 +112,13 @@ export const UserAttendance = () => {
                             </thead>
                             <tbody>
                                 {Object.entries(attendance)?.length ? Object.entries(attendance)?.map((item, index) => {
-                                    console.log("final retrival of item is ", item)
+                                    if (item[1]['checkedin']) {
+                                        // console.log("item is ",  item)
+                                        presentDays = presentDays + 1
+                                        let tempUtilizedTime = ((item[1]["checkedout"] - item[1]["checkedin"]) / (1000 * 3600 * 24))
+                                        utilizedTime += tempUtilizedTime
+                                        // console.log("temp time utilized  ", utilizedTime)
+                                    }
                                     return <tr key={index}>
                                         <td>{item[1] ? moment(item[0]).format('DD-MM-YYYY') : null}</td>
                                         <td>{item[1] ? moment(item[1]["checkedin"]).format('hh:mm:ss A') : null}</td>
@@ -121,8 +130,15 @@ export const UserAttendance = () => {
                                         <td colSpan="6" >No data</td>
                                     </tr>}
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colSpan="3">Total Days Present {presentDays}</td>
+                                    <td>Total Time Utilized {utilizedTime.toFixed(2)}</td>
+                                    <td>Total Time required for the month 240 Hours </td>
+                                </tr>
+                            </tfoot>
+
                         </Table>
-                        {console.log(attendance, "atendate")}
                     </div>}
                 </div>
                 : <h3>Kindly ask your administrator to authorize your account</h3>}

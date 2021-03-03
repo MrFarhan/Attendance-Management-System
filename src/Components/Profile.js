@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 
     signupFormMain: {
         width: "100%",
-        justifyContent:"center",
+        justifyContent: "center",
         [theme.breakpoints.up('xl')]: {
             width: `70%`,
             display: "flex",
@@ -37,11 +37,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Profile = () => {
-    const state = useSelector((state)=>state)
-    const userDetails =  state?.userDetails
+    const state = useSelector((state) => state)
+    const userDetails = state?.userDetails
     const loading = state?.loading
     let history = useHistory()
     const [dp, uploadDp] = useState(userDetails?.dp || pic)
+    const [uploadError, setUploadError] = useState("")
     console.log("user details are : ", state)
 
     const formik = useFormik({
@@ -79,6 +80,7 @@ export const Profile = () => {
     });
 
     const UpdateFunc = (values) => {
+        setUploadError("")
         let UID = firebase.auth().currentUser?.uid
 
         firebase.database().ref("Users/" + UID).update({
@@ -94,17 +96,21 @@ export const Profile = () => {
         history.push("/")
     }
 
+
     const imgUpload = (e) => {
         let UID = firebase.auth()?.currentUser?.uid
         var file = e.target.files[0]
-        firebase.storage().ref(`Users/${UID}/profilePic`).put(file).then(() => {
-            uploadDp(file)
-        }).then(() => {
-            firebase.storage().ref(`Users/${UID}/profilePic`).getDownloadURL().then(urlImg => {
-                uploadDp(String(urlImg))
+        if (file.type === "image/jpeg" || file.type === "image/jpg" || file.type === "image/png" && file.size < 1024) {
+            firebase.storage().ref(`Users/${UID}/profilePic`).put(file).then(() => {
+                uploadDp(file)
+            }).then(() => {
+                firebase.storage().ref(`Users/${UID}/profilePic`).getDownloadURL().then(urlImg => {
+                    uploadDp(String(urlImg))
+                    setUploadError("")
 
-            })
-        }).catch((e) => console.log(e.message, "error in profile pic put"))
+                })
+            }).catch((e) => console.log(e.message, "error in profile pic put"))
+        } else setUploadError("kindly select an image with JPG and PNG format with size less then 1 MB")
     }
 
     if (!loading && !userDetails) history.push("/")
@@ -113,81 +119,84 @@ export const Profile = () => {
     return (
         <Layout>
             <div className={classes.signupFormMain} >
-                    <Form onSubmit={formik.handleSubmit} className={classes.signupForm}>
-                        <div className="mb-3">
-                            <Form.File >
-                                <img src={dp} className="profilePagePic" alt="Profile pic" />
-                                <Form.File.Input onChange={((e) => imgUpload(e))} />
-                            </Form.File>
-                        </div>
-
-                        <Form.Group>
-                            <Form.Label className="labels" htmlFor="firstName">First Name</Form.Label>
-                            <Form.Control id="firstName" type="text" placeholder="Enter First Name" {...formik.getFieldProps('firstName')} autoFocus />
-                            <span className="inputerror">  {formik.touched.firstName && formik.errors.firstName ? (
-                                <div>{formik.errors.firstName}</div>
-                            ) : null}</span>
-                        </Form.Group>
-
-                        <Form.Group>
-                            <Form.Label className="labels" htmlFor="lastName">Last Name</Form.Label>
-                            <Form.Control id="lastName" type="text" placeholder="Enter Last Name" {...formik.getFieldProps('lastName')} />
-                            <span className="inputerror">  {formik.touched.lastName && formik.errors.lastName ? (
-                                <div>{formik.errors.lastName}</div>
-                            ) : null}</span>
-                        </Form.Group>
-
-                        <Form.Group>
-                            <Form.Label className="labels" htmlFor="email">Email address</Form.Label>
-                            <Form.Control id="email" type="email" placeholder="Enter Email" {...formik.getFieldProps('email')} disabled/>
-                            <span className="inputerror">  {formik.touched.email && formik.errors.email ? (
-                                <div>{formik.errors.email}</div>
-                            ) : null}</span>
-                        </Form.Group>
+                <Form onSubmit={formik.handleSubmit} className={classes.signupForm}>
+                    <div className="mb-3">
+                        <Form.File >
+                            <img src={dp} className="profilePagePic" alt="Profile pic" />
+                            <Form.File.Input onChange={((e) => imgUpload(e))} />
+                        </Form.File>
+                        <span className="inputerror">{uploadError && uploadError.length ? "Kindly upload image with JPG or PNG format" : null}</span>
 
 
-                        <Form.Group>
-                            <Form.Label className="labels" htmlFor="cNumber">Phone Number</Form.Label>
-                            <Form.Control id="cNumber" type="number" placeholder="Enter your mobile number" {...formik.getFieldProps('cNumber')} />
-                            <span className="inputerror">  {formik.touched.cNumber && formik.errors.cNumber ? (
-                                <div>{formik.errors.cNumber}</div>
-                            ) : null}</span>
-                        </Form.Group>
+                    </div>
 
-                        <Form.Group >
-                            <Form.Label className="labels" htmlFor="dateofBirth">Select your date of birth</Form.Label>
-                            <Form.Control id="dateofBirth" type="date" placeholder="Select your date of birth" {...formik.getFieldProps('dateofBirth')} disabled />
-                            <span className="inputerror">  {formik.touched.dateofBirth && formik.errors.dateofBirth ? (
-                                <div>{formik.errors.dateofBirth}</div>
-                            ) : null}</span>
-                        </Form.Group>
+                    <Form.Group>
+                        <Form.Label className="labels" htmlFor="firstName">First Name</Form.Label>
+                        <Form.Control id="firstName" type="text" placeholder="Enter First Name" {...formik.getFieldProps('firstName')} autoFocus />
+                        <span className="inputerror">  {formik.touched.firstName && formik.errors.firstName ? (
+                            <div>{formik.errors.firstName}</div>
+                        ) : null}</span>
+                    </Form.Group>
+
+                    <Form.Group>
+                        <Form.Label className="labels" htmlFor="lastName">Last Name</Form.Label>
+                        <Form.Control id="lastName" type="text" placeholder="Enter Last Name" {...formik.getFieldProps('lastName')} />
+                        <span className="inputerror">  {formik.touched.lastName && formik.errors.lastName ? (
+                            <div>{formik.errors.lastName}</div>
+                        ) : null}</span>
+                    </Form.Group>
+
+                    <Form.Group>
+                        <Form.Label className="labels" htmlFor="email">Email address</Form.Label>
+                        <Form.Control id="email" type="email" placeholder="Enter Email" {...formik.getFieldProps('email')} disabled />
+                        <span className="inputerror">  {formik.touched.email && formik.errors.email ? (
+                            <div>{formik.errors.email}</div>
+                        ) : null}</span>
+                    </Form.Group>
+
+
+                    <Form.Group>
+                        <Form.Label className="labels" htmlFor="cNumber">Phone Number</Form.Label>
+                        <Form.Control id="cNumber" type="number" placeholder="Enter your mobile number" {...formik.getFieldProps('cNumber')} />
+                        <span className="inputerror">  {formik.touched.cNumber && formik.errors.cNumber ? (
+                            <div>{formik.errors.cNumber}</div>
+                        ) : null}</span>
+                    </Form.Group>
+
+                    <Form.Group >
+                        <Form.Label className="labels" htmlFor="dateofBirth">Select your date of birth</Form.Label>
+                        <Form.Control id="dateofBirth" type="date" placeholder="Select your date of birth" {...formik.getFieldProps('dateofBirth')} disabled />
+                        <span className="inputerror">  {formik.touched.dateofBirth && formik.errors.dateofBirth ? (
+                            <div>{formik.errors.dateofBirth}</div>
+                        ) : null}</span>
+                    </Form.Group>
 
 
 
-                        <Form.Group style={{ display: "flex" }} {...formik.getFieldProps('gender')} >
-                            <Form.Label style={{ marginRight: "1rem" }}>Gender</Form.Label>
-                            <Form.Check style={{ justifyContent: "flex-start" }}
-                                type="radio"
-                                label="Male"
-                                name="gender"
-                                id="Male"
-                                value="Male"
-                                checked={formik?.values?.['gender'] === 'Male'} disabled
-                            />
-                            <Form.Check
-                                type="radio"
-                                label="Female"
-                                name="gender"
-                                id="Female"
-                                value="Female"
-                                checked={formik?.values?.['gender'] === 'Female'} disabled
-                            />
-                            <div>                <br /><div className="inputerror" style={{ marginLeft: "-13em" }}>  {formik.touched.gender && formik.errors.gender ? (
-                                <div>{formik.errors.gender}</div>
-                            ) : null}</div></div>
-                        </Form.Group>
-                        <Button variant="primary" type="submit" > Update</Button>
-                    </Form>
+                    <Form.Group style={{ display: "flex" }} {...formik.getFieldProps('gender')} >
+                        <Form.Label style={{ marginRight: "1rem" }}>Gender</Form.Label>
+                        <Form.Check style={{ justifyContent: "flex-start" }}
+                            type="radio"
+                            label="Male"
+                            name="gender"
+                            id="Male"
+                            value="Male"
+                            checked={formik?.values?.['gender'] === 'Male'} disabled
+                        />
+                        <Form.Check
+                            type="radio"
+                            label="Female"
+                            name="gender"
+                            id="Female"
+                            value="Female"
+                            checked={formik?.values?.['gender'] === 'Female'} disabled
+                        />
+                        <div>                <br /><div className="inputerror" style={{ marginLeft: "-13em" }}>  {formik.touched.gender && formik.errors.gender ? (
+                            <div>{formik.errors.gender}</div>
+                        ) : null}</div></div>
+                    </Form.Group>
+                    <Button variant="primary" type="submit" > Update</Button>
+                </Form>
 
             </div >
         </Layout>
