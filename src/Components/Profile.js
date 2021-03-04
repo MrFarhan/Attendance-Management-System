@@ -43,7 +43,7 @@ export const Profile = () => {
     let history = useHistory()
     const [dp, uploadDp] = useState(userDetails?.dp || pic)
     const [uploadError, setUploadError] = useState("")
-    console.log("user details are : ", state)
+    // console.log("user details are : ", state)
 
     const formik = useFormik({
         initialValues: {
@@ -54,6 +54,7 @@ export const Profile = () => {
             password: userDetails?.password,
             gender: userDetails?.gender,
             dateofBirth: userDetails?.dateofBirth,
+            weekEnd: userDetails?.weekEnd || "Sunday"
 
         },
         validationSchema: Yup.object({
@@ -80,18 +81,16 @@ export const Profile = () => {
     });
 
     const UpdateFunc = (values) => {
+        console.log("values are : ", values)
         setUploadError("")
         let UID = firebase.auth().currentUser?.uid
 
         firebase.database().ref("Users/" + UID).update({
             firstName: values.firstName,
             lastName: values.lastName,
-            email: values.email,
             cNumber: values.cNumber,
-            gender: values.gender,
-            dateofBirth: values.dateofBirth,
             dp: dp,
-            isVerified: false
+            weekEnd:values.weekEnd
         }).then().catch((e) => console.log(e, "error"))
         history.push("/")
     }
@@ -195,6 +194,21 @@ export const Profile = () => {
                             <div>{formik.errors.gender}</div>
                         ) : null}</div></div>
                     </Form.Group>
+
+
+                    <Form.Group style={{ display: "flex" }}>
+                        <select required={true} style={{ padding: "0.5em" }} {...formik.getFieldProps('weekEnd')} >
+                            <option value="">SELECT YOUR WEEKEND</option>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday" >Sunday</option>
+                        </select>
+                    </Form.Group>
+                    
                     <Button variant="primary" type="submit" > Update</Button>
                 </Form>
 

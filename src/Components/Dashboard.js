@@ -17,6 +17,8 @@ import { Form, Button } from 'react-bootstrap';
 import { Modal } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import moment from "moment"
+
 require("datejs")
 
 
@@ -100,7 +102,7 @@ export const Dashboard = () => {
         const checkoutTimeStamp = attendance && attendance[currentYear] && attendance[currentYear][currentMonth] && attendance[currentYear][currentMonth][today]?.checkedout
         // var checkoutTime = new Date(checkoutTimeStamp).toString("hh:mm A")
         var checkoutTime = new Date(checkoutTimeStamp).toLocaleTimeString()
-        var totalTime = checkinTimeStamp - checkoutTimeStamp
+        var totalTime =  checkoutTimeStamp - checkinTimeStamp
         var hourWorkedMinutes = Math.floor(Math.abs(totalTime / 60000)).toFixed(2)
         var hourWorked = (hourWorkedMinutes / 60).toFixed(15)
         if (Number(checkoutTime)) {
@@ -206,6 +208,15 @@ export const Dashboard = () => {
                                     <TableCell align="right">{checkinTime ? checkinTime : "Not Checked in"}</TableCell>
                                     <TableCell align="right">{checkoutTimeStamp ? checkoutTime : "-"}</TableCell>
                                     <TableCell align="right">{totalHr} hours</TableCell>
+                                    {/* {console.log(checkinTime.diff(checkoutTime, 'hours')) } */}
+                                    {/* <TableCell align="right">{ moment.duration(end.diff(checkinTime)).asHours()} hours</TableCell> */}
+                                    {/* var duration = moment.duration(end.diff(startTime)); */}
+{/* var hours = duration.asHours(); */}
+{/* console.log([dif.hours(), dif.minutes(), dif.seconds()].join(':')); */}
+
+
+
+
                                     <TableCell align="right">12 Hours</TableCell>
                                 </TableBody>
                             </Table>
@@ -303,7 +314,7 @@ export const Dashboard = () => {
 
                                     <TableBody>
 
-                                        {data.filter(item=> item.role !== "Admin").map((item, index) => (
+                                        {data.filter(item => item.role !== "Admin").map((item, index) => (
                                             <TableRow key={index} >
                                                 <TableCell >{item.firstName}</TableCell>
                                                 <TableCell ><a href={`mailto:${item.email}`} style={{ textDecoration: "none", color: "black" }}>{item.email}</a></TableCell>

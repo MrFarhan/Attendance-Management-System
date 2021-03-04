@@ -6,7 +6,6 @@ import NumberFormat from 'react-number-format';
 import moment from "moment"
 import Layout from './Layout';
 
-// var currentYear = new Date().getFullYear()
 
 export const UserAttendance = () => {
 
@@ -17,15 +16,23 @@ export const UserAttendance = () => {
     const [userName, setUserName] = useState("")
     const [attendance, setAttendance] = useState("")
     const [year, setYear] = useState()
-    // var [presentDays, setPresentDays] = useState(0)
     const [month, setMonth] = useState(1)
-    console.log("month is ", month)
+    const [weekEnd, setWeekEnd] = useState(state?.userDetails?.weekEnd || "Sunday")
     let presentDays = 0
     let utilizedTime = 0
+    // let tempo = [...tempo]
 
-    // const [currentPage, setCurrentPage] = useState(1);
+    // useEffect(() => {
+    //     firebase.auth().onAuthStateChanged(function (user) {
+    //         if (user) {
+    //             const useruid = user.uid
+    //             firebase.database().ref(`Users/${useruid}/`).on("value", (res) => {
+    //                 dispatch(userDetailsAction(res.val()))
+    //             })
+    //         }
+    //     }, [weekEnd])
+
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    // var today = new Date().toLocaleString().split(",")[0];
     const Generate = () => {
         if (uuid && year && month) {
             const data = Object.entries(state?.allUsersAttendanceDetails)
@@ -112,16 +119,23 @@ export const UserAttendance = () => {
                             </thead>
                             <tbody>
                                 {Object.entries(attendance)?.length ? Object.entries(attendance)?.map((item, index) => {
+                                    let days = moment(item[0]).format('dddd')
+                                    // tempo = tempo.push(item[0])
+                                    // const sortedDates =  item[0] ? item[0].sort((a, b) => b["checkedin"] - a["checkedin"]) : null
+                                    // console.log("sortedDates", sortedDates)
                                     if (item[1]['checkedin']) {
-                                        // console.log("item is ",  item)
                                         presentDays = presentDays + 1
                                         let tempUtilizedTime = ((item[1]["checkedout"] - item[1]["checkedin"]) / (1000 * 3600 * 24))
                                         utilizedTime += tempUtilizedTime
-                                        // console.log("temp time utilized  ", utilizedTime)
                                     }
+                                    // if ()
+                                    // 
                                     return <tr key={index}>
-                                        <td>{item[1] ? moment(item[0]).format('DD-MM-YYYY') : null}</td>
-                                        <td>{item[1] ? moment(item[1]["checkedin"]).format('hh:mm:ss A') : null}</td>
+                                        {console.log("item[1] is : ", item[1], "moment(item[0]).format('dddd') is  ", moment(item[0]).format('dddd'), "weekEnd is ", weekEnd, "(item[1][checkedin] is ", (item[1]["checkedin"]))}
+                                        {console.log("item[1][checkedin]", item[1] && moment(item[0]).format('dddd') === weekEnd && (item[1]["checkedin"].length <= 2) ? "Holiday" : moment(item[0]).format('DD-MM-YYYY'))}
+                                        <td>{item[1] && moment(item[0]).format('dddd') === weekEnd && (item[1]["checkedin"].length >= 2) ? "Holiday" : moment(item[0]).format('DD-MM-YYYY')}</td>
+                                        {/* <td>{item[1] ? moment(item[0]).format('DD-MM-YYYY') : null}</td> */}
+                                        <td>{item[1] ? moment(item[1]["checkedin"]).format('hh:mm:ss A') : "Absent"}</td>
                                         <td>{item[1] ? moment(item[1]["checkedout"]).format('hh:mm:ss A') : null}</td>
                                         <td><NumberFormat value={((item[1]["checkedout"] - item[1]["checkedin"]) / (1000 * 3600 * 24)).toFixed(1)} displayType={'text'} thousandSeparator={true} /></td>
                                         <td>8 Hours</td>
