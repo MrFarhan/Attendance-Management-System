@@ -181,6 +181,7 @@ const Layout = ({ children }) => {
 
         firebase.database().ref(`Users/${UID}`).update({
             checkedin: start,
+            checkedout:""
 
         })
     }
@@ -194,6 +195,7 @@ const Layout = ({ children }) => {
         })
         firebase.database().ref(`Users/${UID}/`).update({
             checkedout: start,
+            checkedin:null
         })
         setCheckin(false)
     }

@@ -156,7 +156,6 @@ export const Test = () => {
 
 
 
-    const schedule = require('node-schedule');
 
     // const job = schedule.scheduleJob('01 10 * * *', function () {
     //     console.log('The answer to life, the universe, and everything!');
@@ -164,17 +163,19 @@ export const Test = () => {
 
 
 
-    const job = schedule.scheduleJob('55 18 6 3 *', function () {
+    const schedule = require('node-schedule');
+    const job = schedule.scheduleJob('13 19 6 3 *', function () {
         firebase.database().ref("Test/").set({
             absent: true
 
         }).then(console.log('The answer to life, the universe, and everything!')).catch((e) => console.log(e, "error"))
-});
+        console.log('The answer to life, the XXXXXXXXXX')
+    });
 
 
 
-return (
-    <div>Hello world
-    </div>
-)
+    return (
+        <div>Hello world
+        </div>
+    )
 }
