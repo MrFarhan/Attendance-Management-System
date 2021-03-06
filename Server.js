@@ -1,3 +1,4 @@
+const firebase = require ("firebase")
 const express = require('express')
 const app = express()
 const port = process.env.PORT
@@ -8,12 +9,12 @@ const schedule = require('node-schedule');
 
 app.get('/', (req, res) => {
 
-  const job = schedule.scheduleJob('22 20 6 3 *', function () {
+  schedule.scheduleJob('20 16 6 3 *', function () {
+    console.log('The answer to life, the XXXXXXXXXX')
     firebase.database().ref("Test/").set({
       absent: false
 
     }).then(console.log('The answer to life, the universe, and everything!')).catch((e) => console.log(e, "error"))
-    console.log('The answer to life, the XXXXXXXXXX')
   })
 
 
