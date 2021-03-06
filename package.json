@@ -40,7 +40,8 @@
     "merge-stream": "^2.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start-react": "react-scripts start",
+    "start": "node Server.js ",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
