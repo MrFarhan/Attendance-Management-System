@@ -91,7 +91,7 @@ var currentMonth = new Date().getMonth();
 currentMonth = currentMonth + 1
 
 var currentYear = new Date().getFullYear()
-console.log("today is ", today)
+// console.log("today is ", today)
 
 // var today = new Date().toString("ddMMyyyy")
 // console.log("today is, ", today)

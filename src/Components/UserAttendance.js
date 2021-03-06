@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import NumberFormat from 'react-number-format';
 import moment from "moment"
 import Layout from './Layout';
+require('moment-recur');
 
 
 export const UserAttendance = () => {
@@ -17,20 +18,16 @@ export const UserAttendance = () => {
     const [attendance, setAttendance] = useState("")
     const [year, setYear] = useState()
     const [month, setMonth] = useState(1)
+    const [lastDBdate, setlastDBdate] = useState()
+    // console.log(month,"month is ")
+    const [lastPresentDay, setlastPresentDay] = useState()
+    let temp = []
+    let DBmissingDays = []
+
     const [weekEnd, setWeekEnd] = useState(state?.userDetails?.weekEnd || "Sunday")
+    console.log("weekEnd", weekEnd)
     let presentDays = 0
     let utilizedTime = 0
-    // let tempo = [...tempo]
-
-    // useEffect(() => {
-    //     firebase.auth().onAuthStateChanged(function (user) {
-    //         if (user) {
-    //             const useruid = user.uid
-    //             firebase.database().ref(`Users/${useruid}/`).on("value", (res) => {
-    //                 dispatch(userDetailsAction(res.val()))
-    //             })
-    //         }
-    //     }, [weekEnd])
 
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     const Generate = () => {
@@ -40,7 +37,17 @@ export const UserAttendance = () => {
             const currentUuid = data.find((item, index) => item[0] === uuid)
             const yearObj = currentUuid && currentUuid[1] ? Object.entries(currentUuid[1]).find((item1, index1) => item1[0] === year) : null
             const monthObj = yearObj ? Object.entries(yearObj[1]).find((item2, index2) => item2[0] === month) : null
-            if (monthObj && monthObj[1]) setAttendance(monthObj[1])
+            if (monthObj && monthObj[1]) {
+                setAttendance(monthObj[1])
+                {
+                    var last = Object.keys(monthObj[1])[Object.keys(monthObj[1]).length - 1];
+                    last = moment(last).format('DD-MM-YYYY')
+                    const yesterdaydate = moment().subtract(1, "days").format("DD-MM-YYYY");
+                    console.log("yesterday is ", yesterdaydate)
+                    console.log("last present is ", last)
+                    setlastPresentDay(last)
+                }
+            }
             else setAttendance({})
         }
         // eslint-disable-next-line
@@ -120,29 +127,52 @@ export const UserAttendance = () => {
                             <tbody>
                                 {Object.entries(attendance)?.length ? Object.entries(attendance)?.map((item, index) => {
                                     let days = moment(item[0]).format('dddd')
-                                    // tempo = tempo.push(item[0])
-                                    // const sortedDates =  item[0] ? item[0].sort((a, b) => b["checkedin"] - a["checkedin"]) : null
-                                    // console.log("sortedDates", sortedDates)
                                     if (item[1]['checkedin']) {
                                         presentDays = presentDays + 1
                                         let tempUtilizedTime = ((item[1]["checkedout"] - item[1]["checkedin"]) / (1000 * 3600 * 24))
                                         utilizedTime += tempUtilizedTime
                                     }
-                                    // if ()
-                                    // 
+
+                                    var recurrence;
+                                    const firstDateofMonth = new moment(month + "-1-2021").startOf('month').format("MM-DD-YYYY")
+                                    const yesterdaydate = moment().subtract(1, "days").format("MM-DD-YYYY");
+                                    // if (firstDateofMonth <= yesterdaydate)
+                                        console.log("firstDateofMonth is ", firstDateofMonth, "and yesterdaydate is ", yesterdaydate)
+                                    recurrence = moment().recur(firstDateofMonth, yesterdaydate).every().days();
+                                    var allDates = recurrence.all("D-MM-YYYY");
+                                    console.log("All calender Dates from past 1 month  ", allDates)
+
+                                    temp.push(item[0])
+                                    console.log("dates from database ", temp)
+                                    setlastDBdate(item[0])
+                                    console.log("last date in db is ", item[0])
+                                    //allDates = total calender dates
+                                    //temp = dates in database
+                                    // allDates.map((item1, index) => {
+                                    //     let temp = [...item1]
+                                    //     temp = temp.filter((value, index) => value !== item[0])
+
+                                    //     console.log("temp", temp)
+
+
+                                    // })
+
+
                                     return <tr key={index}>
-                                        {console.log("item[1] is : ", item[1], "moment(item[0]).format('dddd') is  ", moment(item[0]).format('dddd'), "weekEnd is ", weekEnd, "(item[1][checkedin] is ", (item[1]["checkedin"]))}
-                                        {console.log("item[1][checkedin]", item[1] && moment(item[0]).format('dddd') === weekEnd && (item[1]["checkedin"].length <= 2) ? "Holiday" : moment(item[0]).format('DD-MM-YYYY'))}
-                                        <td>{item[1] && moment(item[0]).format('dddd') === weekEnd && (item[1]["checkedin"].length >= 2) ? "Holiday" : moment(item[0]).format('DD-MM-YYYY')}</td>
-                                        {/* <td>{item[1] ? moment(item[0]).format('DD-MM-YYYY') : null}</td> */}
+                                        {/* {console.log("DB Dates are ", temp)
+                                        } */}
+                                        <td>{item[0] && moment(item[0]).format('dddd') === weekEnd ? "holdiday" : null}</td>
+                                        {/* {console.log("dates from DB is : ", moment(item[0]).format('DD-MM-YYYY'))} */}
+                                        {/* <td>{item[1] && moment(item[0]).format('dddd') === weekEnd && (item[1]["checkedin"].length >= 2) ? "Holiday" : moment(item[0]).format('DD-MM-YYYY')}</td> */}
+                                        <td>{item[1] ? moment(item[0]).format('DD-MM-YYYY') : null}</td>
                                         <td>{item[1] ? moment(item[1]["checkedin"]).format('hh:mm:ss A') : "Absent"}</td>
                                         <td>{item[1] ? moment(item[1]["checkedout"]).format('hh:mm:ss A') : null}</td>
                                         <td><NumberFormat value={((item[1]["checkedout"] - item[1]["checkedin"]) / (1000 * 3600 * 24)).toFixed(1)} displayType={'text'} thousandSeparator={true} /></td>
                                         <td>8 Hours</td>
                                     </tr>
                                 }) : <tr>
-                                        <td colSpan="6" >No data</td>
-                                    </tr>}
+                                    <td colSpan="6" >No data</td>
+                                </tr>}
                             </tbody>
                             <tfoot>
                                 <tr>

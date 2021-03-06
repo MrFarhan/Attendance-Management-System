@@ -102,7 +102,7 @@ export const Dashboard = () => {
         const checkoutTimeStamp = attendance && attendance[currentYear] && attendance[currentYear][currentMonth] && attendance[currentYear][currentMonth][today]?.checkedout
         // var checkoutTime = new Date(checkoutTimeStamp).toString("hh:mm A")
         var checkoutTime = new Date(checkoutTimeStamp).toLocaleTimeString()
-        var totalTime =  checkoutTimeStamp - checkinTimeStamp
+        var totalTime = checkoutTimeStamp - checkinTimeStamp
         var hourWorkedMinutes = Math.floor(Math.abs(totalTime / 60000)).toFixed(2)
         var hourWorked = (hourWorkedMinutes / 60).toFixed(15)
         if (Number(checkoutTime)) {
@@ -200,23 +200,10 @@ export const Dashboard = () => {
                                     </TableRow>
                                 </TableHead>
 
-                                {/* 
-                                <td>{item[1] ? moment(item[1]["checkedin"]).format('hh:mm:ss A') : null}</td>
-                                <td>{item[1] ? moment(item[1]["checkedout"]).format('hh:mm:ss A') : null}</td> */}
-
                                 <TableBody>
                                     <TableCell align="right">{checkinTime ? checkinTime : "Not Checked in"}</TableCell>
                                     <TableCell align="right">{checkoutTimeStamp ? checkoutTime : "-"}</TableCell>
                                     <TableCell align="right">{totalHr} hours</TableCell>
-                                    {/* {console.log(checkinTime.diff(checkoutTime, 'hours')) } */}
-                                    {/* <TableCell align="right">{ moment.duration(end.diff(checkinTime)).asHours()} hours</TableCell> */}
-                                    {/* var duration = moment.duration(end.diff(startTime)); */}
-{/* var hours = duration.asHours(); */}
-{/* console.log([dif.hours(), dif.minutes(), dif.seconds()].join(':')); */}
-
-
-
-
                                     <TableCell align="right">12 Hours</TableCell>
                                 </TableBody>
                             </Table>
