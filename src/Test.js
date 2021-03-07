@@ -6,6 +6,8 @@
 // const bodyParser = require('body-parser');
 // app.use(bodyParser.urlencoded({ extended: false }))
 // const schedule = require('node-schedule');
+// const moment = require("moment")
+
 
 // const firebaseConfig = {
 //   apiKey: process.env.apiKey,
@@ -21,11 +23,16 @@
 
 // firebase.initializeApp(firebaseConfig)
 
+// var currentYear = new Date().getFullYear()
+// var currentMonth = new Date().getMonth();
+// currentMonth = currentMonth + 1
+// let today = moment(new Date()).format('M-D-yyyy')
+// let todayDay = moment(today).format('dddd')
 
 // app.get('/', (req, res) => {
 
-//   //working for late
-//   schedule.scheduleJob('15 0 * * 1-6', function () {
+//   //  working for late
+//   schedule.scheduleJob('15 5 * * 1-6', function () {
 //     console.log('API called for Marking late')
 //     firebase.database().ref("/Attendance").on("value", (res) => {
 //       const attendanceObj = res.val()
@@ -43,23 +50,36 @@
 //     })
 //   })
 
-//   // working for absent
+
+
+//   //  working for Holiday
 //   schedule.scheduleJob('0 5 * * 1-6', function () {
 //     console.log('API called for Marking late')
+
 //     firebase.database().ref("/Attendance").on("value", (res) => {
 //       const attendanceObj = res.val()
 //       firebase.database().ref("/Users").on("value", (res) => {
-//         const userUids = Object.keys(res.val())
-//         userUids.map((uid, index) => {
-//           if (attendanceObj[uid] && (attendanceObj[uid][currentYear][currentMonth][today])) {
-//             console.log(uid, " is present")
-//           } else firebase.database().ref(`/Attendance/${uid}/${currentYear}/${currentMonth}/${today}`).set("Absent")
-//         })
+//           const usersObj = res.val();
+//           const userUids = Object.keys(res.val())
+//           userUids.map((uid, index) => {
+//               if (!attendanceObj[uid] || (attendanceObj[uid] && !(attendanceObj[uid][currentYear][currentMonth][today]) && usersObj[uid]["weekEnd"] === todayDay)) {
+//                 firebase.database().ref(`/Attendance/${uid}/${currentYear}/${currentMonth}/${today}`).set("Holiday")  
+//                 console.log(uid, " is on weekend", today, todayDay)
+//               } else if (!attendanceObj[uid] || (attendanceObj[uid] && !(attendanceObj[uid][currentYear][currentMonth][today]))) {
+//                 firebase.database().ref(`/Attendance/${uid}/${currentYear}/${currentMonth}/${today}`).set("Absent")
+//                 console.log(uid, " is absent")
+//               } else console.log(uid, "is  present ")
+//               // else firebase.database().ref(`/Attendance/${uid}/${currentYear}/${currentMonth}/${today}`).set("Absent")
+//           })
 //       })
-//     })
+//   })
+
 //   })
 //   res.send('Welcome to Computing Yard Attendance Server!')
 // })
+
+
+
 
 // app.listen(port || 3004, () => {
 //   console.log(`Example app listening at http://localhost:${port}`)

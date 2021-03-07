@@ -85,12 +85,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // var today = new Date().toISOString().split("T")[0]
-var today = new Date().toLocaleString().split(",")[0].replaceAll("/", "-");
-
+var currentYear = new Date().getFullYear()
 var currentMonth = new Date().getMonth();
 currentMonth = currentMonth + 1
+var today = new Date().toLocaleString().split(",")[0].replaceAll("/", "-");
 
-var currentYear = new Date().getFullYear()
 // console.log("today is ", today)
 
 // var today = new Date().toString("ddMMyyyy")

@@ -39,14 +39,7 @@ export const UserAttendance = () => {
             const monthObj = yearObj ? Object.entries(yearObj[1]).find((item2, index2) => item2[0] === month) : null
             if (monthObj && monthObj[1]) {
                 setAttendance(monthObj[1])
-                // {
-                //     var last = Object.keys(monthObj[1])[Object.keys(monthObj[1]).length - 1];
-                //     last = moment(last).format('DD-MM-YYYY')
-                //     const yesterdaydate = moment().subtract(1, "days").format("DD-MM-YYYY");
-                //     console.log("yesterday is ", yesterdaydate)
-                //     console.log("last present is ", last)
-                //     setlastPresentDay(last)
-                // }
+
             }
             else setAttendance({})
         }
@@ -133,34 +126,7 @@ export const UserAttendance = () => {
                                         utilizedTime += tempUtilizedTime
                                     }
 
-                                    // var recurrence;
-                                    // const firstDateofMonth = new moment(month + "-1-2021").startOf('month').format("MM-DD-YYYY")
-                                    // const yesterdaydate = moment().subtract(1, "days").format("MM-DD-YYYY");
-                                    // if (firstDateofMonth <= yesterdaydate)
-                                    //     console.log("firstDateofMonth is ", firstDateofMonth, "and yesterdaydate is ", yesterdaydate)
-                                    // recurrence = moment().recur(firstDateofMonth, yesterdaydate).every().days();
-                                    // var allDates = recurrence.all("D-MM-YYYY");
-                                    // console.log("All calender Dates from past 1 month  ", allDates)
-
-                                    // temp.push(item[0])
-                                    // console.log("dates from database ", temp)
-                                    // setlastDBdate(item[0])
-                                    // console.log("last date in db is ", item[0])
-                                    //allDates = total calender dates
-                                    //temp = dates in database
-                                    // allDates.map((item1, index) => {
-                                    //     let temp = [...item1]
-                                    //     temp = temp.filter((value, index) => value !== item[0])
-
-                                    //     console.log("temp", temp)
-
-
-                                    // })
-
-
                                     return <tr key={index}>
-                                        {/* {console.log("DB Dates are ", temp)
-                                        } */}
                                         <td>{item[0] && moment(item[0]).format('dddd') === weekEnd ? "holdiday" : null}</td>
                                         {/* {console.log("dates from DB is : ", moment(item[0]).format('DD-MM-YYYY'))} */}
                                         {/* <td>{item[1] && moment(item[0]).format('dddd') === weekEnd && (item[1]["checkedin"].length >= 2) ? "Holiday" : moment(item[0]).format('DD-MM-YYYY')}</td> */}
