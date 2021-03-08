@@ -21,6 +21,7 @@
 // };
 
 
+
 // firebase.initializeApp(firebaseConfig)
 
 // var currentYear = new Date().getFullYear()
@@ -31,8 +32,9 @@
 
 // app.get('/', (req, res) => {
 
-//   //  working for late
-//   schedule.scheduleJob('15 5 * * 1-6', function () {
+//     console.log(' / API called')
+//     //  working for late
+//   schedule.scheduleJob('35 07 * * *', function () {
 //     console.log('API called for Marking late')
 //     firebase.database().ref("/Attendance").on("value", (res) => {
 //       const attendanceObj = res.val()
@@ -53,7 +55,7 @@
 
 
 //   //  working for Holiday
-//   schedule.scheduleJob('0 5 * * 1-6', function () {
+//   schedule.scheduleJob('17 05 * * *', function () {
 //     console.log('API called for Marking late')
 
 //     firebase.database().ref("/Attendance").on("value", (res) => {
@@ -62,10 +64,10 @@
 //           const usersObj = res.val();
 //           const userUids = Object.keys(res.val())
 //           userUids.map((uid, index) => {
-//               if (!attendanceObj[uid] || (attendanceObj[uid] && !(attendanceObj[uid][currentYear][currentMonth][today]) && usersObj[uid]["weekEnd"] === todayDay)) {
+//               if (!attendanceObj[uid] || (attendanceObj[uid] && !(attendanceObj[uid][currentYear][currentMonth][today]["checkedin"]) && usersObj[uid]["weekEnd"] === todayDay)) {
 //                 firebase.database().ref(`/Attendance/${uid}/${currentYear}/${currentMonth}/${today}`).set("Holiday")  
 //                 console.log(uid, " is on weekend", today, todayDay)
-//               } else if (!attendanceObj[uid] || (attendanceObj[uid] && !(attendanceObj[uid][currentYear][currentMonth][today]))) {
+//               } else if (!attendanceObj[uid] || (attendanceObj[uid] && !(attendanceObj[uid][currentYear][currentMonth][today]["checkedin"]))) {
 //                 firebase.database().ref(`/Attendance/${uid}/${currentYear}/${currentMonth}/${today}`).set("Absent")
 //                 console.log(uid, " is absent")
 //               } else console.log(uid, "is  present ")

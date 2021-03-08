@@ -18,11 +18,7 @@ export const UserAttendance = () => {
     const [attendance, setAttendance] = useState("")
     const [year, setYear] = useState()
     const [month, setMonth] = useState(1)
-    const [lastDBdate, setlastDBdate] = useState()
-    // console.log(month,"month is ")
-    const [lastPresentDay, setlastPresentDay] = useState()
-    let temp = []
-    let DBmissingDays = []
+
 
     const [weekEnd, setWeekEnd] = useState(state?.userDetails?.weekEnd || "Sunday")
     console.log("weekEnd", weekEnd)
@@ -64,7 +60,7 @@ export const UserAttendance = () => {
                             <span style={{ padding: "1em" }}>
                                 <select style={{ padding: "0.5em" }} onChange={e => setUuid(e?.target?.value)} required={true}>
                                     {state.userDetails.role === "Admin" ? <>
-                                        <option disabled={true} value={""}>User</option>
+                                        <option value={""}>User</option>
                                         {allUserValues?.map((item) => {
                                             return <option value={item?.uid} >{item?.firstName}</option>
                                         })}</> : <option value={state.userDetails?.uid} >{state.userDetails?.firstName}</option>
@@ -127,15 +123,28 @@ export const UserAttendance = () => {
                                     }
 
                                     return <tr key={index}>
-                                        <td>{item[0] && moment(item[0]).format('dddd') === weekEnd ? "holdiday" : null}</td>
-                                        {/* {console.log("dates from DB is : ", moment(item[0]).format('DD-MM-YYYY'))} */}
-                                        {/* <td>{item[1] && moment(item[0]).format('dddd') === weekEnd && (item[1]["checkedin"].length >= 2) ? "Holiday" : moment(item[0]).format('DD-MM-YYYY')}</td> */}
+
                                         <td>{item[1] ? moment(item[0]).format('DD-MM-YYYY') : null}</td>
-                                        <td>{item[1] ? moment(item[1]["checkedin"]).format('hh:mm:ss A') : "Absent"}</td>
-                                        <td>{item[1] ? moment(item[1]["checkedout"]).format('hh:mm:ss A') : null}</td>
-                                        <td><NumberFormat value={((item[1]["checkedout"] - item[1]["checkedin"]) / (1000 * 3600 * 24)).toFixed(1)} displayType={'text'} thousandSeparator={true} /></td>
-                                        <td>8 Hours</td>
+
+                                        {item[1] === "Absent" ?
+                                            <td colSpan={"4"} style={{ color: "red" }}>Absent </td>
+                                            : (item[1] === "Holiday" ?
+                                                <td colSpan={"4"}>Holiday </td> :
+                                                <>
+                                                    <td>{item[1] && moment(item[1]["checkedin"]).format('hh:mm:ss A')}</td>
+                                                    <td>{item[1]["checkedout"] && !item[1]["checkedout"].length ? moment(item[1]["checkedout"]).format('hh:mm:ss A') : "Not checked out"}</td>
+                                                    <td>{item[1]["checkedout"] && !item[1]["checkedout"].length ?  <NumberFormat value={((item[1]["checkedout"] - item[1]["checkedin"]) / (3.6e+6)).toFixed(1)} displayType={'text'} thousandSeparator={true} /> : 0}</td>
+                                                    <td>8 Hours</td>
+                                                </>
+
+                                            )}
+
                                     </tr>
+
+
+
+
+
                                 }) : <tr>
                                     <td colSpan="6" >No data</td>
                                 </tr>}

@@ -103,13 +103,13 @@ export const Dashboard = () => {
         // var checkoutTime = new Date(checkoutTimeStamp).toString("hh:mm A")
         var checkoutTime = new Date(checkoutTimeStamp).toLocaleTimeString()
         var totalTime = checkoutTimeStamp - checkinTimeStamp
-        var hourWorkedMinutes = Math.floor(Math.abs(totalTime / 60000)).toFixed(2)
-        var hourWorked = (hourWorkedMinutes / 60).toFixed(15)
-        if (Number(checkoutTime)) {
+        var hourWorked = (totalTime / 3.6e+6).toFixed(2)
+        // var hourWorked = (hourWorkedMinutes / 60).toFixed(15)
+        console.log("hourWorked are : ", hourWorked)
+        if (hourWorked) {
             setTotalhr(hourWorked)
         }
-    }, [attendance])
-
+    }, [attendance, totalHr, checkoutTimeStamp])
 
     if (!loading && !userDetails) history.push("/")
     // eslint-disable-next-line
