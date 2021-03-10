@@ -90,21 +90,20 @@ const useStyles = makeStyles((theme) => ({
 var currentYear = new Date().getFullYear()
 var currentMonth = new Date().getMonth();
 currentMonth = currentMonth + 1
-// var today = new Date().toLocaleString().split(",")[0].replaceAll("/", "-");
 
 // console.log("today is ", today)
 
 // var today = new Date().toString("ddMMyyyy")
 // console.log("today is, ", today)
 // console.log("current date in date.now",new Date())
-
+const axios = require('axios').default;
 const Layout = ({ children }) => {
     // const { window } = props;
     const classes = useStyles();
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const state = useSelector((state) => state)
-    const [today, setToday] = useState()
+    // const [today, setToday] = useState()
 
     const loading = state.loading
     const userDetails = state.userDetails
@@ -113,10 +112,19 @@ const Layout = ({ children }) => {
     let dp = userDetails?.dp || pic
     // eslint-disable-next-line
     const [checkin, setCheckin] = useState(false)
+    const [ISODate, setISODate] = useState()
+    const [pcTimeError, setpcTimeError] = useState()
     let history = useHistory()
     let dispatch = useDispatch();
     // console.log("checkined  is : ", attendance[currentMonth][today])
 
+    var today = new Date().toLocaleString().split(",")[0].replaceAll("/", "-");
+
+    // if (ISODate === moment(new Date()).format("dddd, MMMM Do YYYY, h:mm")) {
+    //     var today = new Date().toLocaleString().split(",")[0].replaceAll("/", "-");
+    // } else if (!!ISODate){
+    //     alert("kindly reset your pc time")
+    // } else alert("kindly reset your pc time...")
     // side bar items and click handler
     var menu = [{ "Text": "Dashboard", "route": "dashboard" }, { "Text": "Attendance", "route": "attendance" }, { "Text": "Report", "route": "report" }]
     const HandelClick = (e) => {
@@ -169,12 +177,23 @@ const Layout = ({ children }) => {
 
     }
 
+
+    useEffect(() => {
+        if (ISODate !== moment(new Date()).format("dddd, MMMM Do YYYY, h:mm") || !!ISODate) {
+            setpcTimeError(true)
+            console.log("check your PC Time")
+            // var today = new Date().toLocaleString().split(",")[0].replaceAll("/", "-");
+        } else setpcTimeError(false)
+
+    }, [])
     const Checkin = (e) => {
         const checkinTimeStamp = attendance && attendance[currentYear] && attendance[currentYear][currentMonth] && attendance[currentYear][currentMonth][today]?.checkedin
         if (checkinTimeStamp) {
+            setpcTimeError(false)
             console.log("today in checkin is ", today)
             setCheckin(true)
         }
+
 
         const start = today;
         let UID = firebase.auth().currentUser?.uid
@@ -219,24 +238,37 @@ const Layout = ({ children }) => {
         });
         // eslint-disable-next-line
     }, [loading])
+
+    // console.log("our date is ", moment(new Date()).format("dddd, MMMM Do YYYY, h:mm"))
+    useEffect(() => {
+        // console.log("responss is ");
+        async function isodate() {
+            await axios.get('http://worldclockapi.com/api/json/utc/now').then((res) => {
+                return setISODate(moment(res.data["currentDateTime"]).format("dddd, MMMM Do YYYY, h:mm"))
+                // console.log("responss is ", moment(res.data["currentDateTime"]).format("dddd, MMMM Do YYYY, h:mm"));
+            })
+        }
+        isodate()
+    }, [])
+
     // useEffect(() => {
-        firebase.database().ref('currentTime/').update({ time: firebase.database.ServerValue.TIMESTAMP })
-            .then(function (data) {
-                firebase.database().ref('currentTime/')
-                    .once('value')
-                    .then(function (data) {
+    //     firebase.database().ref('currentTime/').update({ time: firebase.database.ServerValue.TIMESTAMP })
+    //         .then(function (data) {
+    //             firebase.database().ref('currentTime/')
+    //                 .once('value')
+    //                 .then(function (data) {
 
-                        // setToday(data.val()['time'])
-                        // t = t+1000
-                        setToday(data.val()['time'])
-                        console.log('server time: ', moment(data.val()['time']).format("M-DD-YYYY"));
+    //                     // setToday(data.val()['time'])
+    //                     // t = t+1000
+    //                     setToday(data.val()['time'])
+    //                     console.log('server time: ', moment(data.val()['time']).format("M-DD-YYYY"));
 
-                    }, function serverTimeErr(err) {
-                        console.log('coulnd nt reach to the server time !');
-                    });
-            }, function (err) {
-                console.log('set time error:', err)
-            });
+    //                 }, function serverTimeErr(err) {
+    //                     console.log('coulnd nt reach to the server time !');
+    //                 });
+    //         }, function (err) {
+    //             console.log('set time error:', err)
+    //         });
     // }, [today])
 
 
@@ -271,10 +303,10 @@ const Layout = ({ children }) => {
 
                         {userDetails?.role !== "Admin" && userDetails?.role !== "Blocked" && userDetails?.isVerified && userDetails?.role === "Authorized" ?
                             (attendance && attendance[currentYear] && attendance[currentYear][currentMonth] && attendance[currentYear][currentMonth][today]?.checkedin && !(attendance[currentYear][currentMonth][today].checkedout) ?
-
                                 < Button variant="contained" onClick={((e) => Checkout(e))} className={classes.checkBtn}>Check out</Button> :
-                                <Button variant="contained" className={classes.checkBtn} disabled={attendance && attendance[currentYear] && attendance[currentYear][currentMonth] && attendance[currentYear][currentMonth][today] && attendance[currentYear][currentMonth][today]?.checkedout} onClick={((e) => Checkin(e))} >Check in</Button>
+                                <Button variant="contained" className={classes.checkBtn} disabled={ISODate !== moment(new Date()).format("dddd, MMMM Do YYYY, h:mm") || !!ISODate || attendance && attendance[currentYear] && attendance[currentYear][currentMonth] && attendance[currentYear][currentMonth][today] && attendance[currentYear][currentMonth][today]?.checkedout} onClick={((e) => Checkin(e))} >Check in</Button>
                             )
+
 
                             : null}
 
@@ -314,49 +346,50 @@ const Layout = ({ children }) => {
                 </Toolbar>
             </AppBar>
 
-            {!userDetails.firstName ? <></>
-                :
+            {
+                !userDetails.firstName ? <></>
+                    :
 
-                <div style={{ width: "inherit" }}>
-                    <nav className={classes.drawer} aria-label="mailbox folders">
-                        <Hidden smUp implementation="css">
-                            <Drawer
-                                // container={container}
-                                variant="temporary"
-                                anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-                                open={mobileOpen}
-                                onClose={handleDrawerToggle}
-                                classes={{
-                                    paper: classes.drawerPaper,
-                                }}
-                                ModalProps={{
-                                    keepMounted: true,
-                                }}
-                            >
-                                {drawer}
-                            </Drawer>
-                        </Hidden>
-                        <Hidden xsDown implementation="css">
-                            <Drawer
-                                classes={{
-                                    paper: classes.drawerPaper,
-                                }}
-                                variant="permanent"
-                                open
-                            >
-                                {drawer}
-                            </Drawer>
-                        </Hidden>
-                    </nav>
-                    <main className={classes.content}>
-                        <div className={classes.toolbar} />
-                        <div className={classes.main}>
-                            {children}
-                        </div>
-                    </main>
-                </div>
+                    <div style={{ width: "inherit" }}>
+                        <nav className={classes.drawer} aria-label="mailbox folders">
+                            <Hidden smUp implementation="css">
+                                <Drawer
+                                    // container={container}
+                                    variant="temporary"
+                                    anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+                                    open={mobileOpen}
+                                    onClose={handleDrawerToggle}
+                                    classes={{
+                                        paper: classes.drawerPaper,
+                                    }}
+                                    ModalProps={{
+                                        keepMounted: true,
+                                    }}
+                                >
+                                    {drawer}
+                                </Drawer>
+                            </Hidden>
+                            <Hidden xsDown implementation="css">
+                                <Drawer
+                                    classes={{
+                                        paper: classes.drawerPaper,
+                                    }}
+                                    variant="permanent"
+                                    open
+                                >
+                                    {drawer}
+                                </Drawer>
+                            </Hidden>
+                        </nav>
+                        <main className={classes.content}>
+                            <div className={classes.toolbar} />
+                            <div className={classes.main}>
+                                {children}
+                            </div>
+                        </main>
+                    </div>
             }
-        </div>
+        </div >
     );
 }
 

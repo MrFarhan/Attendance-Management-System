@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-// var today = new Date().toLocaleString().split(",")[0].replaceAll("/", "-");
+var today = new Date().toLocaleString().split(",")[0].replaceAll("/", "-");
 // console.log("tday is ", today)
 var currentMonth = new Date().getMonth();
 currentMonth = currentMonth + 1
@@ -61,11 +61,13 @@ var currentYear = new Date().getFullYear()
 
 export const Dashboard = () => {
 
+    const [ISODate, setISODate] = useState()
+    const [pcTimeError, setpcTimeError] = useState()
 
     const [show, setShow] = useState(false);
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
-    const [today, setToday] = useState()
+    // const [today, setToday] = useState()
 
     let dispatch = useDispatch()
     const state = useSelector((state) => state)
@@ -82,22 +84,41 @@ export const Dashboard = () => {
     // eslint-disable-next-line
     var checkoutTime = checkoutTimeStamp ? new Date(checkoutTimeStamp).toLocaleTimeString() : false
 
-    firebase.database().ref('currentTime/').update({ time: firebase.database.ServerValue.TIMESTAMP })
-        .then(function (data) {
-            firebase.database().ref('currentTime/')
-                .once('value')
-                .then(function (data) {
+    useEffect(() => {
+        // console.log("responss is ");
+        async function isodate() {
+            await axios.get('http://worldclockapi.com/api/json/utc/now').then((res) => {
+                return setISODate(moment(res.data["currentDateTime"]).format("dddd, MMMM Do YYYY, h:mm"))
+                // console.log("responss is ", moment(res.data["currentDateTime"]).format("dddd, MMMM Do YYYY, h:mm"));
+            })
+        }
+        isodate()
+    }, [])
 
-                    setToday(data.val()['time'])
-                    // t = t+1000
-                    console.log('server time: ', moment(today).format("M-DD-YYYY"));
+    useEffect(() => {
+        if (ISODate !== moment(new Date()).format("dddd, MMMM Do YYYY, h:mm") || !ISODate) {
+            setpcTimeError(true)
+            console.log("check your PC Time")
+            // var today = new Date().toLocaleString().split(",")[0].replaceAll("/", "-");
+        } else setpcTimeError(false)
 
-                }, function serverTimeErr(err) {
-                    console.log('coulnd nt reach to the server time !');
-                });
-        }, function (err) {
-            console.log('set time error:', err)
-        });
+    }, [pcTimeError])
+    // firebase.database().ref('currentTime/').update({ time: firebase.database.ServerValue.TIMESTAMP })
+    //     .then(function (data) {
+    //         firebase.database().ref('currentTime/')
+    //             .once('value')
+    //             .then(function (data) {
+
+    //                 setToday(data.val()['time'])
+    //                 // t = t+1000
+    //                 console.log('server time: ', moment(today).format("M-DD-YYYY"));
+
+    //             }, function serverTimeErr(err) {
+    //                 console.log('coulnd nt reach to the server time !');
+    //             });
+    //     }, function (err) {
+    //         console.log('set time error:', err)
+    //     });
 
     // eslint-disable-next-line
     const classes = useStyles();
@@ -117,6 +138,9 @@ export const Dashboard = () => {
         });
         // eslint-disable-next-line
     }, [loading])
+
+    const axios = require('axios').default;
+
 
     useEffect(() => {
         const checkinTimeStamp = attendance && attendance[currentYear] && attendance[currentYear][currentMonth] && attendance[currentYear][currentMonth][today]?.checkedin
@@ -200,8 +224,7 @@ export const Dashboard = () => {
             // UpdateFunc(values)
         },
     });
-
-
+    { console.log("pc error is ", pcTimeError) }
     // if (!loading && !userDetails) history.push("/")
     return (
 
@@ -210,9 +233,12 @@ export const Dashboard = () => {
                 {userDetails && userDetails?.isVerified && userDetails?.role === "Authorized" ?
 
                     <div>
+
                         <TableContainer component={Paper}>
+                            {/* < span style={{ color: "red" }}> {pcTimeError && pcTimeError.legth ? "CHECK YOUR PC TIME TO ENABLE CHECK-IN BUTTON" : "all good go head and enjoy"}</span> */}
                             <Table aria-label="simple table">
                                 <TableHead>
+
                                     <TableRow>
                                         <TableCell align="right">Check in</TableCell>
                                         <TableCell align="right">Check out</TableCell>
